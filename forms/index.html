@@ -26,7 +26,14 @@
       text-align: center;
     }
 
-    .emoji { font-size: 3rem; margin-bottom: 20px; }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
 
     h1 {
       font-size: 2.8rem;
@@ -118,7 +125,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="emoji">✈️☕</div>
+    <img src="avatar.jpg" alt="Carrie" class="avatar" />
     <h1>Carrie</h1>
     <p class="subtitle">Fill out your preferences once. Your coordinator's AI assistant handles the rest — flights, hotels, coffee, and more.</p>
 
