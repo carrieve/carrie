@@ -1,8 +1,7 @@
 # Carrie ✈️☕
-
 **AI-powered preference management for Executive Assistants.**
 
-Capture travel and food preferences once. Claude looks them up automatically when booking flights, hotels, ordering coffee, or placing DoorDash orders — without you having to ask twice.
+Stop looking up the same information over and over. Carrie connects your travelers' preferences directly to your AI assistant — so booking a flight or ordering coffee is as simple as asking.
 
 Built by an EA, for EAs.
 
@@ -10,55 +9,82 @@ Built by an EA, for EAs.
 
 ## What it does
 
-**Travel preferences** — loyalty numbers, seat preferences, TSA PreCheck/Global Entry, hotel chains, ground transport, dietary needs and more.
-
-**Food & delivery preferences** — exact coffee order, favorite restaurants, dietary restrictions, snack preferences, and delivery addresses for home and office.
-
-Once someone fills out their form, you can say:
-
-> *"Book a flight for Jamie to NYC next Tuesday"*
-> *"Order Carrie her usual coffee from Starbucks to the office"*
+You ask Claude:
+> *"Book Jamie a flight to NYC next Tuesday"*
+> *"Order Carrie her usual coffee to the office"*
 > *"What hotel chain does Alex prefer?"*
 
-And Claude already knows everything it needs.
+Claude already knows the answer — because Carrie told it.
+
+No more digging through spreadsheets. No more "what's their loyalty number again." No more copy-pasting into booking sites.
 
 ---
 
-## Install
+## How it works
 
+**Step 1 — Someone fills out a form**
+Send them a link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, exact coffee order, dietary restrictions, delivery address. Everything.
+
+👉 [carrie-ai-forms.netlify.app](https://carrie-ai-forms.netlify.app)
+
+**Step 2 — You save their profile**
+Their preferences download as a file. Drop it in a folder. Done.
+
+**Step 3 — Claude knows everything**
+Next time you need to book travel or order food, just ask. Claude looks up their profile automatically and uses it.
+
+---
+
+## Get started
+
+**What you need:**
+- A Mac or PC
+- [Claude Code](https://claude.ai/code) — free from Anthropic
+- Python 3 — already installed on most Macs
+
+**Install Carrie:**
 ```bash
 claude plugin install github:carrieve/carrie
 ```
 
-Then run:
-
+**Run setup (just once):**
 ```
 /carrie-setup
 ```
 
----
-
-## Usage
-
+**Open Carrie anytime:**
 ```
 /carrie
 ```
-
-Opens the main menu — look up profiles, start the form server, or add new people.
 
 ---
 
 ## Collecting preferences
 
-Start the form server with `/carrie`, then share the links:
-- **Travel form:** http://localhost:8080
-- **Food form:** http://localhost:8080/food
+Share these links with your travelers:
 
-When someone submits their form, a JSON file downloads. Save it to:
-- `~/.carrie/profiles/travel/` for travel profiles
-- `~/.carrie/profiles/food/` for food profiles
+- **Travel form** — flights, hotels, loyalty numbers, dietary needs, and more
+- **Food & coffee form** — exact coffee order, favorite restaurants, delivery addresses
 
-Claude will find it automatically from there.
+👉 **[carrie-ai-forms.netlify.app](https://carrie-ai-forms.netlify.app)**
+
+When they submit, a file downloads. Email it back to you, drop it in your profiles folder, and Claude can find it automatically.
+
+---
+
+## FAQ
+
+**Do my travelers need Claude or any special software?**
+No. They just fill out a web form — like any Google Form. Nothing to install.
+
+**Does this work with any AI?**
+Right now it's built for Claude Code. Support for other platforms is coming as the technology matures.
+
+**Is my data private?**
+Yes. Profiles are stored locally on your own computer. Nothing is sent to the cloud.
+
+**Can I use this for a whole team of EAs?**
+Yes — each EA installs Carrie on their own machine and manages their own travelers' profiles.
 
 ---
 
@@ -72,6 +98,6 @@ Claude will find it automatically from there.
 
 ## About
 
-Created by [Carrie Van Epps](https://github.com/carrieve) — a retired Executive Assistant learning to build with AI.
+Created by [Carrie Van Epps](https://github.com/carrieve) — an Executive Assistant learning to build with AI.
 
-*Questions or ideas? Open an issue on GitHub.*
+*Questions, ideas, or feedback? [Open an issue](https://github.com/carrieve/carrie/issues) — I'd love to hear from you.*
