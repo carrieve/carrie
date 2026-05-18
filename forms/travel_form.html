@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Preferences</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 72px 20px 100px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      max-width: 680px;
+      margin: 0 auto 64px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1d1d1f;
+      line-height: 1.05;
+    }
+    .page-header .subtitle {
+      margin-top: 14px;
+      color: #6e6e73;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      font-weight: 400;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .notice {
+      margin-top: 24px;
+      background: #e3effd;
+      border-radius: 14px;
+      padding: 16px 22px;
+      font-size: 0.9rem;
+      color: #0a3d7a;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    /* ── Form layout ── */
+    form { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #6e6e73;
+      padding: 0 6px;
+      margin-top: 24px;
+      margin-bottom: 4px;
+    }
+
+    /* ── Cards ── */
+    .section {
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    }
+    .section-body {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* ── Grid rows ── */
+    .row { display: grid; gap: 16px; }
+    .row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    /* ── Fields ── */
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    label { font-size: 0.82rem; font-weight: 600; color: #1d1d1f; }
+    label .hint { font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+    label .req { color: #ff3b30; margin-left: 2px; }
+
+    /* ── Inputs ── */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      padding: 11px 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      transition: box-shadow 0.2s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: #c7c7cc; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3.5px rgba(0, 113, 227, 0.35);
+    }
+    textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aeaeb2' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    /* ── Pills ── */
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+      font-size: 0.88rem;
+      color: #1d1d1f;
+      cursor: pointer;
+      background: #f5f5f7;
+      border-radius: 980px;
+      padding: 7px 16px;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .radio-group input, .checkbox-group input { display: none; }
+    .radio-group label:has(input:checked),
+    .checkbox-group label:has(input:checked) {
+      background: #0071e3;
+      color: #ffffff;
+    }
+    .radio-group label:hover:not(:has(input:checked)),
+    .checkbox-group label:hover:not(:has(input:checked)) {
+      background: #e8e8ed;
+    }
+
+    /* ── Repeatable rows ── */
+    .repeatable { display: flex; flex-direction: column; gap: 10px; }
+    .repeatable-row { display: grid; gap: 10px; align-items: center; }
+    .repeatable-row.ff-row { grid-template-columns: 1fr 1fr auto; }
+    .repeatable-row.hotel-loyalty-row { grid-template-columns: 1fr 1fr auto; }
+
+    .btn-add, .btn-remove {
+      border: none;
+      border-radius: 980px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .btn-add {
+      background: #f5f5f7;
+      color: #0071e3;
+      font-size: 0.85rem;
+      padding: 8px 18px;
+      align-self: flex-start;
+    }
+    .btn-add:hover { background: #e8e8ed; }
+    .btn-remove {
+      background: #fff2f1;
+      color: #ff3b30;
+      font-size: 0.88rem;
+      padding: 8px 13px;
+    }
+    .btn-remove:hover { background: #ffe0de; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: #f2f2f5;
+      margin: 2px 0;
+    }
+
+    /* ── Submit ── */
+    .submit-area { text-align: center; margin-top: 20px; }
+    .btn-submit {
+      background: #0071e3;
+      color: #ffffff;
+      border: none;
+      border-radius: 980px;
+      padding: 16px 56px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.1s;
+      -webkit-font-smoothing: antialiased;
+    }
+    .btn-submit:hover { background: #0077ed; }
+    .btn-submit:active { transform: scale(0.98); background: #006edb; }
+
+    /* ── Toast ── */
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(29, 29, 31, 0.88);
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 999;
+      box-shadow: 0 4px 28px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      white-space: nowrap;
+    }
+    .toast.success { background: rgba(52, 199, 89, 0.92); }
+    .toast.error { background: rgba(255, 59, 48, 0.92); }
+    .toast.visible { display: block; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      body { padding: 48px 16px 80px; }
+      .page-header h1 { font-size: 2.2rem; }
+      .section-body { padding: 20px 20px 24px; }
+      .row.cols-2, .row.cols-3 { grid-template-columns: 1fr; }
+      .repeatable-row.ff-row,
+      .repeatable-row.hotel-loyalty-row { grid-template-columns: 1fr 1fr; }
+      .repeatable-row.ff-row .btn-remove,
+      .repeatable-row.hotel-loyalty-row .btn-remove { grid-column: span 2; justify-self: end; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Travel Preferences</h1>
+  <p class="subtitle">Fill this out once and your travel coordinator will have everything needed to book trips on your behalf. All fields except your name are optional.</p>
+  <div class="notice">
+    📎 When you click <strong>Save My Travel Profile</strong>, a file will download to your computer. <strong>Email that file back to your travel coordinator</strong> — that's all you need to do.
+  </div>
+</div>
+
+<form id="travel-form">
+
+  <!-- PERSONAL -->
+  <p class="section-label">Personal Information</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" name="name" placeholder="As it appears on your ID" required />
+        </div>
+        <div class="field">
+          <label>Preferred Name <span class="hint">(if different)</span></label>
+          <input type="text" name="preferred_name" placeholder="What to call you" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label>Mobile Phone</label>
+          <input type="tel" name="phone" placeholder="+1 555 000 0000" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Emergency Contact Name</label>
+          <input type="text" name="emergency_contact_name" placeholder="Full name" />
+        </div>
+        <div class="field">
+          <label>Emergency Contact Phone</label>
+          <input type="tel" name="emergency_contact_phone" placeholder="+1 555 000 0000" />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row cols-3">
+        <div class="field">
+          <label>Passport Country</label>
+          <input type="text" name="passport_country" placeholder="e.g. United States" />
+        </div>
+        <div class="field">
+          <label>Passport Expiry</label>
+          <input type="date" name="passport_expiry" />
+        </div>
+        <div class="field">
+          <label>Date of Birth <span class="hint">(for booking)</span></label>
+          <input type="date" name="dob" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Gender <span class="hint">(as on passport)</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="gender" value="M" />Male</label>
+            <label><input type="radio" name="gender" value="F" />Female</label>
+            <label><input type="radio" name="gender" value="X" />Non-binary / X</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Home Airport(s)</label>
+          <input type="text" name="home_airports" placeholder="e.g. CLT, SFO" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AIR TRAVEL -->
+  <p class="section-label">Air Travel</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Preferred Airlines</label>
+          <input type="text" name="preferred_airlines" placeholder="e.g. United, Delta" />
+        </div>
+        <div class="field">
+          <label>Airlines to Avoid</label>
+          <input type="text" name="avoided_airlines" placeholder="e.g. Spirit, Frontier" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Seat Preference</label>
+          <div class="radio-group">
+            <label><input type="radio" name="seat_pref" value="aisle" />Aisle</label>
+            <label><input type="radio" name="seat_pref" value="window" />Window</label>
+            <label><input type="radio" name="seat_pref" value="no_pref" />No preference</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Class of Service</label>
+          <div class="radio-group">
+            <label><input type="radio" name="class_pref" value="economy" />Economy</label>
+            <label><input type="radio" name="class_pref" value="premium_economy" />Premium Econ</label>
+            <label><input type="radio" name="class_pref" value="business" />Business</label>
+            <label><input type="radio" name="class_pref" value="first" />First</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Class of Service Notes <span class="hint">(e.g. business for flights over 5h, economy for domestic)</span></label>
+        <input type="text" name="class_notes" placeholder="Any nuance to the above" />
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Routing Preference</label>
+          <div class="radio-group">
+            <label><input type="radio" name="routing_pref" value="nonstop_only" />Nonstop only</label>
+            <label><input type="radio" name="routing_pref" value="nonstop_preferred" />Nonstop preferred</label>
+            <label><input type="radio" name="routing_pref" value="no_pref" />No preference</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Minimum Connection Time</label>
+          <input type="text" name="min_connection" placeholder="e.g. 1 hour" />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field">
+        <label>Trusted Traveler Programs</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="tsa_precheck" value="yes" />TSA PreCheck</label>
+          <label><input type="checkbox" name="global_entry" value="yes" />Global Entry</label>
+          <label><input type="checkbox" name="clear" value="yes" />CLEAR</label>
+          <label><input type="checkbox" name="nexus" value="yes" />NEXUS</label>
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Known Traveler Number (KTN)</label>
+          <input type="text" name="ktn" placeholder="TSA PreCheck / Global Entry KTN" />
+        </div>
+        <div class="field">
+          <label>CLEAR Member ID</label>
+          <input type="text" name="clear_id" placeholder="CLEAR membership ID" />
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field">
+        <label>Frequent Flyer Programs</label>
+        <div class="repeatable" id="ff-container">
+          <div class="repeatable-row ff-row">
+            <input type="text" name="ff_airline[]" placeholder="Airline (e.g. United)" />
+            <input type="text" name="ff_number[]" placeholder="Member number" />
+            <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addFFRow()">+ Add program</button>
+      </div>
+      <div class="field">
+        <label>In-flight Meal Preference</label>
+        <select name="meal_pref">
+          <option value="">Standard / no preference</option>
+          <option value="vegetarian">Vegetarian (VGML)</option>
+          <option value="vegan">Vegan (AVML)</option>
+          <option value="gluten_free">Gluten-free (GFML)</option>
+          <option value="kosher">Kosher (KSML)</option>
+          <option value="halal">Halal (MOML)</option>
+          <option value="low_sodium">Low sodium (LSML)</option>
+          <option value="diabetic">Diabetic (DBML)</option>
+          <option value="child">Child meal (CHML)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOTELS -->
+  <p class="section-label">Hotels</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Preferred Hotel Chains</label>
+          <input type="text" name="preferred_hotels" placeholder="e.g. Marriott, Hyatt, Hilton" />
+        </div>
+        <div class="field">
+          <label>Chains to Avoid</label>
+          <input type="text" name="avoided_hotels" placeholder="e.g. Motel 6" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Room / Bed Type</label>
+          <div class="radio-group">
+            <label><input type="radio" name="bed_pref" value="king" />King</label>
+            <label><input type="radio" name="bed_pref" value="queen" />Queen</label>
+            <label><input type="radio" name="bed_pref" value="two_queens" />Two Queens</label>
+            <label><input type="radio" name="bed_pref" value="no_pref" />No preference</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Floor Preference</label>
+          <div class="radio-group">
+            <label><input type="radio" name="floor_pref" value="high" />High floor</label>
+            <label><input type="radio" name="floor_pref" value="low" />Low floor</label>
+            <label><input type="radio" name="floor_pref" value="no_pref" />No preference</label>
+          </div>
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Location Preference</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hotel_location" value="city_center" />City center</label>
+            <label><input type="radio" name="hotel_location" value="near_venue" />Near venue</label>
+            <label><input type="radio" name="hotel_location" value="near_airport" />Near airport</label>
+            <label><input type="radio" name="hotel_location" value="no_pref" />No preference</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Smoking</label>
+          <div class="radio-group">
+            <label><input type="radio" name="smoking_pref" value="non_smoking" />Non-smoking only</label>
+            <label><input type="radio" name="smoking_pref" value="ok" />Smoking OK</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Desired Amenities</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="amenity_gym" value="yes" />Gym / fitness</label>
+          <label><input type="checkbox" name="amenity_pool" value="yes" />Pool</label>
+          <label><input type="checkbox" name="amenity_business" value="yes" />Business center</label>
+          <label><input type="checkbox" name="amenity_breakfast" value="yes" />Breakfast included</label>
+          <label><input type="checkbox" name="amenity_parking" value="yes" />Parking</label>
+          <label><input type="checkbox" name="amenity_lounge" value="yes" />Club lounge access</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Hotel Loyalty Programs</label>
+        <div class="repeatable" id="hotel-loyalty-container">
+          <div class="repeatable-row hotel-loyalty-row">
+            <input type="text" name="hotel_chain[]" placeholder="Chain (e.g. Marriott Bonvoy)" />
+            <input type="text" name="hotel_loyalty_number[]" placeholder="Member number" />
+            <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addHotelLoyaltyRow()">+ Add program</button>
+      </div>
+      <div class="field">
+        <label>Hotel Notes <span class="hint">(pillow preferences, quiet room, accessibility, etc.)</span></label>
+        <textarea name="hotel_notes" placeholder="Anything else your booker should know"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUND TRANSPORT -->
+  <p class="section-label">Ground Transport</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="field">
+        <label>Preferred Transport Mode</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ground_pref" value="rental_car" />Rental car</label>
+          <label><input type="radio" name="ground_pref" value="car_service" />Car service / black car</label>
+          <label><input type="radio" name="ground_pref" value="rideshare" />Rideshare (Uber / Lyft)</label>
+          <label><input type="radio" name="ground_pref" value="taxi" />Taxi</label>
+          <label><input type="radio" name="ground_pref" value="no_pref" />No preference</label>
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Preferred Rental Car Company</label>
+          <input type="text" name="rental_car_company" placeholder="e.g. Hertz, National, Avis" />
+        </div>
+        <div class="field">
+          <label>Rental Car Loyalty Number</label>
+          <input type="text" name="rental_car_loyalty" placeholder="Member number" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Preferred Car Type</label>
+          <select name="car_type_pref">
+            <option value="">No preference</option>
+            <option value="compact">Compact</option>
+            <option value="midsize">Midsize</option>
+            <option value="fullsize">Full-size</option>
+            <option value="suv">SUV</option>
+            <option value="minivan">Minivan</option>
+            <option value="luxury">Luxury</option>
+            <option value="electric">Electric</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Car Service Preference</label>
+          <input type="text" name="car_service_pref" placeholder="e.g. Uber Black, specific company" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Ground Transport Notes</label>
+        <textarea name="ground_notes" placeholder="e.g. always need a car seat, prefer curbside pickup, etc."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOD & DIETARY -->
+  <p class="section-label">Food &amp; Dietary</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="field">
+        <label>Dietary Restrictions</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="diet_vegetarian" value="yes" />Vegetarian</label>
+          <label><input type="checkbox" name="diet_vegan" value="yes" />Vegan</label>
+          <label><input type="checkbox" name="diet_gluten_free" value="yes" />Gluten-free</label>
+          <label><input type="checkbox" name="diet_kosher" value="yes" />Kosher</label>
+          <label><input type="checkbox" name="diet_halal" value="yes" />Halal</label>
+          <label><input type="checkbox" name="diet_dairy_free" value="yes" />Dairy-free</label>
+          <label><input type="checkbox" name="diet_nut_free" value="yes" />Nut-free</label>
+          <label><input type="checkbox" name="diet_shellfish_free" value="yes" />No shellfish</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Food Allergies <span class="hint">(list anything serious)</span></label>
+        <input type="text" name="food_allergies" placeholder="e.g. peanuts, tree nuts, shellfish" />
+      </div>
+      <div class="field">
+        <label>Food Notes <span class="hint">(dislikes, preferences, cuisine preferences, etc.)</span></label>
+        <textarea name="food_notes" placeholder="Anything else relevant — e.g. no spicy food, loves sushi, light meals before early meetings"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDITIONAL -->
+  <p class="section-label">Anything Else</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="field">
+        <label>Medical / Accessibility Needs</label>
+        <textarea name="medical_notes" placeholder="Wheelchair assistance, oxygen, medication storage, etc."></textarea>
+      </div>
+      <div class="field">
+        <label>Additional Notes</label>
+        <textarea name="additional_notes" placeholder="Anything else your travel coordinator should know — preferences, quirks, standing rules"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button type="submit" class="btn-submit">Save My Travel Profile</button>
+  </div>
+
+</form>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function addFFRow() {
+    const container = document.getElementById('ff-container');
+    const row = document.createElement('div');
+    row.className = 'repeatable-row ff-row';
+    row.innerHTML = `
+      <input type="text" name="ff_airline[]" placeholder="Airline (e.g. Delta)" />
+      <input type="text" name="ff_number[]" placeholder="Member number" />
+      <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function addHotelLoyaltyRow() {
+    const container = document.getElementById('hotel-loyalty-container');
+    const row = document.createElement('div');
+    row.className = 'repeatable-row hotel-loyalty-row';
+    row.innerHTML = `
+      <input type="text" name="hotel_chain[]" placeholder="Chain (e.g. Hilton Honors)" />
+      <input type="text" name="hotel_loyalty_number[]" placeholder="Member number" />
+      <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function removeRow(btn) {
+    btn.closest('.repeatable-row').remove();
+  }
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} visible`;
+    setTimeout(() => t.className = 'toast', 7000);
+  }
+
+  document.getElementById('travel-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = {};
+
+    for (const el of form.elements) {
+      if (!el.name || el.name.endsWith('[]')) continue;
+      if (el.type === 'radio' && !el.checked) continue;
+      if (el.type === 'checkbox') {
+        if (el.checked) data[el.name] = el.value;
+        continue;
+      }
+      if (el.value) data[el.name] = el.value;
+    }
+
+    const ffAirlines = [...form.querySelectorAll('[name="ff_airline[]"]')].map(i => i.value.trim()).filter(Boolean);
+    const ffNumbers = [...form.querySelectorAll('[name="ff_number[]"]')].map(i => i.value.trim());
+    data.frequent_flyer = ffAirlines.map((airline, i) => ({ airline, number: ffNumbers[i] || '' }));
+
+    const hotelChains = [...form.querySelectorAll('[name="hotel_chain[]"]')].map(i => i.value.trim()).filter(Boolean);
+    const hotelNumbers = [...form.querySelectorAll('[name="hotel_loyalty_number[]"]')].map(i => i.value.trim());
+    data.hotel_loyalty = hotelChains.map((chain, i) => ({ chain, number: hotelNumbers[i] || '' }));
+
+    const diets = [];
+    for (const el of form.querySelectorAll('[name^="diet_"]:checked')) {
+      diets.push(el.name.replace('diet_', '').replace('_', '-'));
+    }
+    data.dietary_restrictions = diets;
+
+    const amenities = [];
+    for (const el of form.querySelectorAll('[name^="amenity_"]:checked')) {
+      amenities.push(el.name.replace('amenity_', ''));
+    }
+    data.hotel_amenities = amenities;
+
+    const trusted = [];
+    for (const prog of ['tsa_precheck', 'global_entry', 'clear', 'nexus']) {
+      if (form.querySelector(`[name="${prog}"]:checked`)) trusted.push(prog);
+    }
+    data.trusted_traveler = trusted;
+
+    data.updated_at = new Date().toISOString();
+
+    try {
+      const res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        showToast('Profile saved successfully!', 'success');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showToast('Server error — profile not saved.', 'error');
+      }
+    } catch {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (data.name || 'traveler').toLowerCase().replace(/\s+/g, '_');
+      a.href = url;
+      a.download = `${safeName}_travel_profile.json`;
+      a.click();
+      showToast(`Downloaded ${safeName}_travel_profile.json — please email this file back to your travel coordinator!`, 'success');
+    }
+  });
+</script>
+</body>
+</html>

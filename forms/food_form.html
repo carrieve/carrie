@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food &amp; Delivery Preferences</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 72px 20px 100px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-header {
+      max-width: 680px;
+      margin: 0 auto 64px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1d1d1f;
+      line-height: 1.05;
+    }
+    .page-header .subtitle {
+      margin-top: 14px;
+      color: #6e6e73;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      font-weight: 400;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .notice {
+      margin-top: 24px;
+      background: #e3effd;
+      border-radius: 14px;
+      padding: 16px 22px;
+      font-size: 0.9rem;
+      color: #0a3d7a;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    form { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #6e6e73;
+      padding: 0 6px;
+      margin-top: 24px;
+      margin-bottom: 4px;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    }
+    .section-body {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .row { display: grid; gap: 16px; }
+    .row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    label { font-size: 0.82rem; font-weight: 600; color: #1d1d1f; }
+    label .hint { font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+    label .req { color: #ff3b30; margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      padding: 11px 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      transition: box-shadow 0.2s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: #c7c7cc; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3.5px rgba(0, 113, 227, 0.35);
+    }
+    textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aeaeb2' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+      font-size: 0.88rem;
+      color: #1d1d1f;
+      cursor: pointer;
+      background: #f5f5f7;
+      border-radius: 980px;
+      padding: 7px 16px;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .radio-group input, .checkbox-group input { display: none; }
+    .radio-group label:has(input:checked),
+    .checkbox-group label:has(input:checked) {
+      background: #0071e3;
+      color: #ffffff;
+    }
+    .radio-group label:hover:not(:has(input:checked)),
+    .checkbox-group label:hover:not(:has(input:checked)) {
+      background: #e8e8ed;
+    }
+
+    .repeatable { display: flex; flex-direction: column; gap: 10px; }
+    .repeatable-row { display: grid; gap: 10px; align-items: center; }
+    .repeatable-row.restaurant-row { grid-template-columns: 1fr 1fr auto; }
+    .repeatable-row.address-row { grid-template-columns: 1fr auto; }
+
+    .btn-add, .btn-remove {
+      border: none;
+      border-radius: 980px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .btn-add {
+      background: #f5f5f7;
+      color: #0071e3;
+      font-size: 0.85rem;
+      padding: 8px 18px;
+      align-self: flex-start;
+    }
+    .btn-add:hover { background: #e8e8ed; }
+    .btn-remove {
+      background: #fff2f1;
+      color: #ff3b30;
+      font-size: 0.88rem;
+      padding: 8px 13px;
+    }
+    .btn-remove:hover { background: #ffe0de; }
+
+    .divider { height: 1px; background: #f2f2f5; margin: 2px 0; }
+
+    .submit-area { text-align: center; margin-top: 20px; }
+    .btn-submit {
+      background: #0071e3;
+      color: #ffffff;
+      border: none;
+      border-radius: 980px;
+      padding: 16px 56px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-submit:hover { background: #0077ed; }
+    .btn-submit:active { transform: scale(0.98); background: #006edb; }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(29, 29, 31, 0.88);
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 999;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      white-space: nowrap;
+    }
+    .toast.success { background: rgba(52, 199, 89, 0.92); }
+    .toast.error { background: rgba(255, 59, 48, 0.92); }
+    .toast.visible { display: block; }
+
+    @media (max-width: 600px) {
+      body { padding: 48px 16px 80px; }
+      .page-header h1 { font-size: 2.2rem; }
+      .section-body { padding: 20px 20px 24px; }
+      .row.cols-2, .row.cols-3 { grid-template-columns: 1fr; }
+      .repeatable-row.restaurant-row { grid-template-columns: 1fr 1fr; }
+      .repeatable-row.restaurant-row .btn-remove { grid-column: span 2; justify-self: end; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Food &amp; Delivery Preferences</h1>
+  <p class="subtitle">Fill this out once so your coordinator can order coffee, meals, and groceries exactly the way you like them — without having to ask every time.</p>
+  <div class="notice">
+    📎 When you click <strong>Save My Food Profile</strong>, a file will download to your computer. <strong>Email that file back to your coordinator</strong> — that's all you need to do.
+  </div>
+</div>
+
+<form id="food-form">
+
+  <!-- IDENTITY -->
+  <p class="section-label">About You</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" name="name" placeholder="Your name" required />
+        </div>
+        <div class="field">
+          <label>Preferred Name <span class="hint">(if different)</span></label>
+          <input type="text" name="preferred_name" placeholder="What to call you" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label>Mobile Phone</label>
+          <input type="tel" name="phone" placeholder="+1 555 000 0000" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COFFEE & DRINKS -->
+  <p class="section-label">Coffee &amp; Drinks</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Preferred Coffee Chain</label>
+          <input type="text" name="coffee_chain" placeholder="e.g. Starbucks, Dunkin', local café" />
+        </div>
+        <div class="field">
+          <label>Backup Chain <span class="hint">(if preferred isn't available)</span></label>
+          <input type="text" name="coffee_chain_backup" placeholder="e.g. Peet's, any independent" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Usual Coffee Order <span class="hint">(be as specific as you'd say it to a barista)</span></label>
+        <textarea name="coffee_order" placeholder="e.g. Grande oat milk latte, extra shot, no foam, at 130°F"></textarea>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Size Preference</label>
+          <div class="radio-group">
+            <label><input type="radio" name="coffee_size" value="small" />Small</label>
+            <label><input type="radio" name="coffee_size" value="medium" />Medium</label>
+            <label><input type="radio" name="coffee_size" value="large" />Large</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Temperature</label>
+          <div class="radio-group">
+            <label><input type="radio" name="coffee_temp" value="hot" />Hot</label>
+            <label><input type="radio" name="coffee_temp" value="iced" />Iced</label>
+            <label><input type="radio" name="coffee_temp" value="either" />Either</label>
+          </div>
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Milk / Dairy</label>
+          <div class="radio-group">
+            <label><input type="radio" name="milk_pref" value="whole" />Whole</label>
+            <label><input type="radio" name="milk_pref" value="skim" />Skim</label>
+            <label><input type="radio" name="milk_pref" value="oat" />Oat</label>
+            <label><input type="radio" name="milk_pref" value="almond" />Almond</label>
+            <label><input type="radio" name="milk_pref" value="soy" />Soy</label>
+            <label><input type="radio" name="milk_pref" value="none" />No milk</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Sweetener</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sweetener" value="none" />None</label>
+            <label><input type="radio" name="sweetener" value="sugar" />Sugar</label>
+            <label><input type="radio" name="sweetener" value="splenda" />Splenda</label>
+            <label><input type="radio" name="sweetener" value="stevia" />Stevia</label>
+            <label><input type="radio" name="sweetener" value="honey" />Honey</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Backup Coffee Order <span class="hint">(if usual isn't on the menu)</span></label>
+        <input type="text" name="coffee_backup_order" placeholder="e.g. Just a plain medium dark roast with oat milk" />
+      </div>
+      <div class="divider"></div>
+      <div class="field">
+        <label>Non-Coffee Drinks <span class="hint">(tea, juice, sparkling water, etc.)</span></label>
+        <textarea name="other_drinks" placeholder="e.g. English Breakfast tea with milk, no sugar — or just sparkling water if no coffee available"></textarea>
+      </div>
+      <div class="field">
+        <label>Drinks to Never Order</label>
+        <input type="text" name="drinks_avoid" placeholder="e.g. energy drinks, anything with artificial sweeteners" />
+      </div>
+    </div>
+  </div>
+
+  <!-- MEALS -->
+  <p class="section-label">Meals &amp; Restaurants</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="field">
+        <label>Dietary Restrictions</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="diet_vegetarian" value="yes" />Vegetarian</label>
+          <label><input type="checkbox" name="diet_vegan" value="yes" />Vegan</label>
+          <label><input type="checkbox" name="diet_gluten_free" value="yes" />Gluten-free</label>
+          <label><input type="checkbox" name="diet_kosher" value="yes" />Kosher</label>
+          <label><input type="checkbox" name="diet_halal" value="yes" />Halal</label>
+          <label><input type="checkbox" name="diet_dairy_free" value="yes" />Dairy-free</label>
+          <label><input type="checkbox" name="diet_nut_free" value="yes" />Nut-free</label>
+          <label><input type="checkbox" name="diet_shellfish_free" value="yes" />No shellfish</label>
+          <label><input type="checkbox" name="diet_low_carb" value="yes" />Low carb</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Food Allergies <span class="hint">(anything serious — will always be avoided)</span></label>
+        <input type="text" name="food_allergies" placeholder="e.g. peanuts, tree nuts, shellfish, eggs" />
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Favorite Cuisines</label>
+          <input type="text" name="fav_cuisines" placeholder="e.g. Japanese, Italian, Mexican" />
+        </div>
+        <div class="field">
+          <label>Cuisines to Avoid</label>
+          <input type="text" name="avoid_cuisines" placeholder="e.g. spicy food, Indian" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Spice Tolerance</label>
+        <div class="radio-group">
+          <label><input type="radio" name="spice_level" value="none" />None — mild only</label>
+          <label><input type="radio" name="spice_level" value="mild" />A little spice is fine</label>
+          <label><input type="radio" name="spice_level" value="medium" />Medium</label>
+          <label><input type="radio" name="spice_level" value="hot" />Hot</label>
+          <label><input type="radio" name="spice_level" value="extra_hot" />The hotter the better</label>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="field">
+        <label>Favorite Restaurants <span class="hint">(name + what you usually order)</span></label>
+        <div class="repeatable" id="restaurant-container">
+          <div class="repeatable-row restaurant-row">
+            <input type="text" name="restaurant_name[]" placeholder="Restaurant name" />
+            <input type="text" name="restaurant_order[]" placeholder="Usual order" />
+            <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addRestaurantRow()">+ Add restaurant</button>
+      </div>
+      <div class="field">
+        <label>Restaurants to Avoid</label>
+        <input type="text" name="restaurants_avoid" placeholder="e.g. McDonald's, anything chain fast food" />
+      </div>
+      <div class="field">
+        <label>Foods You Won't Eat</label>
+        <input type="text" name="foods_avoid" placeholder="e.g. mushrooms, cilantro, blue cheese" />
+      </div>
+      <div class="field">
+        <label>Meal Notes <span class="hint">(portion size, anything else your coordinator should know)</span></label>
+        <textarea name="meal_notes" placeholder="e.g. light eater, prefers salads at lunch, big breakfast person, always wants extra sauce on the side"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROCERIES & SNACKS -->
+  <p class="section-label">Groceries &amp; Snacks</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Favorite Salty Snacks</label>
+          <input type="text" name="snacks_salty" placeholder="e.g. Kettle chips, almonds, pretzels" />
+        </div>
+        <div class="field">
+          <label>Favorite Sweet Snacks</label>
+          <input type="text" name="snacks_sweet" placeholder="e.g. dark chocolate, Kind bars, fruit" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Favorite Non-Coffee Drinks</label>
+          <input type="text" name="fav_drinks" placeholder="e.g. Topo Chico, Liquid IV, Diet Coke" />
+        </div>
+        <div class="field">
+          <label>Specific Brands You Love</label>
+          <input type="text" name="fav_brands" placeholder="e.g. Siggis yogurt, Chomps sticks, Hu crackers" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Staples to Always Have On Hand</label>
+        <textarea name="staples" placeholder="e.g. Greek yogurt, Kind bars, sparkling water, fresh fruit, string cheese"></textarea>
+      </div>
+      <div class="field">
+        <label>Things to Never Order</label>
+        <input type="text" name="grocery_avoid" placeholder="e.g. anything with artificial colors, diet sodas, pork products" />
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVERY -->
+  <p class="section-label">Delivery Details</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-2">
+        <div class="field">
+          <label>Home Address</label>
+          <textarea name="address_home" placeholder="Street, City, State, ZIP" style="min-height:64px;"></textarea>
+        </div>
+        <div class="field">
+          <label>Home Delivery Instructions</label>
+          <textarea name="instructions_home" placeholder="e.g. Gate code #1234, leave at front door, ring bell" style="min-height:64px;"></textarea>
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>Office / Work Address</label>
+          <textarea name="address_office" placeholder="Street, City, State, ZIP" style="min-height:64px;"></textarea>
+        </div>
+        <div class="field">
+          <label>Office Delivery Instructions</label>
+          <textarea name="instructions_office" placeholder="e.g. Lobby desk, suite 400, text when arrived" style="min-height:64px;"></textarea>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row cols-2">
+        <div class="field">
+          <label>DoorDash Account Email <span class="hint">(optional)</span></label>
+          <input type="email" name="doordash_email" placeholder="your@email.com" />
+        </div>
+        <div class="field">
+          <label>Instacart Account Email <span class="hint">(optional)</span></label>
+          <input type="email" name="instacart_email" placeholder="your@email.com" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUDGET -->
+  <p class="section-label">Budget &amp; Other</p>
+  <div class="section">
+    <div class="section-body">
+      <div class="row cols-3">
+        <div class="field">
+          <label>Typical Meal Budget</label>
+          <select name="meal_budget">
+            <option value="">No preference</option>
+            <option value="under_15">Under $15</option>
+            <option value="15_25">$15 – $25</option>
+            <option value="25_40">$25 – $40</option>
+            <option value="40_plus">$40+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Coffee Budget</label>
+          <select name="coffee_budget">
+            <option value="">No preference</option>
+            <option value="under_5">Under $5</option>
+            <option value="5_8">$5 – $8</option>
+            <option value="8_12">$8 – $12</option>
+            <option value="any">Whatever it costs</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Delivery Timing</label>
+          <div class="radio-group">
+            <label><input type="radio" name="delivery_timing" value="asap" />ASAP</label>
+            <label><input type="radio" name="delivery_timing" value="scheduled" />Scheduled</label>
+            <label><input type="radio" name="delivery_timing" value="no_pref" />No preference</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Anything Else Your Coordinator Should Know</label>
+        <textarea name="additional_notes" placeholder="e.g. allergic to the smell of fish, always wants a fork and napkins, prefers orders arrive before noon"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button type="submit" class="btn-submit">Save My Food Profile</button>
+  </div>
+
+</form>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function addRestaurantRow() {
+    const container = document.getElementById('restaurant-container');
+    const row = document.createElement('div');
+    row.className = 'repeatable-row restaurant-row';
+    row.innerHTML = `
+      <input type="text" name="restaurant_name[]" placeholder="Restaurant name" />
+      <input type="text" name="restaurant_order[]" placeholder="Usual order" />
+      <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function removeRow(btn) {
+    btn.closest('.repeatable-row').remove();
+  }
+
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} visible`;
+    setTimeout(() => t.className = 'toast', 7000);
+  }
+
+  document.getElementById('food-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'food' };
+
+    for (const el of form.elements) {
+      if (!el.name || el.name.endsWith('[]')) continue;
+      if (el.type === 'radio' && !el.checked) continue;
+      if (el.type === 'checkbox') {
+        if (el.checked) data[el.name] = el.value;
+        continue;
+      }
+      if (el.value) data[el.name] = el.value;
+    }
+
+    // Favorite restaurants
+    const names = [...form.querySelectorAll('[name="restaurant_name[]"]')].map(i => i.value.trim()).filter(Boolean);
+    const orders = [...form.querySelectorAll('[name="restaurant_order[]"]')].map(i => i.value.trim());
+    data.favorite_restaurants = names.map((name, i) => ({ name, usual_order: orders[i] || '' }));
+
+    // Dietary restrictions
+    const diets = [];
+    for (const el of form.querySelectorAll('[name^="diet_"]:checked')) {
+      diets.push(el.name.replace('diet_', '').replace(/_/g, '-'));
+    }
+    data.dietary_restrictions = diets;
+
+    data.updated_at = new Date().toISOString();
+
+    try {
+      const res = await fetch('/food/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        showToast('Food profile saved!', 'success');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showToast('Server error — profile not saved.', 'error');
+      }
+    } catch {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (data.name || 'person').toLowerCase().replace(/\s+/g, '_');
+      a.href = url;
+      a.download = `${safeName}_food_profile.json`;
+      a.click();
+      showToast(`Downloaded ${safeName}_food_profile.json — please email this file back to your coordinator!`, 'success');
+    }
+  });
+</script>
+</body>
+</html>

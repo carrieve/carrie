@@ -1,0 +1,24 @@
+{
+  "name": "carrie",
+  "version": "1.0.0",
+  "description": "AI-powered preference management for Executive Assistants. Capture travel and food preferences once — Claude looks them up automatically when booking flights, hotels, or ordering coffee and meals.",
+  "author": "Carrie Van Epps (carrieve)",
+  "skills": [
+    {
+      "name": "carrie-setup",
+      "path": "skills/setup.md",
+      "description": "Set up the Carrie preference system for the first time. Creates profile folders, installs dependencies, and registers the MCP server."
+    },
+    {
+      "name": "carrie",
+      "path": "skills/carrie.md",
+      "description": "Open Carrie's main menu — start the form server, look up a profile, or get quick access to travel and food preferences."
+    }
+  ],
+  "mcpServers": {
+    "carrie": {
+      "command": "python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/server/mcp_server.py"]
+    }
+  }
+}

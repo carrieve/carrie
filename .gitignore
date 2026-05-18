@@ -1,0 +1,13 @@
+# Never commit personal profiles
+profiles/
+*.json
+!.claude-plugin/manifest.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Mac
+.DS_Store
