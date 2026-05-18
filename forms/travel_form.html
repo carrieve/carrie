@@ -682,6 +682,17 @@
 
     data.updated_at = new Date().toISOString();
 
+    const _download = () => {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (data.name || 'traveler').toLowerCase().replace(/\s+/g, '_');
+      a.href = url;
+      a.download = `${safeName}_travel_profile.json`;
+      a.click();
+      showToast(`Downloaded! Please email ${safeName}_travel_profile.json to your travel coordinator.`, 'success');
+    };
+
     try {
       const res = await fetch('/submit', {
         method: 'POST',
@@ -692,17 +703,10 @@
         showToast('Profile saved successfully!', 'success');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        showToast('Server error — profile not saved.', 'error');
+        _download();
       }
     } catch {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const safeName = (data.name || 'traveler').toLowerCase().replace(/\s+/g, '_');
-      a.href = url;
-      a.download = `${safeName}_travel_profile.json`;
-      a.click();
-      showToast(`Downloaded ${safeName}_travel_profile.json — please email this file back to your travel coordinator!`, 'success');
+      _download();
     }
   });
 </script>

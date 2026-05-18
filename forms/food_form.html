@@ -624,6 +624,17 @@
 
     data.updated_at = new Date().toISOString();
 
+    const _download = () => {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const safeName = (data.name || 'person').toLowerCase().replace(/\s+/g, '_');
+      a.href = url;
+      a.download = `${safeName}_food_profile.json`;
+      a.click();
+      showToast(`Downloaded! Please email ${safeName}_food_profile.json to your coordinator.`, 'success');
+    };
+
     try {
       const res = await fetch('/food/submit', {
         method: 'POST',
@@ -634,17 +645,10 @@
         showToast('Food profile saved!', 'success');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        showToast('Server error — profile not saved.', 'error');
+        _download();
       }
     } catch {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const safeName = (data.name || 'person').toLowerCase().replace(/\s+/g, '_');
-      a.href = url;
-      a.download = `${safeName}_food_profile.json`;
-      a.click();
-      showToast(`Downloaded ${safeName}_food_profile.json — please email this file back to your coordinator!`, 'success');
+      _download();
     }
   });
 </script>
