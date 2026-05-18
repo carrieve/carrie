@@ -322,6 +322,49 @@
         </div>
       </div>
       <div class="field">
+        <label>Syrups <span class="hint">(type and pumps — e.g. "2 pumps vanilla, 1 pump caramel")</span></label>
+        <input type="text" name="coffee_syrups" placeholder="e.g. 2 pumps sugar-free vanilla, 1 pump hazelnut" />
+      </div>
+      <div class="field">
+        <label>Espresso Shots <span class="hint">(standard, extra, half-caf, etc.)</span></label>
+        <input type="text" name="coffee_shots" placeholder="e.g. extra shot, double, half-caf" />
+      </div>
+      <div class="field">
+        <label>Foam & Texture <span class="hint">(foam, ice, whip preferences)</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="coffee_foam" value="no foam" />No foam</label>
+          <label><input type="radio" name="coffee_foam" value="light foam" />Light foam</label>
+          <label><input type="radio" name="coffee_foam" value="extra foam" />Extra foam</label>
+          <label><input type="radio" name="coffee_foam" value="no preference" />No preference</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Ice Preference</label>
+        <div class="radio-group">
+          <label><input type="radio" name="coffee_ice" value="no ice" />No ice</label>
+          <label><input type="radio" name="coffee_ice" value="light ice" />Light ice</label>
+          <label><input type="radio" name="coffee_ice" value="regular ice" />Regular ice</label>
+          <label><input type="radio" name="coffee_ice" value="extra ice" />Extra ice</label>
+          <label><input type="radio" name="coffee_ice" value="hot drink" />Hot drink</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Whipped Cream</label>
+        <div class="radio-group">
+          <label><input type="radio" name="coffee_whip" value="yes" />Yes please</label>
+          <label><input type="radio" name="coffee_whip" value="no" />No thanks</label>
+          <label><input type="radio" name="coffee_whip" value="no preference" />No preference</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Temperature <span class="hint">(if you want it a specific temp — Starbucks can do this)</span></label>
+        <input type="text" name="coffee_exact_temp" placeholder="e.g. extra hot, 130°F, kids temp" />
+      </div>
+      <div class="field">
+        <label>Any other customizations <span class="hint">(anything else a barista should know)</span></label>
+        <input type="text" name="coffee_custom" placeholder="e.g. no water in Americano, upside down, dry cappuccino" />
+      </div>
+      <div class="field">
         <label>Backup Coffee Order <span class="hint">(if usual isn't on the menu)</span></label>
         <input type="text" name="coffee_backup_order" placeholder="e.g. Just a plain medium dark roast with oat milk" />
       </div>
