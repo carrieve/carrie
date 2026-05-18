@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrie — AI Preference Management</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 580px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .emoji { font-size: 3rem; margin-bottom: 20px; }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1d1d1f;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #6e6e73;
+      line-height: 1.65;
+      margin-bottom: 52px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+
+    .card-emoji { font-size: 2.4rem; }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: #6e6e73;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .card-btn {
+      margin-top: 8px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 980px;
+      padding: 10px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .footer {
+      font-size: 0.82rem;
+      color: #aeaeb2;
+    }
+
+    .footer a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .cards { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="emoji">✈️☕</div>
+    <h1>Carrie</h1>
+    <p class="subtitle">Fill out your preferences once. Your coordinator's AI assistant handles the rest — flights, hotels, coffee, and more.</p>
+
+    <div class="cards">
+      <a class="card" href="travel_form.html">
+        <div class="card-emoji">✈️</div>
+        <div class="card-title">Travel Preferences</div>
+        <div class="card-desc">Flights, hotels, ground transport, loyalty numbers, dietary needs, and more.</div>
+        <div class="card-btn">Fill out form</div>
+      </a>
+      <a class="card" href="food_form.html">
+        <div class="card-emoji">☕</div>
+        <div class="card-title">Food & Coffee</div>
+        <div class="card-desc">Your exact coffee order, favorite restaurants, dietary restrictions, and delivery addresses.</div>
+        <div class="card-btn">Fill out form</div>
+      </a>
+    </div>
+
+    <p class="footer">Powered by <a href="https://github.com/carrieve/carrie" target="_blank">Carrie AI</a> — built for Executive Assistants</p>
+  </div>
+</body>
+</html>
