@@ -25,7 +25,7 @@ No more digging through spreadsheets. No more "what's their loyalty number again
 **Step 1 — Someone fills out a form**
 Send them a link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, exact coffee order, dietary restrictions, delivery address. Everything.
 
-👉 [carrie-ai-forms.netlify.app](https://carrie-ai-forms.netlify.app)
+👉 [getcarrieai.com](https://getcarrieai.com)
 
 **Step 2 — You save their profile**
 Their preferences download as a file. Drop it in a folder. Done.
