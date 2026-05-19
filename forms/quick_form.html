@@ -251,21 +251,12 @@
     </div>
   </div>
 
-  <!-- Step 5: Dietary -->
+  <!-- Step 5: Food order -->
   <div class="step" id="step-4">
     <p class="step-label">Question 5 of 5</p>
-    <p class="step-question">Any dietary restrictions?</p>
-    <p class="step-hint">Select all that apply, or skip if none.</p>
-    <div class="chip-group">
-      <button class="chip" onclick="toggleChip(this, 'diet')">Vegetarian</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Vegan</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Gluten-free</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Dairy-free</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Nut allergy</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Kosher</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">Halal</button>
-      <button class="chip" onclick="toggleChip(this, 'diet')">None</button>
-    </div>
+    <p class="step-question" id="q5-title">What's your usual food order?</p>
+    <p class="step-hint" id="q5-hint">Favorite restaurant and what you usually get — or any dietary restrictions to know about.</p>
+    <textarea id="f-food" placeholder="e.g. Chick-fil-A — grilled chicken sandwich, no pickles. Allergic to nuts."></textarea>
     <div class="btn-row">
       <button class="btn btn-back" onclick="back(4)">← Back</button>
       <button class="btn btn-next" onclick="finish()">Save Profile →</button>
@@ -296,6 +287,8 @@
     document.getElementById('q1-hint').textContent = "First name is fine — this is what Claude will use.";
     document.getElementById('q4-title').textContent = "What's their coffee order?";
     document.getElementById('q4-hint').textContent = "Be as specific as they'd say it to a barista.";
+    document.getElementById('q5-title').textContent = "What's their usual food order?";
+    document.getElementById('q5-hint').textContent = "Favorite restaurant and usual order — or any dietary restrictions to know about.";
     document.getElementById('done-title').textContent = "Profile saved!";
     document.getElementById('done-body').textContent = "Download this profile and upload it to your Claude Project. Claude will know exactly what to order and how to book.";
   }
@@ -345,7 +338,7 @@
     const airline = document.getElementById('f-airline').value.trim();
     const hotelNumber = document.getElementById('f-hotel-number').value.trim();
     const coffee = document.getElementById('f-coffee').value.trim();
-    const dietChips = [...document.querySelectorAll('#step-4 .chip.selected')].map(c => c.textContent).filter(d => d !== 'None');
+    const food = document.getElementById('f-food').value.trim();
 
     const seatChip = document.querySelector('#seat-chips .chip.selected');
     const hotelChip = document.querySelector('.chip[onclick*="hotel"].selected');
@@ -361,7 +354,7 @@
     if (hotelChip && hotelChip.textContent !== 'No preference') data.preferred_hotel_chain = hotelChip.textContent;
     if (hotelNumber) data.hotel_loyalty_number = hotelNumber;
     if (coffee) data.coffee_order = coffee;
-    if (dietChips.length > 0) data.dietary_restrictions = dietChips;
+    if (food) data.food_order = food;
 
     const displayName = name.split(' ')[0].toLowerCase();
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
