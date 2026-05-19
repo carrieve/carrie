@@ -642,11 +642,43 @@
         : 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload every traveler\'s profile file. Claude now knows everyone\'s preferences. Add new travelers anytime.';
 
       document.getElementById('step3-title').textContent = isSelf
-        ? 'Just ask — like texting a colleague'
-        : 'Ask Claude anything about your travelers';
+        ? 'Just ask — Claude handles the rest'
+        : 'Instant answers — no more digging';
       document.getElementById('step3-body').textContent = isSelf
-        ? '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.'
-        : '"Book Jamie a flight to NYC Tuesday, nonstop aisle." "What hotel chain does Sarah prefer?" "Order Alex his usual coffee." Claude knows every traveler and handles the rest.';
+        ? '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find me a hotel in Chicago." Claude knows your preferences and handles the booking.'
+        : '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel chain does Alex prefer?" Instant answers while you\'re booking — no more hunting through notes or emails.';
+
+      // Swap example prompts
+      const promptsTitle = document.getElementById('prompts-title');
+      const promptsSub = document.getElementById('prompts-sub');
+      const promptsList = document.getElementById('prompts-list');
+
+      if (isSelf) {
+        promptsTitle.textContent = 'What you can ask';
+        promptsSub.textContent = 'Just type it like you\'d say it to a colleague.';
+        promptsList.innerHTML = `
+          <div class="prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
+          <div class="prompt">"Order my usual coffee to the office."</div>
+          <div class="prompt">"Find a hotel in Chicago that matches my loyalty program."</div>
+          <div class="prompt">"What's my Marriott loyalty number?"</div>
+          <div class="prompt">"Find a good client dinner spot in San Francisco."</div>
+          <div class="prompt">"Draft a follow-up email from these meeting notes."</div>
+          <div class="prompt">"What do I need to follow up on today?"</div>
+        `;
+      } else {
+        promptsTitle.textContent = 'What EAs actually ask';
+        promptsSub.textContent = 'Instant answers while you\'re booking — no hunting through notes.';
+        promptsList.innerHTML = `
+          <div class="prompt">"What's Jamie's TSA PreCheck number?"</div>
+          <div class="prompt">"Does Sarah have Global Entry?"</div>
+          <div class="prompt">"What hotel chain does Alex prefer? What's his loyalty number?"</div>
+          <div class="prompt">"What are Carrie's dietary restrictions?"</div>
+          <div class="prompt">"What's the usual coffee order for the Tuesday morning team meeting?"</div>
+          <div class="prompt">"Process these meeting notes and draft a follow-up email."</div>
+          <div class="prompt">"What do I need to follow up on in Slack today?"</div>
+          <div class="prompt">"Send me a profile form link to onboard my new exec."</div>
+        `;
+      }
     }
     </script>
 
@@ -721,17 +753,16 @@
 
     <!-- Example prompts -->
     <div class="examples-section">
-      <h2>What you can ask</h2>
-      <p class="sub">Just type it like you'd say it to a colleague.</p>
-      <div class="prompts">
-        <div class="prompt">"Book Jamie a flight to NYC next Tuesday — nonstop, aisle seat."</div>
-        <div class="prompt">"Order Carrie her usual coffee to the office."</div>
-        <div class="prompt">"What hotel chain does Alex prefer? And what's his loyalty number?"</div>
-        <div class="prompt">"Where should my CEO take 5 clients for dinner in Chicago?"</div>
-        <div class="prompt">"Find a hotel in London that matches Sarah's loyalty program."</div>
-        <div class="prompt">"What's the best car service to use for airport pickups in NYC?"</div>
-        <div class="prompt">"Check my Slack DMs — anything I need to follow up on today?"</div>
-        <div class="prompt">"Pull all to-dos from the #exec-team Slack channel from the last 24 hours."</div>
+      <h2 id="prompts-title">What you can ask</h2>
+      <p class="sub" id="prompts-sub">Just type it like you'd say it to a colleague.</p>
+      <div class="prompts" id="prompts-list">
+        <div class="prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
+        <div class="prompt">"Order my usual coffee to the office."</div>
+        <div class="prompt">"Find a hotel in Chicago that matches my loyalty program."</div>
+        <div class="prompt">"What's my Marriott loyalty number?"</div>
+        <div class="prompt">"Find a good client dinner spot in San Francisco."</div>
+        <div class="prompt">"Draft a follow-up email from these meeting notes."</div>
+        <div class="prompt">"What do I need to follow up on today?"</div>
       </div>
     </div>
 
