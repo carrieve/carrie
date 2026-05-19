@@ -67,10 +67,13 @@
     /* Audience split */
     .audience-split {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
       margin-bottom: 40px;
       width: 100%;
+    }
+    @media (max-width: 580px) {
+      .audience-split { grid-template-columns: 1fr; }
     }
     .audience-btn {
       background: #ffffff;
@@ -678,6 +681,11 @@
         <span class="btn-title">I am an EA</span>
         <span class="btn-desc">I support executives and want to manage their preferences smarter.</span>
       </button>
+      <button class="audience-btn" id="btn-smb" onclick="setAudience('smb')">
+        <span class="btn-emoji">🏪</span>
+        <span class="btn-title">I run a business</span>
+        <span class="btn-desc">I'm a small business owner who needs help with admin, clients, and day-to-day ops.</span>
+      </button>
     </div>
 
     <!-- Get set up -->
@@ -792,78 +800,70 @@
 
     <script>
     function setAudience(type) {
-      const isSelf = type === 'self';
-      document.getElementById('btn-self').classList.toggle('active', isSelf);
-      document.getElementById('btn-ea').classList.toggle('active', !isSelf);
+      document.getElementById('btn-self').classList.toggle('active', type === 'self');
+      document.getElementById('btn-ea').classList.toggle('active', type === 'ea');
+      document.getElementById('btn-smb').classList.toggle('active', type === 'smb');
 
-      document.getElementById('hero-subtitle').textContent = isSelf
-        ? "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude."
-        : "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.";
-
-      document.getElementById('hero-prompt').textContent = isSelf
-        ? '"Book me a flight to NYC Tuesday — nonstop, aisle seat."'
-        : '"Book Jamie a flight to NYC Tuesday — nonstop, aisle seat."';
-
-      document.getElementById('forms-label').textContent = isSelf
-        ? 'Step 1 — Set up your profile'
-        : 'Step 1 — Collect traveler profiles';
-
-      document.getElementById('card-travel').textContent = isSelf
-        ? 'Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.'
-        : 'Flights, hotels, ground transport, loyalty numbers, dietary needs, and more — for every traveler.';
-
-      document.getElementById('card-food').textContent = isSelf
-        ? 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.'
-        : 'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.';
-
-      const mode = isSelf ? 'self' : 'ea';
-      document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
-      document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
-      document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
-
-      // How it works steps
-      document.getElementById('step1-title').textContent = isSelf
-        ? 'Set up your profile once'
-        : 'Collect traveler profiles';
-      document.getElementById('step1-body').textContent = isSelf
-        ? 'Fill out your own preferences once — seat, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you\'re done.'
-        : 'Send each traveler a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. They download and send it back to you.';
-
-      document.getElementById('step2-title').textContent = isSelf
-        ? 'Upload to a Claude Project'
-        : 'Upload all profiles to a Claude Project';
-      document.getElementById('step2-body').innerHTML = isSelf
-        ? 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. That\'s it — Claude now knows your preferences. No app to install, no account to create.'
-        : 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload every traveler\'s profile file. Claude now knows everyone\'s preferences. Add new travelers anytime.';
-
-      document.getElementById('step3-title').textContent = isSelf
-        ? 'Just ask — Claude handles the rest'
-        : 'Instant answers — no more digging';
-      document.getElementById('step3-body').textContent = isSelf
-        ? '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find me a hotel in Chicago." Claude knows your preferences and handles the booking.'
-        : '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel chain does Alex prefer?" Instant answers while you\'re booking — no more hunting through notes or emails.';
-
-      // Swap example prompts
-      const promptsTitle = document.getElementById('prompts-title');
-      const promptsSub = document.getElementById('prompts-sub');
-      const promptsList = document.getElementById('prompts-list');
-
-      if (isSelf) {
-        promptsTitle.textContent = 'What you can ask';
-        promptsSub.textContent = 'Just type it like you\'d say it to a colleague.';
-        promptsList.innerHTML = `
+      const subtitles = {
+        self: "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.",
+        ea:   "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.",
+        smb:  "Your AI business assistant. Handle emails, client updates, admin, and day-to-day ops — all through a simple chat with Claude."
+      };
+      const prompts = {
+        self: '"Book me a flight to NYC Tuesday — nonstop, aisle seat."',
+        ea:   '"Book Jamie a flight to NYC Tuesday — nonstop, aisle seat."',
+        smb:  '"Draft a follow-up email to my client about the estimate."'
+      };
+      const formsLabels = {
+        self: 'Step 1 — Set up your profile',
+        ea:   'Step 1 — Collect traveler profiles',
+        smb:  'Step 1 — Set up your business profile'
+      };
+      const travelDesc = {
+        self: 'Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.',
+        ea:   'Flights, hotels, ground transport, loyalty numbers, dietary needs, and more — for every traveler.',
+        smb:  'Your seat preferences, loyalty numbers, and hotel preferences for business trips.'
+      };
+      const foodDesc = {
+        self: 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.',
+        ea:   'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.',
+        smb:  'Your coffee order, usual lunch spot, and dietary preferences — so Claude can handle the order.'
+      };
+      const step1 = {
+        self: ['Set up your profile once', 'Fill out your own preferences once — seat, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. Download the file when you\'re done.'],
+        ea:   ['Collect traveler profiles', 'Send each traveler a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. They send it back to you.'],
+        smb:  ['Fill out your business profile', 'Business name, what you do, communication style, admin pain points, tools you use. Download the file when you\'re done.']
+      };
+      const step2 = {
+        self: ['Upload to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. Claude now knows your preferences. No app to install.'],
+        ea:   ['Upload all profiles to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload every traveler\'s profile. Claude knows everyone\'s preferences.'],
+        smb:  ['Upload to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your business profile. Claude now knows your business context instantly.']
+      };
+      const step3 = {
+        self: ['Just ask — Claude handles the rest', '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find me a hotel in Chicago." Claude knows your preferences and handles it.'],
+        ea:   ['Instant answers — no more digging', '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel chain does Alex prefer?" Instant answers while you\'re booking — no more hunting through notes.'],
+        smb:  ['Ask Claude to help run your business', '"Draft a quote for this client." "Write a follow-up to a no-response." "Help me respond to this complaint." Claude knows your business and handles the words.']
+      };
+      const exampleTitles = {
+        self: 'What you can ask',
+        ea:   'What EAs actually ask',
+        smb:  'What business owners ask'
+      };
+      const exampleSubs = {
+        self: 'Just type it like you\'d say it to a colleague.',
+        ea:   'Instant answers while you\'re booking — no hunting through notes.',
+        smb:  'Just say what you need — Claude knows your business.'
+      };
+      const examplePrompts = {
+        self: `
           <div class="prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
           <div class="prompt">"Order my usual coffee to the office."</div>
           <div class="prompt">"Find a hotel in Chicago that matches my loyalty program."</div>
           <div class="prompt">"What's my Marriott loyalty number?"</div>
           <div class="prompt">"Find a good client dinner spot in San Francisco."</div>
           <div class="prompt">"Draft a follow-up email from these meeting notes."</div>
-          <div class="prompt">"What do I need to follow up on today?"</div>
-        `;
-      } else {
-        promptsTitle.textContent = 'What EAs actually ask';
-        promptsSub.textContent = 'Instant answers while you\'re booking — no hunting through notes.';
-        promptsList.innerHTML = `
+          <div class="prompt">"What do I need to follow up on today?"</div>`,
+        ea: `
           <div class="prompt">"What's Jamie's TSA PreCheck number?"</div>
           <div class="prompt">"Does Sarah have Global Entry?"</div>
           <div class="prompt">"What hotel chain does Alex prefer? What's his loyalty number?"</div>
@@ -871,9 +871,36 @@
           <div class="prompt">"What's the usual coffee order for the Tuesday morning team meeting?"</div>
           <div class="prompt">"Process these meeting notes and draft a follow-up email."</div>
           <div class="prompt">"What do I need to follow up on in Slack today?"</div>
-          <div class="prompt">"Send me a profile form link to onboard my new exec."</div>
-        `;
-      }
+          <div class="prompt">"Send me a profile form link to onboard my new exec."</div>`,
+        smb: `
+          <div class="prompt">"Draft a professional quote for a new restoration project."</div>
+          <div class="prompt">"Write a follow-up to a client who hasn't responded in a week."</div>
+          <div class="prompt">"Help me respond to this customer complaint."</div>
+          <div class="prompt">"Write a caption for my Instagram post about this finished job."</div>
+          <div class="prompt">"Order my usual coffee to the shop."</div>
+          <div class="prompt">"Draft an out-of-office message for next week."</div>
+          <div class="prompt">"What should I charge for a job like this?"</div>`
+      };
+
+      document.getElementById('hero-subtitle').textContent = subtitles[type];
+      document.getElementById('hero-prompt').textContent = prompts[type];
+      document.getElementById('forms-label').textContent = formsLabels[type];
+      document.getElementById('card-travel').textContent = travelDesc[type];
+      document.getElementById('card-food').textContent = foodDesc[type];
+      document.getElementById('step1-title').textContent = step1[type][0];
+      document.getElementById('step1-body').textContent = step1[type][1];
+      document.getElementById('step2-title').textContent = step2[type][0];
+      document.getElementById('step2-body').innerHTML = step2[type][1];
+      document.getElementById('step3-title').textContent = step3[type][0];
+      document.getElementById('step3-body').textContent = step3[type][1];
+      document.getElementById('prompts-title').textContent = exampleTitles[type];
+      document.getElementById('prompts-sub').textContent = exampleSubs[type];
+      document.getElementById('prompts-list').innerHTML = examplePrompts[type];
+
+      const mode = type === 'ea' ? 'ea' : 'self';
+      document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
+      document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
+      document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
     }
     </script>
 
