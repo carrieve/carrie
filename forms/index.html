@@ -383,6 +383,130 @@
       font-weight: 500;
     }
 
+    /* Setup section */
+    .setup-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+    .setup-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .setup-section .sub {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .setup-tiers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .setup-tier {
+      background: #f5f5f7;
+      border-radius: 18px;
+      padding: 24px 20px;
+    }
+    .setup-tier.featured {
+      background: #f0f7ff;
+      border: 1.5px solid #0071e3;
+    }
+    .setup-tier-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 980px;
+      margin-bottom: 12px;
+      background: #e8e8ed;
+      color: #6e6e73;
+    }
+    .setup-tier.featured .setup-tier-badge {
+      background: #0071e3;
+      color: #fff;
+    }
+    .setup-tier-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .setup-tier-price {
+      font-size: 0.82rem;
+      color: #6e6e73;
+      margin-bottom: 14px;
+    }
+    .setup-tier-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .setup-tier-features li {
+      font-size: 0.85rem;
+      color: #1d1d1f;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.45;
+    }
+    .setup-tier-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #34c759;
+      font-weight: 700;
+    }
+    .setup-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .setup-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #f5f5f7;
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .setup-step-num {
+      width: 26px;
+      height: 26px;
+      background: #0071e3;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .setup-step-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .setup-step-body {
+      font-size: 0.83rem;
+      color: #6e6e73;
+      line-height: 1.55;
+    }
+    .setup-step-body a { color: #0071e3; text-decoration: none; }
+    @media (max-width: 580px) {
+      .setup-tiers { grid-template-columns: 1fr; }
+    }
+
     /* Mobile section */
     .mobile-section {
       background: #ffffff;
@@ -712,8 +836,73 @@
       <div style="margin-top:28px; background:#f0f7ff; border-radius:14px; padding:20px 24px; display:flex; gap:14px; align-items:flex-start;">
         <div style="font-size:1.4rem; flex-shrink:0;">💡</div>
         <div>
-          <div style="font-weight:600; font-size:0.95rem; margin-bottom:4px;">You need a Claude account — it's free to start</div>
-          <div style="font-size:0.875rem; color:#6e6e73; line-height:1.6;">Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> and sign up. The free plan lets you create Projects and upload files. Claude Pro ($20/mo) gives you more usage if you're supporting multiple executives.</div>
+          <div style="font-weight:600; font-size:0.95rem; margin-bottom:4px;">You need a Claude account — free to start</div>
+          <div style="font-size:0.875rem; color:#6e6e73; line-height:1.6;">Sign up at <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a>. The free plan works for lookups and recommendations. For hands-on booking (flights, hotels, restaurants), you'll need <strong>Claude Code</strong> — see the setup guide below.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Get set up -->
+    <div class="setup-section">
+      <h2>What you'll need</h2>
+      <p class="sub">Two ways to use it — pick what fits.</p>
+
+      <div class="setup-tiers">
+        <div class="setup-tier">
+          <div class="setup-tier-badge">Free</div>
+          <div class="setup-tier-title">claude.ai</div>
+          <div class="setup-tier-price">Free plan · iPhone, Android & web</div>
+          <ul class="setup-tier-features">
+            <li>Instant preference lookups</li>
+            <li>Loyalty numbers on demand</li>
+            <li>Meeting notes → action items</li>
+            <li>Recommendations & research</li>
+            <li>Draft emails & messages</li>
+          </ul>
+        </div>
+        <div class="setup-tier featured">
+          <div class="setup-tier-badge">For booking</div>
+          <div class="setup-tier-title">Claude Code</div>
+          <div class="setup-tier-price">Claude Pro $20/mo · desktop</div>
+          <ul class="setup-tier-features">
+            <li>Everything in the free tier</li>
+            <li>Books flights on Google Flights</li>
+            <li>Searches hotels by loyalty program</li>
+            <li>Makes restaurant reservations</li>
+            <li>Creates calendar invites</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size:0.82rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:#aeaeb2; margin-bottom:16px;">Step-by-step setup</p>
+      <div class="setup-steps">
+        <div class="setup-step">
+          <div class="setup-step-num">1</div>
+          <div>
+            <div class="setup-step-title">Create a free Claude account</div>
+            <div class="setup-step-body">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> and sign up. Free. Takes 2 minutes. Download the app on your phone too — search "Claude" in the App Store or Google Play.</div>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-step-num">2</div>
+          <div>
+            <div class="setup-step-title">Fill out your profile</div>
+            <div class="setup-step-body">Use the ⚡ Quick Profile above (5 questions, 2 min) or fill out the full Travel or Food form. Download the file when you're done.</div>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-step-num">3</div>
+          <div>
+            <div class="setup-step-title">Create a Claude Project and upload your file</div>
+            <div class="setup-step-body">In Claude, tap <strong>Projects → New Project</strong>. Upload your profile file. Claude now knows your preferences permanently — in every conversation in that project.</div>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-step-num" style="background:#1d1d1f;">4</div>
+          <div>
+            <div class="setup-step-title">Optional: Install Claude Code for hands-on booking</div>
+            <div class="setup-step-body">Want Claude to actually book flights and hotels? Download <a href="https://claude.ai/download" target="_blank">Claude Code</a> (Mac/Windows/Linux) and upgrade to <a href="https://claude.ai/upgrade" target="_blank">Claude Pro</a> ($20/mo). Then just ask: "Book me a flight to NYC Tuesday."</div>
+          </div>
         </div>
       </div>
     </div>
