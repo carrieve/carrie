@@ -66,9 +66,19 @@ Share these links with your travelers:
 - **Travel form** — flights, hotels, loyalty numbers, dietary needs, and more
 - **Food & coffee form** — exact coffee order, favorite restaurants, delivery addresses
 
-👉 **[carrie-ai-forms.netlify.app](https://carrie-ai-forms.netlify.app)**
+👉 **[getcarrieai.com](https://getcarrieai.com)**
 
 When they submit, a file downloads. Email it back to you, drop it in your profiles folder, and Claude can find it automatically.
+
+---
+
+## Already have preferences in a Google Doc?
+
+No need to start from scratch. Use the **Import tool** to paste any existing notes — a Google Doc, an email, bullet points — and Carrie will extract and convert them into a profile automatically.
+
+👉 **[getcarrieai.com/import.html](https://getcarrieai.com/import.html)**
+
+Just paste, review, and download. Works for both travel and food profiles.
 
 ---
 
