@@ -12,7 +12,9 @@ Built by an EA, for EAs.
 > *"Book Jamie a flight to NYC next Tuesday — nonstop, aisle seat."*
 > *"Order Carrie her usual coffee to the office."*
 > *"What hotel chain does Alex prefer? And what's his loyalty number?"*
-> *"Find a restaurant near the venue that works for Sarah's dietary restrictions."*
+> *"Where should my CEO take 5 clients for dinner in Chicago?"*
+> *"Find a hotel in London that matches Sarah's loyalty program."*
+> *"What's the best car service for airport pickups in NYC?"*
 
 Your AI assistant already knows the answer — because Carrie told it.
 
@@ -73,6 +75,19 @@ Share these links with your travelers:
 👉 **[getcarrieai.com](https://getcarrieai.com)**
 
 When they submit, a file downloads. Email it back to you, drop it in your profiles folder (or Claude Project), and Claude can find it automatically.
+
+---
+
+## City Guides 🗺️
+
+Carrie includes EA-vetted city guides for **15 top business travel destinations** — so when your CEO needs a client dinner spot or a hotel recommendation, the answer is instant.
+
+Each city guide includes:
+- 🍽️ **Restaurants** — top client dinner spots, private dining rooms, Michelin-starred options
+- 🏨 **Hotels** — luxury and business hotels matched to loyalty programs (Marriott Bonvoy, Hilton Honors, Four Seasons, and more)
+- 🚗 **Ground Transport** — vetted black car services and car companies used by EAs
+
+**Covered cities:** New York City · Los Angeles · San Francisco · Chicago · Austin · Charlotte · London · Seattle · Boston · Miami · Denver · Atlanta · Washington DC · Nashville · Toronto
 
 ---
 

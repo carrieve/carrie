@@ -293,6 +293,127 @@
       border-left: 3px solid #0071e3;
     }
 
+    /* City guides */
+    .city-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      text-align: left;
+    }
+
+    .city-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .city-section .sub {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .city-categories {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .city-cat {
+      background: #f5f5f7;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .city-cat-emoji { font-size: 1.8rem; margin-bottom: 8px; }
+    .city-cat-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .city-cat-desc { font-size: 0.8rem; color: #6e6e73; line-height: 1.5; }
+
+    .city-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .city-pill {
+      background: #f5f5f7;
+      border-radius: 980px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      color: #1d1d1f;
+      font-weight: 500;
+    }
+
+    /* Waitlist */
+    .waitlist-section {
+      background: #1d1d1f;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .waitlist-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .waitlist-section p {
+      font-size: 0.95rem;
+      color: #aeaeb2;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 10px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 980px;
+      border: none;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .waitlist-form button {
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 980px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .waitlist-form button:hover { background: #0077ed; }
+
+    .waitlist-note {
+      font-size: 0.78rem;
+      color: #6e6e73;
+      margin-top: 14px;
+    }
+
     .footer {
       font-size: 0.82rem;
       color: #aeaeb2;
@@ -307,8 +428,10 @@
     @media (max-width: 580px) {
       .cards { grid-template-columns: 1fr; }
       .paths { grid-template-columns: 1fr; }
+      .city-categories { grid-template-columns: 1fr; }
+      .waitlist-form { flex-direction: column; }
       h1 { font-size: 2rem; }
-      .how-section, .examples-section { padding: 32px 24px; }
+      .how-section, .examples-section, .city-section, .waitlist-section { padding: 32px 24px; }
     }
   </style>
 </head>
@@ -405,9 +528,65 @@
         <div class="prompt">"Book Jamie a flight to NYC next Tuesday — nonstop, aisle seat."</div>
         <div class="prompt">"Order Carrie her usual coffee to the office."</div>
         <div class="prompt">"What hotel chain does Alex prefer? And what's his loyalty number?"</div>
-        <div class="prompt">"Find a restaurant near the venue that works for Sarah's dietary restrictions."</div>
-        <div class="prompt">"What's the earliest flight from CLT to LAX that works for Carrie's preferences?"</div>
+        <div class="prompt">"Where should my CEO take 5 clients for dinner in Chicago?"</div>
+        <div class="prompt">"Find a hotel in London that matches Sarah's loyalty program."</div>
+        <div class="prompt">"What's the best car service to use for airport pickups in NYC?"</div>
       </div>
+    </div>
+
+    <!-- City guides -->
+    <div class="city-section">
+      <h2>🗺️ City Guides</h2>
+      <p class="sub">EA-vetted restaurants, hotels, and car services for top business travel cities.</p>
+
+      <div class="city-categories">
+        <div class="city-cat">
+          <div class="city-cat-emoji">🍽️</div>
+          <div class="city-cat-title">Restaurants</div>
+          <div class="city-cat-desc">Top client dinner spots, private dining rooms, and local favorites — by city.</div>
+        </div>
+        <div class="city-cat">
+          <div class="city-cat-emoji">🏨</div>
+          <div class="city-cat-title">Hotels</div>
+          <div class="city-cat-desc">Luxury and business hotels matched to loyalty programs and executive preferences.</div>
+        </div>
+        <div class="city-cat">
+          <div class="city-cat-emoji">🚗</div>
+          <div class="city-cat-title">Ground Transport</div>
+          <div class="city-cat-desc">Vetted car services and black car companies used by EAs every day.</div>
+        </div>
+      </div>
+
+      <div class="city-list">
+        <span class="city-pill">New York City</span>
+        <span class="city-pill">Los Angeles</span>
+        <span class="city-pill">San Francisco</span>
+        <span class="city-pill">Chicago</span>
+        <span class="city-pill">Austin</span>
+        <span class="city-pill">Charlotte</span>
+        <span class="city-pill">London</span>
+        <span class="city-pill">Seattle</span>
+        <span class="city-pill">Boston</span>
+        <span class="city-pill">Miami</span>
+        <span class="city-pill">Denver</span>
+        <span class="city-pill">Atlanta</span>
+        <span class="city-pill">Washington DC</span>
+        <span class="city-pill">Nashville</span>
+        <span class="city-pill">Toronto</span>
+      </div>
+    </div>
+
+    <!-- Waitlist -->
+    <div class="waitlist-section">
+      <h2>Join the waitlist</h2>
+      <p>Carrie is growing. Get early access and be the first to know when new features — including team profiles, calendar integration, and more cities — go live.</p>
+      <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="waitlist" />
+        <input type="hidden" name="bot-field" />
+        <input type="email" name="email" placeholder="your@email.com" required />
+        <button type="submit">Join waitlist</button>
+      </form>
+      <p class="waitlist-note">No spam. Unsubscribe anytime.</p>
     </div>
 
     <p class="footer">Built by an EA, for EAs &nbsp;·&nbsp; <a href="https://github.com/carrieve/carrie" target="_blank">GetCarrieAI on GitHub</a> &nbsp;·&nbsp; <a href="https://getcarrieai.com" target="_blank">getcarrieai.com</a></p>
