@@ -474,7 +474,8 @@ United MileagePlus #XY123456"></textarea>
       if (data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k];
     });
 
-    const safeName = name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    const displayName = data.preferred_name || (name || 'person').split(' ')[0];
+    const safeName = displayName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
