@@ -493,16 +493,16 @@
     <!-- Collect forms -->
     <p class="section-label" id="forms-label">Step 1 — Set up your profile</p>
     <div class="cards">
-      <a class="card" href="travel_form.html">
+      <a class="card" id="link-travel" href="travel_form.html?mode=self">
         <div class="card-emoji">✈️</div>
         <div class="card-title">Travel Preferences</div>
-        <div class="card-desc" id="card-travel">Flights, hotels, ground transport, loyalty numbers, dietary needs, and more.</div>
+        <div class="card-desc" id="card-travel">Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.</div>
         <div class="card-btn">Fill out form</div>
       </a>
-      <a class="card" href="food_form.html">
+      <a class="card" id="link-food" href="food_form.html?mode=self">
         <div class="card-emoji">☕</div>
         <div class="card-title">Food & Coffee</div>
-        <div class="card-desc" id="card-food">Exact coffee order, favorite restaurants, dietary restrictions, delivery addresses.</div>
+        <div class="card-desc" id="card-food">Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.</div>
         <div class="card-btn">Fill out form</div>
       </a>
       <a class="card" href="import.html">
@@ -544,6 +544,10 @@
       document.getElementById('card-food').textContent = isSelf
         ? 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.'
         : 'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.';
+
+      const mode = isSelf ? 'self' : 'ea';
+      document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
+      document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
     }
     </script>
 

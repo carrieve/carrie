@@ -248,11 +248,27 @@
 
 <div class="page-header">
   <h1>Travel Preferences</h1>
-  <p class="subtitle">Fill this out once and your travel coordinator will have everything needed to book trips on your behalf. All fields except your name are optional.</p>
-  <div class="notice">
+  <p class="subtitle" id="form-subtitle">Fill this out once and your travel coordinator will have everything needed to book trips on your behalf. All fields except your name are optional.</p>
+  <div class="notice" id="form-notice">
     📎 When you click <strong>Save My Travel Profile</strong>, a file will download to your computer. <strong>Email that file back to your travel coordinator</strong> — that's all you need to do.
   </div>
 </div>
+
+<script>
+(function() {
+  const mode = new URLSearchParams(window.location.search).get('mode');
+  if (mode === 'self') {
+    document.getElementById('form-subtitle').textContent = 'Fill this out once and Claude will have everything needed to book trips for you. All fields except your name are optional.';
+    document.getElementById('form-notice').innerHTML = '📎 When you click <strong>Save My Travel Profile</strong>, a file will download to your computer. <strong>Upload it to your Claude Project</strong> — that\'s all you need to do.';
+    document.addEventListener('DOMContentLoaded', function() {
+      const preferredHint = document.querySelector('label .hint');
+      if (preferredHint && preferredHint.closest('label').textContent.includes('Preferred')) {
+        preferredHint.textContent = '(what you go by)';
+      }
+    });
+  }
+})();
+</script>
 
 <form id="travel-form">
 
