@@ -7,6 +7,7 @@ Profiles are stored in ~/.carrie/profiles/travel/ and ~/.carrie/profiles/food/
 """
 
 import json
+import os
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 
@@ -453,6 +454,152 @@ def _format_food(data: dict) -> str:
     add("Notes",            data.get("additional_notes"))
     add("Last updated",     data.get("updated_at"))
     return "\n".join(line for line in lines)
+
+
+# ── Slack tools ───────────────────────────────────────────────────────────────
+
+def _slack_client():
+    """Return a Slack WebClient using SLACK_BOT_TOKEN from environment."""
+    token = os.environ.get("SLACK_BOT_TOKEN")
+    if not token:
+        raise ValueError(
+            "SLACK_BOT_TOKEN not set. Add it to your environment or ~/.zshrc:\n"
+            "  export SLACK_BOT_TOKEN=xoxb-your-token-here"
+        )
+    from slack_sdk import WebClient
+    return WebClient(token=token)
+
+
+@mcp.tool()
+def get_slack_todos(channel: str = "", hours: int = 24) -> str:
+    """
+    Scan a Slack channel or DM for to-dos, action items, and tasks
+    directed at the EA in the last N hours.
+
+    channel: channel name (e.g. 'general') or leave blank to check all DMs
+    hours: how far back to look (default 24)
+    """
+    try:
+        client = _slack_client()
+    except ValueError as e:
+        return str(e)
+
+    import time
+    oldest = str(time.time() - (hours * 3600))
+
+    try:
+        if channel:
+            # Find channel ID
+            channels = client.conversations_list(types="public_channel,private_channel")
+            channel_id = None
+            for ch in channels["channels"]:
+                if ch["name"] == channel.lstrip("#"):
+                    channel_id = ch["id"]
+                    break
+            if not channel_id:
+                return f"Channel '{channel}' not found. Check the name and make sure the bot is invited."
+            result = client.conversations_history(channel=channel_id, oldest=oldest, limit=100)
+        else:
+            # Get DMs
+            dms = client.conversations_list(types="im")
+            if not dms["channels"]:
+                return "No DMs found."
+            result = client.conversations_history(channel=dms["channels"][0]["id"], oldest=oldest, limit=100)
+
+        messages = result.get("messages", [])
+        if not messages:
+            return f"No messages found in the last {hours} hours."
+
+        # Filter for action signals
+        ACTION_WORDS = ["can you", "could you", "please", "follow up", "remind", "don't forget",
+                        "make sure", "book", "schedule", "send", "draft", "order", "reserve",
+                        "reach out", "confirm", "set up", "need you to", "would you"]
+
+        todos = []
+        for msg in messages:
+            text = msg.get("text", "").lower()
+            if any(word in text for word in ACTION_WORDS):
+                ts = msg.get("ts", "")
+                t = time.strftime("%b %d %I:%M%p", time.localtime(float(ts))) if ts else ""
+                todos.append(f"  [{t}] {msg.get('text', '')[:200]}")
+
+        if not todos:
+            return f"No clear action items found in the last {hours} hours."
+
+        lines = [f"To-dos from Slack (last {hours}h):\n"]
+        lines.extend(todos[:20])
+        return "\n".join(lines)
+
+    except Exception as e:
+        return f"Slack error: {e}"
+
+
+@mcp.tool()
+def list_slack_channels() -> str:
+    """List all Slack channels the bot has access to."""
+    try:
+        client = _slack_client()
+    except ValueError as e:
+        return str(e)
+    try:
+        result = client.conversations_list(types="public_channel,private_channel", limit=50)
+        channels = result.get("channels", [])
+        if not channels:
+            return "No channels found."
+        lines = ["Slack channels:\n"]
+        for ch in channels:
+            lines.append(f"  #{ch['name']} — {ch.get('num_members', '?')} members")
+        return "\n".join(lines)
+    except Exception as e:
+        return f"Slack error: {e}"
+
+
+@mcp.tool()
+def get_slack_dms(hours: int = 24) -> str:
+    """
+    Check your most recent Slack DMs for any action items or requests
+    directed at you in the last N hours.
+    """
+    try:
+        client = _slack_client()
+    except ValueError as e:
+        return str(e)
+
+    import time
+    oldest = str(time.time() - (hours * 3600))
+
+    ACTION_WORDS = ["can you", "could you", "please", "follow up", "remind", "don't forget",
+                    "make sure", "book", "schedule", "send", "draft", "order", "reserve",
+                    "reach out", "confirm", "set up", "need you to", "would you"]
+    try:
+        dms = client.conversations_list(types="im", limit=20)
+        all_todos = []
+
+        for dm in dms.get("channels", []):
+            try:
+                # Get user name
+                user_info = client.users_info(user=dm["user"])
+                username = user_info["user"]["real_name"] or dm["user"]
+
+                msgs = client.conversations_history(channel=dm["id"], oldest=oldest, limit=50)
+                for msg in msgs.get("messages", []):
+                    text = msg.get("text", "")
+                    if any(w in text.lower() for w in ACTION_WORDS):
+                        ts = msg.get("ts", "")
+                        t = time.strftime("%b %d %I:%M%p", time.localtime(float(ts))) if ts else ""
+                        all_todos.append(f"  [{t}] {username}: {text[:200]}")
+            except Exception:
+                continue
+
+        if not all_todos:
+            return f"No action items found in your DMs in the last {hours} hours."
+
+        lines = [f"Action items from your Slack DMs (last {hours}h):\n"]
+        lines.extend(all_todos[:20])
+        return "\n".join(lines)
+
+    except Exception as e:
+        return f"Slack error: {e}"
 
 
 if __name__ == "__main__":
