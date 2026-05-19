@@ -782,6 +782,12 @@
         <div class="card-desc">Paste meeting notes or a Slack thread. Get action items and follow-ups drafted instantly.</div>
         <div class="card-btn">Process notes</div>
       </a>
+      <a class="card" id="link-business" href="business_quick_form.html?mode=self">
+        <div class="card-emoji">💼</div>
+        <div class="card-title">Business Quick Profile</div>
+        <div class="card-desc" id="card-business">Company, travel class, expense tool, meeting platform, and standing rules — all in 2 minutes.</div>
+        <div class="card-btn">Fill out form</div>
+      </a>
     </div>
 
     <script>
@@ -810,10 +816,15 @@
         ? 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.'
         : 'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.';
 
+      document.getElementById('card-business').textContent = isSelf
+        ? 'Company, travel class, expense tool, meeting platform, and standing rules — all in 2 minutes.'
+        : 'Capture company, travel policy, expense tool, meeting platform, and booking rules for each exec — fast.';
+
       const mode = isSelf ? 'self' : 'ea';
       document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
       document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
       document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
+      document.getElementById('link-business').href = `business_quick_form.html?mode=${mode}`;
 
       // How it works steps
       document.getElementById('step1-title').textContent = isSelf
