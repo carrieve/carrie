@@ -61,8 +61,39 @@
       font-size: 0.95rem;
       color: #1d1d1f;
       font-style: italic;
-      margin-bottom: 52px;
+      margin-bottom: 40px;
     }
+
+    /* Audience split */
+    .audience-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+      width: 100%;
+    }
+    .audience-btn {
+      background: #ffffff;
+      border: 2px solid #d2d2d7;
+      border-radius: 20px;
+      padding: 28px 24px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .audience-btn:hover {
+      border-color: #0071e3;
+      box-shadow: 0 4px 20px rgba(0,113,227,0.12);
+      transform: translateY(-2px);
+    }
+    .audience-btn.active {
+      border-color: #0071e3;
+      background: #f0f7ff;
+    }
+    .audience-btn .btn-emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
+    .audience-btn .btn-title { font-size: 1rem; font-weight: 700; color: #1d1d1f; display: block; margin-bottom: 6px; }
+    .audience-btn .btn-desc { font-size: 0.82rem; color: #6e6e73; line-height: 1.5; display: block; }
 
     /* Forms section */
     .section-label {
@@ -441,37 +472,80 @@
     <!-- Hero -->
     <img src="avatar.jpg" alt="Carrie" class="avatar" />
     <h1>Carrie ✈️☕</h1>
-    <p class="subtitle">Your AI toolkit for executive support. Collect traveler preferences, look up loyalty numbers, process meeting notes, and find top restaurants and hotels — all through a simple chat with Claude.</p>
-    <div class="example-prompt">"Order Carrie her usual coffee to the office."</div>
+    <p class="subtitle" id="hero-subtitle">Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.</p>
+    <div class="example-prompt" id="hero-prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
+
+    <!-- Audience split -->
+    <p class="section-label">Who are you?</p>
+    <div class="audience-split">
+      <button class="audience-btn active" id="btn-self" onclick="setAudience('self')">
+        <span class="btn-emoji">🙋</span>
+        <span class="btn-title">I need an EA</span>
+        <span class="btn-desc">I'm a busy professional managing my own travel, calendar, and logistics.</span>
+      </button>
+      <button class="audience-btn" id="btn-ea" onclick="setAudience('ea')">
+        <span class="btn-emoji">💼</span>
+        <span class="btn-title">I am an EA</span>
+        <span class="btn-desc">I support executives and want to manage their preferences smarter.</span>
+      </button>
+    </div>
 
     <!-- Collect forms -->
-    <p class="section-label">Step 1 — Collect preferences</p>
+    <p class="section-label" id="forms-label">Step 1 — Set up your profile</p>
     <div class="cards">
       <a class="card" href="travel_form.html">
         <div class="card-emoji">✈️</div>
         <div class="card-title">Travel Preferences</div>
-        <div class="card-desc">Flights, hotels, ground transport, loyalty numbers, dietary needs, and more.</div>
+        <div class="card-desc" id="card-travel">Flights, hotels, ground transport, loyalty numbers, dietary needs, and more.</div>
         <div class="card-btn">Fill out form</div>
       </a>
       <a class="card" href="food_form.html">
         <div class="card-emoji">☕</div>
         <div class="card-title">Food & Coffee</div>
-        <div class="card-desc">Exact coffee order, favorite restaurants, dietary restrictions, delivery addresses.</div>
+        <div class="card-desc" id="card-food">Exact coffee order, favorite restaurants, dietary restrictions, delivery addresses.</div>
         <div class="card-btn">Fill out form</div>
       </a>
       <a class="card" href="import.html">
         <div class="card-emoji">📋</div>
         <div class="card-title">Import Existing Notes</div>
-        <div class="card-desc">Already have preferences in a Google Doc or email? Paste and convert instantly.</div>
+        <div class="card-desc">Already have preferences saved somewhere? Paste and convert instantly.</div>
         <div class="card-btn">Import now</div>
       </a>
       <a class="card" href="meeting_notes.html">
         <div class="card-emoji">📝</div>
         <div class="card-title">Meeting Notes & Slack</div>
-        <div class="card-desc">Paste meeting notes or a Slack thread. Get action items extracted and follow-ups drafted instantly.</div>
+        <div class="card-desc">Paste meeting notes or a Slack thread. Get action items and follow-ups drafted instantly.</div>
         <div class="card-btn">Process notes</div>
       </a>
     </div>
+
+    <script>
+    function setAudience(type) {
+      const isSelf = type === 'self';
+      document.getElementById('btn-self').classList.toggle('active', isSelf);
+      document.getElementById('btn-ea').classList.toggle('active', !isSelf);
+
+      document.getElementById('hero-subtitle').textContent = isSelf
+        ? "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude."
+        : "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.";
+
+      document.getElementById('hero-prompt').textContent = isSelf
+        ? '"Book me a flight to NYC Tuesday — nonstop, aisle seat."'
+        : '"Book Jamie a flight to NYC Tuesday — nonstop, aisle seat."';
+
+      document.getElementById('forms-label').textContent = isSelf
+        ? 'Step 1 — Set up your profile'
+        : 'Step 1 — Collect traveler profiles';
+
+      document.getElementById('card-travel').textContent = isSelf
+        ? 'Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.'
+        : 'Flights, hotels, ground transport, loyalty numbers, dietary needs, and more — for every traveler.';
+
+      document.getElementById('card-food').textContent = isSelf
+        ? 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.'
+        : 'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.';
+    }
+    </script>
 
     <!-- How it works -->
     <div class="how-section">
@@ -480,8 +554,8 @@
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-content">
-            <h3>Collect preferences once</h3>
-            <p>Send your traveler or executive a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when they're done.</p>
+            <h3>Set up your profile once</h3>
+            <p>Fill out your preferences once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you're done.</p>
           </div>
         </div>
         <div class="step">
@@ -495,7 +569,7 @@
           <div class="step-num">3</div>
           <div class="step-content">
             <h3>Just ask — like texting a colleague</h3>
-            <p>"Book Jamie a flight to NYC Tuesday, nonstop aisle." "Order Sarah her usual coffee." "Find a client dinner spot in Chicago." Claude knows their preferences and handles the rest.</p>
+            <p>"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.</p>
           </div>
         </div>
       </div>
