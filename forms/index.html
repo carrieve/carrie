@@ -383,6 +383,72 @@
       font-weight: 500;
     }
 
+    /* Mobile section */
+    .mobile-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .mobile-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .mobile-section .sub {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 32px;
+    }
+    .mobile-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .mobile-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .mobile-step-num {
+      width: 32px;
+      height: 32px;
+      background: #1d1d1f;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .mobile-step-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .mobile-step-body {
+      font-size: 0.85rem;
+      color: #6e6e73;
+      line-height: 1.55;
+    }
+    .mobile-note {
+      background: #f5f5f7;
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      color: #6e6e73;
+      line-height: 1.6;
+      text-align: left;
+    }
+
     /* Waitlist */
     .waitlist-section {
       background: #1d1d1f;
@@ -462,7 +528,7 @@
       .city-categories { grid-template-columns: 1fr; }
       .waitlist-form { flex-direction: column; }
       h1 { font-size: 2rem; }
-      .how-section, .examples-section, .city-section, .waitlist-section { padding: 32px 24px; }
+      .how-section, .examples-section, .city-section, .waitlist-section, .mobile-section { padding: 32px 24px; }
     }
   </style>
 </head>
@@ -617,6 +683,39 @@
           <div style="font-weight:600; font-size:0.95rem; margin-bottom:4px;">You need a Claude account — it's free to start</div>
           <div style="font-size:0.875rem; color:#6e6e73; line-height:1.6;">Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> and sign up. The free plan lets you create Projects and upload files. Claude Pro ($20/mo) gives you more usage if you're supporting multiple executives.</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Mobile section -->
+    <div class="mobile-section">
+      <div style="font-size:2rem; margin-bottom:12px;">📱</div>
+      <h2>Works from your phone</h2>
+      <p class="sub">No desktop required to get started.</p>
+      <div class="mobile-steps">
+        <div class="mobile-step">
+          <div class="mobile-step-num">1</div>
+          <div>
+            <div class="mobile-step-title">Fill out Quick Profile</div>
+            <div class="mobile-step-body">5 tap-friendly questions. Takes 2 minutes.</div>
+          </div>
+        </div>
+        <div class="mobile-step">
+          <div class="mobile-step-num">2</div>
+          <div>
+            <div class="mobile-step-title">Upload to Claude.ai</div>
+            <div class="mobile-step-body">Free app on iPhone & Android. Create a Project, upload your file.</div>
+          </div>
+        </div>
+        <div class="mobile-step">
+          <div class="mobile-step-num">3</div>
+          <div>
+            <div class="mobile-step-title">Ask Claude anything</div>
+            <div class="mobile-step-body">Your preferences, loyalty numbers, usual orders — Claude knows it all. From anywhere.</div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-note">
+        💻 <strong>Hands-on booking</strong> (flights, hotels, restaurants) works best on desktop with Claude Code. Mobile is perfect for lookups, recommendations, and drafting on the go.
       </div>
     </div>
 
