@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Import Preferences — Carrie</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 72px 20px 100px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-header {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #1d1d1f;
+    }
+    .page-header .subtitle {
+      margin-top: 14px;
+      color: #6e6e73;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    }
+
+    .section h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1d1d1f;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    textarea:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,113,227,0.25); }
+
+    .notice {
+      background: #e3effd;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #0a3d7a;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 28px;
+      border-radius: 980px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .btn-primary { background: #0071e3; color: #fff; }
+    .btn-primary:hover { background: #0077ed; }
+    .btn-secondary { background: #e8e8ed; color: #1d1d1f; }
+    .btn-secondary:hover { background: #d8d8dd; }
+    .btn-success { background: #34c759; color: #fff; }
+    .btn-success:hover { background: #2fb350; }
+
+    .btn-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+
+    .profile-type-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .type-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: 2px solid #e8e8ed;
+      background: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .type-btn.active { border-color: #0071e3; background: #e3effd; color: #0071e3; }
+
+    .results { display: none; }
+    .results.visible { display: block; }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 0.8rem; font-weight: 600; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    input[type="text"], input[type="email"], input[type="tel"] {
+      padding: 10px 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      width: 100%;
+    }
+    input:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,113,227,0.25); }
+
+    .tag { display: inline-block; background: #e3effd; color: #0a3d7a; border-radius: 6px; padding: 3px 8px; font-size: 0.8rem; margin: 2px; }
+
+    .back-link { text-align: center; margin-top: 24px; }
+    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.9rem; }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1d1d1f;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 980px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 1000;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>📋 Import Preferences</h1>
+    <p class="subtitle">Already have someone's preferences in a Google Doc, email, or notes? Paste them here and Carrie will convert them automatically.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- Step 1: Paste -->
+    <div class="section" id="step1">
+      <h2>Step 1 — What type of profile?</h2>
+      <div class="profile-type-row">
+        <button class="type-btn active" onclick="setType('travel', this)">✈️ Travel Profile</button>
+        <button class="type-btn" onclick="setType('food', this)">☕ Food & Coffee Profile</button>
+      </div>
+
+      <h2>Step 2 — Paste their preferences</h2>
+      <textarea id="raw-text" placeholder="Paste anything here — a Google Doc, an email, bullet points, notes. For example:
+
+John Smith
+john@company.com
+Flies United, always aisle seat, TSA PreCheck #ABC123
+Marriott preferred, high floor, king bed
+No shellfish, gluten free
+United MileagePlus #XY123456"></textarea>
+
+      <div class="notice">
+        💡 Don't worry about formatting — paste it exactly as it is. Carrie will figure out the rest.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="parseProfile()">Parse Preferences →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Review -->
+    <div class="section results" id="results-section">
+      <h2>Step 3 — Review & download</h2>
+      <p style="color:#6e6e73; font-size:0.9rem; margin-bottom:20px;">Check the extracted info below. Edit anything that looks wrong, then download.</p>
+
+      <div id="travel-fields" class="field-grid">
+        <div class="field"><label>Full Name</label><input type="text" id="f-name" /></div>
+        <div class="field"><label>Preferred Name</label><input type="text" id="f-preferred-name" /></div>
+        <div class="field"><label>Email</label><input type="email" id="f-email" /></div>
+        <div class="field"><label>Phone</label><input type="tel" id="f-phone" /></div>
+        <div class="field"><label>Preferred Airlines</label><input type="text" id="f-airlines" /></div>
+        <div class="field"><label>Avoided Airlines</label><input type="text" id="f-avoided-airlines" /></div>
+        <div class="field"><label>Seat Preference</label><input type="text" id="f-seat" placeholder="aisle / window / middle" /></div>
+        <div class="field"><label>Class Preference</label><input type="text" id="f-class" placeholder="economy / business / first" /></div>
+        <div class="field"><label>Home Airport</label><input type="text" id="f-airport" /></div>
+        <div class="field"><label>KTN / PreCheck #</label><input type="text" id="f-ktn" /></div>
+        <div class="field"><label>Frequent Flyer Airline</label><input type="text" id="f-ff-airline" /></div>
+        <div class="field"><label>Frequent Flyer #</label><input type="text" id="f-ff-number" /></div>
+        <div class="field"><label>Preferred Hotels</label><input type="text" id="f-hotels" /></div>
+        <div class="field"><label>Hotel Loyalty #</label><input type="text" id="f-hotel-loyalty" /></div>
+        <div class="field"><label>Bed Preference</label><input type="text" id="f-bed" placeholder="king / queen / twin" /></div>
+        <div class="field"><label>Floor Preference</label><input type="text" id="f-floor" placeholder="high / low / no preference" /></div>
+        <div class="field full"><label>Food Allergies</label><input type="text" id="f-allergies" /></div>
+        <div class="field full"><label>Dietary Restrictions</label><input type="text" id="f-dietary" /></div>
+        <div class="field full"><label>Additional Notes</label><input type="text" id="f-notes" /></div>
+      </div>
+
+      <div id="food-fields" class="field-grid" style="display:none;">
+        <div class="field"><label>Full Name</label><input type="text" id="ff-name" /></div>
+        <div class="field"><label>Preferred Name</label><input type="text" id="ff-preferred-name" /></div>
+        <div class="field"><label>Email</label><input type="email" id="ff-email" /></div>
+        <div class="field"><label>Phone</label><input type="tel" id="ff-phone" /></div>
+        <div class="field full"><label>Coffee Chain</label><input type="text" id="ff-chain" placeholder="Starbucks, Dunkin', etc." /></div>
+        <div class="field full"><label>Exact Coffee Order</label><input type="text" id="ff-coffee" placeholder="e.g. Grande iced oat milk latte, 2 pumps vanilla" /></div>
+        <div class="field"><label>Coffee Size</label><input type="text" id="ff-size" placeholder="small / medium / large" /></div>
+        <div class="field"><label>Temperature</label><input type="text" id="ff-temp" placeholder="hot / iced" /></div>
+        <div class="field"><label>Milk Preference</label><input type="text" id="ff-milk" /></div>
+        <div class="field"><label>Sweetener</label><input type="text" id="ff-sweetener" /></div>
+        <div class="field full"><label>Food Allergies</label><input type="text" id="ff-allergies" /></div>
+        <div class="field full"><label>Dietary Restrictions</label><input type="text" id="ff-dietary" /></div>
+        <div class="field full"><label>Favorite Restaurants</label><input type="text" id="ff-restaurants" /></div>
+        <div class="field full"><label>Office Delivery Address</label><input type="text" id="ff-office" /></div>
+        <div class="field full"><label>Home Delivery Address</label><input type="text" id="ff-home" /></div>
+        <div class="field full"><label>Additional Notes</label><input type="text" id="ff-notes" /></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-success" onclick="downloadProfile()">⬇️ Download Profile</button>
+        <button class="btn btn-secondary" onclick="resetForm()">Start over</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="back-link">
+    <a href="/">← Back to Carrie</a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  let currentType = 'travel';
+
+  function setType(type, btn) {
+    currentType = type;
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function extract(text, patterns) {
+    for (const pattern of patterns) {
+      const m = text.match(pattern);
+      if (m) return m[1]?.trim() || m[0]?.trim();
+    }
+    return '';
+  }
+
+  function parseProfile() {
+    const text = document.getElementById('raw-text').value;
+    if (!text.trim()) { showToast('Please paste some text first!'); return; }
+
+    const lower = text.toLowerCase();
+
+    if (currentType === 'travel') {
+      // Name
+      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) ||
+                        text.match(/name[:\s]+([A-Za-z ]+)/i);
+      document.getElementById('f-name').value = nameMatch ? nameMatch[1].trim() : '';
+
+      // Email
+      const email = text.match(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
+      document.getElementById('f-email').value = email ? email[0] : '';
+
+      // Phone
+      const phone = text.match(/(\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4})/);
+      document.getElementById('f-phone').value = phone ? phone[1] : '';
+
+      // Airlines
+      const airlines = ['united', 'american', 'delta', 'southwest', 'jetblue', 'alaska', 'frontier', 'spirit', 'lufthansa', 'british airways', 'emirates'];
+      const foundAirlines = airlines.filter(a => lower.includes(a)).map(a => a.charAt(0).toUpperCase() + a.slice(1));
+      document.getElementById('f-airlines').value = foundAirlines.join(', ');
+
+      // Seat
+      if (lower.includes('aisle')) document.getElementById('f-seat').value = 'aisle';
+      else if (lower.includes('window')) document.getElementById('f-seat').value = 'window';
+      else if (lower.includes('middle')) document.getElementById('f-seat').value = 'middle';
+
+      // Class
+      if (lower.includes('first class') || lower.includes('first-class')) document.getElementById('f-class').value = 'first';
+      else if (lower.includes('business')) document.getElementById('f-class').value = 'business';
+      else if (lower.includes('premium economy') || lower.includes('premium_economy')) document.getElementById('f-class').value = 'premium_economy';
+      else if (lower.includes('economy')) document.getElementById('f-class').value = 'economy';
+
+      // KTN
+      const ktn = text.match(/(?:ktn|precheck|pre-check|known traveler)[:\s#]+([A-Z0-9]+)/i);
+      document.getElementById('f-ktn').value = ktn ? ktn[1] : '';
+
+      // Frequent flyer
+      const ff = text.match(/(?:mileageplus|aadvantage|skymiles|rapid rewards|frequent flyer|ff#?)[:\s#]+([A-Z0-9]+)/i);
+      document.getElementById('f-ff-number').value = ff ? ff[1] : '';
+
+      // Hotels
+      const hotels = ['marriott', 'hilton', 'hyatt', 'ihg', 'westin', 'sheraton', 'ritz', 'four seasons', 'kimpton'];
+      const foundHotels = hotels.filter(h => lower.includes(h)).map(h => h.charAt(0).toUpperCase() + h.slice(1));
+      document.getElementById('f-hotels').value = foundHotels.join(', ');
+
+      // Bed
+      if (lower.includes('king')) document.getElementById('f-bed').value = 'king';
+      else if (lower.includes('queen')) document.getElementById('f-bed').value = 'queen';
+
+      // Floor
+      if (lower.includes('high floor')) document.getElementById('f-floor').value = 'high';
+      else if (lower.includes('low floor')) document.getElementById('f-floor').value = 'low';
+
+      // Dietary
+      const dietary = [];
+      if (lower.includes('vegetarian')) dietary.push('vegetarian');
+      if (lower.includes('vegan')) dietary.push('vegan');
+      if (lower.includes('gluten')) dietary.push('gluten-free');
+      if (lower.includes('kosher')) dietary.push('kosher');
+      if (lower.includes('halal')) dietary.push('halal');
+      if (lower.includes('shellfish')) dietary.push('shellfish-free');
+      if (lower.includes('dairy')) dietary.push('dairy-free');
+      if (lower.includes('nut') || lower.includes('peanut')) dietary.push('nut-free');
+      document.getElementById('f-dietary').value = dietary.join(', ');
+
+      // Show travel fields
+      document.getElementById('travel-fields').style.display = 'grid';
+      document.getElementById('food-fields').style.display = 'none';
+
+    } else {
+      // Food profile parsing
+      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) ||
+                        text.match(/name[:\s]+([A-Za-z ]+)/i);
+      document.getElementById('ff-name').value = nameMatch ? nameMatch[1].trim() : '';
+
+      const email = text.match(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
+      document.getElementById('ff-email').value = email ? email[0] : '';
+
+      // Coffee chain
+      const chains = ['starbucks', "dunkin'", 'dunkin', 'peets', "peet's", 'dutch bros', 'caribou', 'tim hortons'];
+      const foundChain = chains.find(c => lower.includes(c));
+      document.getElementById('ff-chain').value = foundChain ? foundChain.charAt(0).toUpperCase() + foundChain.slice(1) : '';
+
+      // Coffee order
+      const coffeeOrder = text.match(/(?:coffee order|usual order|order)[:\s]+([^\n]+)/i) ||
+                          text.match(/(?:latte|cappuccino|americano|macchiato|espresso|cold brew|frappuccino)[^\n]*/i);
+      document.getElementById('ff-coffee').value = coffeeOrder ? coffeeOrder[0].trim() : '';
+
+      // Milk
+      const milks = ['oat milk', 'oat', 'almond milk', 'almond', 'soy milk', 'soy', 'whole milk', 'whole', 'skim milk', 'skim', 'coconut milk', 'coconut'];
+      const foundMilk = milks.find(m => lower.includes(m));
+      document.getElementById('ff-milk').value = foundMilk || '';
+
+      // Size
+      if (lower.includes('grande')) document.getElementById('ff-size').value = 'grande (medium)';
+      else if (lower.includes('venti')) document.getElementById('ff-size').value = 'venti (large)';
+      else if (lower.includes('tall')) document.getElementById('ff-size').value = 'tall (small)';
+      else if (lower.includes('large')) document.getElementById('ff-size').value = 'large';
+      else if (lower.includes('medium')) document.getElementById('ff-size').value = 'medium';
+      else if (lower.includes('small')) document.getElementById('ff-size').value = 'small';
+
+      // Temp
+      if (lower.includes('iced') || lower.includes('cold')) document.getElementById('ff-temp').value = 'iced';
+      else if (lower.includes('hot')) document.getElementById('ff-temp').value = 'hot';
+
+      // Dietary
+      const dietary = [];
+      if (lower.includes('vegetarian')) dietary.push('vegetarian');
+      if (lower.includes('vegan')) dietary.push('vegan');
+      if (lower.includes('gluten')) dietary.push('gluten-free');
+      if (lower.includes('shellfish')) dietary.push('shellfish-free');
+      if (lower.includes('dairy')) dietary.push('dairy-free');
+      if (lower.includes('nut') || lower.includes('peanut')) dietary.push('nut-free');
+      document.getElementById('ff-dietary').value = dietary.join(', ');
+
+      // Show food fields
+      document.getElementById('food-fields').style.display = 'grid';
+      document.getElementById('travel-fields').style.display = 'none';
+    }
+
+    document.getElementById('results-section').classList.add('visible');
+    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+    showToast('Parsed! Review the fields and download.');
+  }
+
+  function downloadProfile() {
+    let data = { updated_at: new Date().toISOString() };
+    let name, suffix;
+
+    if (currentType === 'travel') {
+      name = document.getElementById('f-name').value || 'traveler';
+      suffix = 'travel_profile';
+      data.name = document.getElementById('f-name').value;
+      data.preferred_name = document.getElementById('f-preferred-name').value;
+      data.email = document.getElementById('f-email').value;
+      data.phone = document.getElementById('f-phone').value;
+      data.preferred_airlines = document.getElementById('f-airlines').value;
+      data.avoided_airlines = document.getElementById('f-avoided-airlines').value;
+      data.seat_pref = document.getElementById('f-seat').value;
+      data.class_pref = document.getElementById('f-class').value;
+      data.home_airports = document.getElementById('f-airport').value;
+      data.ktn = document.getElementById('f-ktn').value;
+      data.food_allergies = document.getElementById('f-allergies').value;
+      data.dietary_restrictions = document.getElementById('f-dietary').value.split(',').map(s => s.trim()).filter(Boolean);
+      data.preferred_hotels = document.getElementById('f-hotels').value;
+      data.bed_pref = document.getElementById('f-bed').value;
+      data.floor_pref = document.getElementById('f-floor').value;
+      data.additional_notes = document.getElementById('f-notes').value;
+      const ffAirline = document.getElementById('f-ff-airline').value;
+      const ffNumber = document.getElementById('f-ff-number').value;
+      if (ffAirline || ffNumber) {
+        data.frequent_flyer = [{ airline: ffAirline, number: ffNumber }];
+      }
+      const hotelChain = document.getElementById('f-hotels').value;
+      const hotelLoyalty = document.getElementById('f-hotel-loyalty').value;
+      if (hotelChain || hotelLoyalty) {
+        data.hotel_loyalty = [{ chain: hotelChain, number: hotelLoyalty }];
+      }
+    } else {
+      name = document.getElementById('ff-name').value || 'person';
+      suffix = 'food_profile';
+      data.name = document.getElementById('ff-name').value;
+      data.preferred_name = document.getElementById('ff-preferred-name').value;
+      data.email = document.getElementById('ff-email').value;
+      data.phone = document.getElementById('ff-phone').value;
+      data.coffee_chain = document.getElementById('ff-chain').value;
+      data.coffee_order = document.getElementById('ff-coffee').value;
+      data.coffee_size = document.getElementById('ff-size').value;
+      data.coffee_temp = document.getElementById('ff-temp').value;
+      data.milk_pref = document.getElementById('ff-milk').value;
+      data.sweetener = document.getElementById('ff-sweetener').value;
+      data.food_allergies = document.getElementById('ff-allergies').value;
+      data.dietary_restrictions = document.getElementById('ff-dietary').value.split(',').map(s => s.trim()).filter(Boolean);
+      data.fav_cuisines = document.getElementById('ff-restaurants').value;
+      data.address_office = document.getElementById('ff-office').value;
+      data.address_home = document.getElementById('ff-home').value;
+      data.additional_notes = document.getElementById('ff-notes').value;
+    }
+
+    // Remove empty fields
+    Object.keys(data).forEach(k => {
+      if (data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k];
+    });
+
+    const safeName = name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${safeName}_${suffix}.json`;
+    a.click();
+    showToast(`Downloaded ${safeName}_${suffix}.json!`);
+  }
+
+  function resetForm() {
+    document.getElementById('raw-text').value = '';
+    document.getElementById('results-section').classList.remove('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
