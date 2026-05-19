@@ -13,10 +13,12 @@ from mcp.server.fastmcp import FastMCP
 CARRIE_HOME     = Path.home() / ".carrie"
 TRAVEL_PROFILES = CARRIE_HOME / "profiles" / "travel"
 FOOD_PROFILES   = CARRIE_HOME / "profiles" / "food"
+CITY_GUIDES     = CARRIE_HOME / "city_guides"
 
 # Create directories if they don't exist
 TRAVEL_PROFILES.mkdir(parents=True, exist_ok=True)
 FOOD_PROFILES.mkdir(parents=True, exist_ok=True)
+CITY_GUIDES.mkdir(parents=True, exist_ok=True)
 
 mcp = FastMCP("carrie")
 
@@ -188,6 +190,89 @@ def get_delivery_address(name: str, location: str = "office") -> str:
     if instr:
         result += f"\n  Delivery instructions: {instr}"
     return result
+
+
+# ── City guide tools ──────────────────────────────────────────────────────────
+
+@mcp.tool()
+def get_city_recommendations(city: str, category: str = "restaurants") -> str:
+    """
+    Get EA-vetted recommendations for a city, sourced from r/ExecutiveAssistants.
+    Categories: 'restaurants', 'hotels', 'transport'
+    Returns top recommendations with scores and Reddit source links.
+    If no guide exists for the city, returns instructions to build one.
+    """
+    city_slug = city.lower().replace(" ", "_").replace(",", "")
+    path = CITY_GUIDES / f"{city_slug}.json"
+
+    if not path.exists():
+        available = [p.stem.replace("_", " ").title() for p in sorted(CITY_GUIDES.glob("*.json"))]
+        if available:
+            return (
+                f"No city guide found for '{city}'. "
+                f"Available cities: {', '.join(available)}. "
+                f"To build a guide for {city}, run: "
+                f"python ~/.carrie/../'Claude stuff'/carrie/scripts/build_city_guides.py \"{city}\""
+            )
+        return (
+            f"No city guides built yet. To create one, run: "
+            f"python '/Users/carrievanepps/Claude stuff/carrie/scripts/build_city_guides.py' \"{city}\""
+        )
+
+    with open(path, encoding="utf-8") as f:
+        guide = json.load(f)
+
+    cat = category.lower()
+    # fuzzy match category
+    if cat in ("restaurant", "dining", "food", "eat"):
+        cat = "restaurants"
+    elif cat in ("hotel", "accommodation", "stay"):
+        cat = "hotels"
+    elif cat in ("car", "car service", "transportation", "limo", "transit"):
+        cat = "transport"
+
+    items = guide.get("categories", {}).get(cat, [])
+    updated = guide.get("last_updated", "unknown")[:10]
+
+    if not items:
+        return f"No {category} recommendations found for {city} yet. Try rebuilding the guide."
+
+    lines = [
+        f"=== EA-Vetted {cat.title()} Recommendations: {city} ===",
+        f"Source: r/ExecutiveAssistants | Last updated: {updated}\n",
+    ]
+    for i, item in enumerate(items, 1):
+        lines.append(f"{i}. {item['title']} (↑{item['score']} upvotes, {item['date']})")
+        if item.get("summary") and item["summary"] not in ("(link post)", "(link post — no body text)"):
+            lines.append(f"   {item['summary'][:200]}")
+        comments = item.get("comments", [])
+        if comments:
+            lines.append("   Top EA responses:")
+            for c in comments[:5]:
+                lines.append(f"     • {c}")
+        lines.append(f"   🔗 {item['url']}\n")
+
+    return "\n".join(lines)
+
+
+@mcp.tool()
+def list_city_guides() -> str:
+    """List all cities that have saved EA recommendation guides."""
+    guides = sorted(CITY_GUIDES.glob("*.json"))
+    if not guides:
+        return (
+            "No city guides built yet. To create one, run: "
+            "python '/Users/carrievanepps/Claude stuff/carrie/scripts/build_city_guides.py' <city>"
+        )
+    lines = ["Saved city guides (sourced from r/ExecutiveAssistants):\n"]
+    for p in guides:
+        with open(p, encoding="utf-8") as f:
+            g = json.load(f)
+        city    = g.get("city", p.stem)
+        updated = g.get("last_updated", "unknown")[:10]
+        cats    = list(g.get("categories", {}).keys())
+        lines.append(f"  • {city} — updated {updated} | categories: {', '.join(cats)}")
+    return "\n".join(lines)
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────
