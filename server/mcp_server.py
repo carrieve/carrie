@@ -192,6 +192,51 @@ def get_delivery_address(name: str, location: str = "office") -> str:
     return result
 
 
+# ── Meeting notes tools ───────────────────────────────────────────────────────
+
+@mcp.tool()
+def process_meeting_notes(notes: str, meeting_name: str = "", attendees: str = "", date: str = "") -> str:
+    """
+    Process raw meeting notes or a transcript.
+    Extracts action items, key decisions, and drafts a follow-up email.
+
+    notes: raw notes, Zoom transcript, or Otter.ai export
+    meeting_name: name of the meeting (optional)
+    attendees: comma-separated list of attendees (optional)
+    date: meeting date in any format (optional, defaults to today)
+    """
+    from datetime import date as dt
+    meeting  = meeting_name or "the meeting"
+    date_str = date or dt.today().strftime("%B %d, %Y")
+
+    prompt_context = f"""You are an experienced Executive Assistant processing notes from {meeting}{' on ' + date_str if date_str else ''}{' with ' + attendees if attendees else ''}.
+
+From the notes below, please provide:
+
+1. ACTION ITEMS — list each one with:
+   - The task
+   - Owner (person responsible)
+   - Deadline (if mentioned)
+
+2. KEY DECISIONS — bullet points of decisions made
+
+3. FOLLOW-UP EMAIL — a concise, professional email ready to send to attendees
+
+Meeting notes:
+---
+{notes}
+---
+
+Format your response clearly with those three sections."""
+
+    return f"""Meeting notes received. Here is the full processing prompt — paste into Claude or ask me to process it:
+
+{prompt_context}
+
+---
+TIP: In Claude Code, just say "process these meeting notes" and paste the transcript. I'll handle the rest."""
+
+
 # ── City guide tools ──────────────────────────────────────────────────────────
 
 @mcp.tool()
