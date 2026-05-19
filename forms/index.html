@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carrie — AI Preference Management</title>
+  <title>Carrie — AI Preference Management for EAs</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,20 +15,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
       -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 580px;
+      max-width: 680px;
       width: 100%;
       text-align: center;
     }
 
     .avatar {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       object-position: center top;
       border-radius: 50%;
@@ -47,23 +46,45 @@
       font-size: 1.1rem;
       color: #6e6e73;
       line-height: 1.65;
-      margin-bottom: 52px;
-      max-width: 440px;
+      margin-bottom: 20px;
+      max-width: 520px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .example-prompt {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      color: #1d1d1f;
+      font-style: italic;
+      margin-bottom: 52px;
+    }
+
+    /* Forms section */
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aeaeb2;
+      margin-bottom: 16px;
     }
 
     .cards {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 64px;
     }
 
     .card {
       background: #ffffff;
       border-radius: 20px;
-      padding: 36px 28px;
+      padding: 32px 24px;
       text-decoration: none;
       color: inherit;
       box-shadow: 0 2px 20px rgba(0,0,0,0.06);
@@ -71,7 +92,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .card:hover {
@@ -79,16 +100,16 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
 
-    .card-emoji { font-size: 2.4rem; }
+    .card-emoji { font-size: 2.2rem; }
 
     .card-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
       color: #1d1d1f;
     }
 
     .card-desc {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: #6e6e73;
       line-height: 1.55;
       text-align: center;
@@ -101,15 +122,181 @@
       border: none;
       border-radius: 980px;
       padding: 10px 22px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
     }
 
+    /* How it works */
+    .how-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      text-align: left;
+    }
+
+    .how-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: #0071e3;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      line-height: 1.6;
+    }
+
+    /* Paths section */
+    .paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .path-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      text-align: left;
+    }
+
+    .path-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .path-card .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #e8f4fd;
+      color: #0071e3;
+      border-radius: 6px;
+      padding: 2px 8px;
+    }
+
+    .path-card .badge.easy {
+      background: #e8faf0;
+      color: #1a7f4b;
+    }
+
+    .path-card p {
+      font-size: 0.85rem;
+      color: #6e6e73;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .path-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .path-steps li {
+      font-size: 0.85rem;
+      color: #1d1d1f;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .path-steps li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #0071e3;
+      font-weight: 600;
+    }
+
+    /* Examples */
+    .examples-section {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    .examples-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .examples-section .sub {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 32px;
+    }
+
+    .prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 0.92rem;
+      color: #1d1d1f;
+      font-style: italic;
+      text-align: left;
+      border-left: 3px solid #0071e3;
+    }
+
     .footer {
       font-size: 0.82rem;
       color: #aeaeb2;
+      margin-top: 16px;
     }
 
     .footer a {
@@ -117,18 +304,25 @@
       text-decoration: none;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 580px) {
       .cards { grid-template-columns: 1fr; }
+      .paths { grid-template-columns: 1fr; }
       h1 { font-size: 2rem; }
+      .how-section, .examples-section { padding: 32px 24px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="avatar.jpg" alt="Carrie" class="avatar" />
-    <h1>Carrie</h1>
-    <p class="subtitle">Fill out your preferences once. Your coordinator's AI assistant handles the rest — flights, hotels, coffee, and more.</p>
 
+    <!-- Hero -->
+    <img src="avatar.jpg" alt="Carrie" class="avatar" />
+    <h1>Carrie ✈️☕</h1>
+    <p class="subtitle">AI-powered preference management for Executive Assistants. Your travelers fill out a form once. Your AI assistant handles the rest.</p>
+    <div class="example-prompt">"Order Carrie her usual coffee to the office."</div>
+
+    <!-- Collect forms -->
+    <p class="section-label">Step 1 — Collect preferences</p>
     <div class="cards">
       <a class="card" href="travel_form.html">
         <div class="card-emoji">✈️</div>
@@ -139,18 +333,84 @@
       <a class="card" href="food_form.html">
         <div class="card-emoji">☕</div>
         <div class="card-title">Food & Coffee</div>
-        <div class="card-desc">Your exact coffee order, favorite restaurants, dietary restrictions, and delivery addresses.</div>
+        <div class="card-desc">Exact coffee order, favorite restaurants, dietary restrictions, delivery addresses.</div>
         <div class="card-btn">Fill out form</div>
       </a>
       <a class="card" href="import.html">
         <div class="card-emoji">📋</div>
-        <div class="card-title">Import from Google Doc</div>
-        <div class="card-desc">Already have preferences saved somewhere? Paste them in and Carrie converts them automatically.</div>
+        <div class="card-title">Import Existing Notes</div>
+        <div class="card-desc">Already have preferences in a Google Doc or email? Paste and convert instantly.</div>
         <div class="card-btn">Import now</div>
       </a>
     </div>
 
-    <p class="footer">Powered by <a href="https://github.com/carrieve/carrie" target="_blank">Carrie AI</a> — built for Executive Assistants</p>
+    <!-- How it works -->
+    <div class="how-section">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Collect — Send a form link</h3>
+            <p>Share a form link with your traveler. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, exact coffee order, dietary restrictions, delivery address. Everything.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Save — Drop the file in place</h3>
+            <p>When they submit, a profile file downloads. Save it to a folder or upload it to a Claude Project. That's it — no database, no setup, no IT ticket.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Ask — Just tell Claude what you need</h3>
+            <p>Next time you need to book travel or order food, just ask your AI assistant. It looks up the profile automatically and takes care of the rest.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two paths -->
+    <p class="section-label" style="margin-bottom:16px;">Step 2 — Pick your path</p>
+    <div class="paths" style="margin-bottom:64px;">
+      <div class="path-card">
+        <h3>💬 Claude Chat <span class="badge easy">Easiest</span></h3>
+        <p>No installation needed. Works on any device — laptop, phone, tablet.</p>
+        <ul class="path-steps">
+          <li>Collect profiles using the forms above</li>
+          <li>Create a Project in Claude.ai</li>
+          <li>Upload your travelers' profile files</li>
+          <li>Ask Claude anything about your travelers</li>
+        </ul>
+      </div>
+      <div class="path-card">
+        <h3>⚡ Claude Code <span class="badge">Power users</span></h3>
+        <p>Full automation — Claude can book flights and place orders for you.</p>
+        <ul class="path-steps">
+          <li>Install the Carrie plugin</li>
+          <li>Drop profiles in your profiles folder</li>
+          <li>Ask Claude to book, order, or look up anything</li>
+          <li>Claude acts — not just answers</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Example prompts -->
+    <div class="examples-section">
+      <h2>What you can ask</h2>
+      <p class="sub">Just type it like you'd say it to a colleague.</p>
+      <div class="prompts">
+        <div class="prompt">"Book Jamie a flight to NYC next Tuesday — nonstop, aisle seat."</div>
+        <div class="prompt">"Order Carrie her usual coffee to the office."</div>
+        <div class="prompt">"What hotel chain does Alex prefer? And what's his loyalty number?"</div>
+        <div class="prompt">"Find a restaurant near the venue that works for Sarah's dietary restrictions."</div>
+        <div class="prompt">"What's the earliest flight from CLT to LAX that works for Carrie's preferences?"</div>
+      </div>
+    </div>
+
+    <p class="footer">Built by an EA, for EAs &nbsp;·&nbsp; <a href="https://github.com/carrieve/carrie" target="_blank">GetCarrieAI on GitHub</a> &nbsp;·&nbsp; <a href="https://getcarrieai.com" target="_blank">getcarrieai.com</a></p>
   </div>
 </body>
 </html>

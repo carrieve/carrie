@@ -7,40 +7,44 @@ Built by an EA, for EAs.
 
 ---
 
-## What it does
+## What you can ask
 
-You ask Claude:
-> *"Book Jamie a flight to NYC next Tuesday"*
-> *"Order Carrie her usual coffee to the office"*
-> *"What hotel chain does Alex prefer?"*
+> *"Book Jamie a flight to NYC next Tuesday — nonstop, aisle seat."*
+> *"Order Carrie her usual coffee to the office."*
+> *"What hotel chain does Alex prefer? And what's his loyalty number?"*
+> *"Find a restaurant near the venue that works for Sarah's dietary restrictions."*
 
-Claude already knows the answer — because Carrie told it.
-
-No more digging through spreadsheets. No more "what's their loyalty number again." No more copy-pasting into booking sites.
+Your AI assistant already knows the answer — because Carrie told it.
 
 ---
 
-## How it works
+## How it works: Collect → Save → Ask
 
-**Step 1 — Someone fills out a form**
-Send them a link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, exact coffee order, dietary restrictions, delivery address. Everything.
+**Step 1 — Collect**
+Send your travelers a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, exact coffee order, dietary restrictions, delivery address. Everything.
 
 👉 [getcarrieai.com](https://getcarrieai.com)
 
-**Step 2 — You save their profile**
-Their preferences download as a file. Drop it in a folder. Done.
+**Step 2 — Save**
+When they submit, a profile file downloads. Save it to a folder or upload it to a Claude Project. No database. No IT ticket.
 
-**Step 3 — Claude knows everything**
-Next time you need to book travel or order food, just ask. Claude looks up their profile automatically and uses it.
+**Step 3 — Ask**
+Next time you need to book travel or order food, just ask your AI assistant. It looks up the profile automatically and handles the rest.
 
 ---
 
-## Get started
+## Two ways to use Carrie
 
-**What you need:**
-- A Mac or PC
-- [Claude Code](https://claude.ai/code) — free from Anthropic
-- Python 3 — already installed on most Macs
+### 💬 Claude Chat — Easiest, no installation needed
+Works on any device — laptop, phone, or tablet.
+
+1. Collect profiles using the forms at [getcarrieai.com](https://getcarrieai.com)
+2. Create a **Project** in [Claude.ai](https://claude.ai)
+3. Upload your travelers' profile files to the Project
+4. Ask Claude anything — *"What does Jamie eat?"* *"Order Carrie her coffee."*
+
+### ⚡ Claude Code — Full automation for power users
+Claude doesn't just answer — it acts. It can book flights, place orders, and look things up on your behalf.
 
 **Install Carrie:**
 ```bash
@@ -68,7 +72,7 @@ Share these links with your travelers:
 
 👉 **[getcarrieai.com](https://getcarrieai.com)**
 
-When they submit, a file downloads. Email it back to you, drop it in your profiles folder, and Claude can find it automatically.
+When they submit, a file downloads. Email it back to you, drop it in your profiles folder (or Claude Project), and Claude can find it automatically.
 
 ---
 
@@ -78,7 +82,7 @@ No need to start from scratch. Use the **Import tool** to paste any existing not
 
 👉 **[getcarrieai.com/import.html](https://getcarrieai.com/import.html)**
 
-Just paste, review, and download. Works for both travel and food profiles.
+Just paste, review, and download.
 
 ---
 
@@ -87,19 +91,27 @@ Just paste, review, and download. Works for both travel and food profiles.
 **Do my travelers need Claude or any special software?**
 No. They just fill out a web form — like any Google Form. Nothing to install.
 
+**Do I need to be technical to use this?**
+No. The Claude Chat path requires zero installation — just a form, a file, and a Claude Project.
+
 **Does this work with any AI?**
-Right now it's built for Claude Code. Support for other platforms is coming as the technology matures.
+Right now it's built for Claude. Support for other platforms is coming as the technology matures.
 
 **Is my data private?**
-Yes. Profiles are stored locally on your own computer. Nothing is sent to the cloud.
+Yes. Profiles are stored locally on your own computer or in your own Claude Project. Nothing is sent to the cloud.
 
 **Can I use this for a whole team of EAs?**
-Yes — each EA installs Carrie on their own machine and manages their own travelers' profiles.
+Yes — share a Claude Project with your team and everyone can access the same traveler profiles instantly.
 
 ---
 
 ## Requirements
 
+**Claude Chat path:**
+- A free or paid [Claude.ai](https://claude.ai) account
+- That's it
+
+**Claude Code path:**
 - [Claude Code](https://claude.ai/code)
 - Python 3
 - The `mcp` package (installed automatically by `/carrie-setup`)
@@ -108,6 +120,6 @@ Yes — each EA installs Carrie on their own machine and manages their own trave
 
 ## About
 
-Created by [Carrie Van Epps](https://github.com/carrieve) — an Executive Assistant learning to build with AI.
+Created by [Carrie Van Epps](https://www.linkedin.com/in/carrievanepps) — an Executive Assistant building with AI.
 
 *Questions, ideas, or feedback? [Open an issue](https://github.com/carrieve/carrie/issues) — I'd love to hear from you.*
