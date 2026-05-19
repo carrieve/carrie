@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carrie — AI Preference Management for EAs</title>
+  <title>GetCarrieAI — AI assistant, with or without an EA</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,1035 +15,394 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 60px 20px;
+      padding: 60px 20px 80px;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 680px;
-      width: 100%;
-      text-align: center;
-    }
+    .container { max-width: 620px; width: 100%; text-align: center; }
 
+    /* Hero */
     .avatar {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      object-position: center top;
+      width: 88px; height: 88px;
+      object-fit: cover; object-position: center top;
       border-radius: 50%;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
     h1 {
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
       letter-spacing: -0.04em;
-      color: #1d1d1f;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #6e6e73;
       line-height: 1.65;
-      margin-bottom: 20px;
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
+      max-width: 480px;
+      margin: 0 auto 16px;
     }
-
     .example-prompt {
       display: inline-block;
-      background: #ffffff;
+      background: #fff;
       border: 1px solid #d2d2d7;
       border-radius: 12px;
       padding: 10px 20px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #1d1d1f;
       font-style: italic;
       margin-bottom: 40px;
     }
 
     /* Audience split */
+    .who-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aeaeb2;
+      margin-bottom: 12px;
+    }
     .audience-split {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 40px;
-      width: 100%;
-    }
-    @media (max-width: 580px) {
-      .audience-split { grid-template-columns: 1fr; }
+      gap: 10px;
+      margin-bottom: 32px;
     }
     .audience-btn {
-      background: #ffffff;
+      background: #fff;
       border: 2px solid #d2d2d7;
-      border-radius: 20px;
-      padding: 28px 24px;
+      border-radius: 18px;
+      padding: 22px 16px;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s;
       font-family: inherit;
     }
-    .audience-btn:hover {
-      border-color: #0071e3;
-      box-shadow: 0 4px 20px rgba(0,113,227,0.12);
-      transform: translateY(-2px);
-    }
-    .audience-btn.active {
-      border-color: #0071e3;
-      background: #f0f7ff;
-    }
-    .audience-btn .btn-emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
-    .audience-btn .btn-title { font-size: 1rem; font-weight: 700; color: #1d1d1f; display: block; margin-bottom: 6px; }
-    .audience-btn .btn-desc { font-size: 0.82rem; color: #6e6e73; line-height: 1.5; display: block; }
+    .audience-btn:hover { border-color: #0071e3; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,113,227,0.1); }
+    .audience-btn.active { border-color: #0071e3; background: #f0f7ff; }
+    .audience-btn .btn-emoji { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+    .audience-btn .btn-title { font-size: 0.9rem; font-weight: 700; color: #1d1d1f; display: block; margin-bottom: 4px; }
+    .audience-btn .btn-desc { font-size: 0.76rem; color: #6e6e73; line-height: 1.45; display: block; }
 
-    /* Forms section */
-    .section-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #aeaeb2;
-      margin-bottom: 16px;
+    /* Quick Profile CTA */
+    .quick-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #0071e3;
+      color: #fff;
+      border-radius: 18px;
+      padding: 22px 26px;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+    .quick-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,113,227,0.28); }
+    .quick-cta-icon { font-size: 2rem; flex-shrink: 0; }
+    .quick-cta-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 3px; }
+    .quick-cta-sub { font-size: 0.85rem; opacity: 0.85; }
+    .quick-cta-arrow { margin-left: auto; font-size: 1.2rem; flex-shrink: 0; }
+
+    /* More options toggle */
+    .more-toggle {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #0071e3;
+      cursor: pointer;
+      padding: 10px 0;
+      margin-bottom: 24px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    .more-toggle:hover { opacity: 0.75; }
+
+    .more-forms { display: none; }
+    .more-forms.open { display: block; }
 
     .cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 64px;
+      gap: 12px;
+      margin-bottom: 28px;
+      text-align: left;
     }
-
     .card {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 32px 24px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px 20px;
       text-decoration: none;
       color: inherit;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
       transition: transform 0.2s, box-shadow 0.2s;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-    }
-
-    .card-emoji { font-size: 2.2rem; }
-
-    .card-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-
-    .card-desc {
-      font-size: 0.85rem;
-      color: #6e6e73;
-      line-height: 1.55;
-      text-align: center;
-    }
-
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.10); }
+    .card-emoji { font-size: 1.8rem; }
+    .card-title { font-size: 0.92rem; font-weight: 600; color: #1d1d1f; }
+    .card-desc { font-size: 0.8rem; color: #6e6e73; line-height: 1.5; }
     .card-btn {
-      margin-top: 8px;
+      margin-top: 6px;
+      display: inline-block;
       background: #0071e3;
       color: #fff;
-      border: none;
       border-radius: 980px;
-      padding: 10px 22px;
-      font-size: 0.85rem;
+      padding: 7px 18px;
+      font-size: 0.8rem;
       font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
+      align-self: flex-start;
     }
 
     /* How it works */
     .how-section {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-      text-align: left;
-    }
-
-    .how-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    .step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-
-    .step-num {
-      width: 36px;
-      height: 36px;
-      background: #0071e3;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .step-content h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .step-content p {
-      font-size: 0.9rem;
-      color: #6e6e73;
-      line-height: 1.6;
-    }
-
-    /* Paths section */
-    .paths {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .path-card {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 32px 28px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-      text-align: left;
-    }
-
-    .path-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .path-card .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: #e8f4fd;
-      color: #0071e3;
-      border-radius: 6px;
-      padding: 2px 8px;
-    }
-
-    .path-card .badge.easy {
-      background: #e8faf0;
-      color: #1a7f4b;
-    }
-
-    .path-card p {
-      font-size: 0.85rem;
-      color: #6e6e73;
-      line-height: 1.6;
+      background: #fff;
+      border-radius: 22px;
+      padding: 40px 36px;
       margin-bottom: 16px;
-    }
-
-    .path-steps {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .path-steps li {
-      font-size: 0.85rem;
-      color: #1d1d1f;
-      padding-left: 20px;
-      position: relative;
-      line-height: 1.5;
-    }
-
-    .path-steps li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: #0071e3;
-      font-weight: 600;
-    }
-
-    /* Examples */
-    .examples-section {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-    }
-
-    .examples-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .examples-section .sub {
-      font-size: 0.9rem;
-      color: #6e6e73;
-      margin-bottom: 32px;
-    }
-
-    .prompts {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .prompt {
-      background: #f5f5f7;
-      border-radius: 12px;
-      padding: 14px 20px;
-      font-size: 0.92rem;
-      color: #1d1d1f;
-      font-style: italic;
-      text-align: left;
-      border-left: 3px solid #0071e3;
-    }
-
-    /* City guides */
-    .city-section {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
       text-align: left;
     }
-
-    .city-section h2 {
-      font-size: 1.5rem;
+    .how-section h2 {
+      font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .city-section .sub {
-      font-size: 0.9rem;
-      color: #6e6e73;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .city-categories {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
       margin-bottom: 28px;
-    }
-
-    .city-cat {
-      background: #f5f5f7;
-      border-radius: 16px;
-      padding: 20px;
       text-align: center;
     }
-
-    .city-cat-emoji { font-size: 1.8rem; margin-bottom: 8px; }
-    .city-cat-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
-    .city-cat-desc { font-size: 0.8rem; color: #6e6e73; line-height: 1.5; }
-
-    .city-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-    }
-
-    .city-pill {
-      background: #f5f5f7;
-      border-radius: 980px;
-      padding: 6px 16px;
-      font-size: 0.82rem;
-      color: #1d1d1f;
-      font-weight: 500;
-    }
-
-    /* Setup section */
-    .setup-section {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-    }
-    .setup-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .setup-section .sub {
-      font-size: 0.9rem;
-      color: #6e6e73;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-    .setup-tiers {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    .setup-tier {
-      background: #f5f5f7;
-      border-radius: 18px;
-      padding: 24px 20px;
-    }
-    .setup-tier.featured {
-      background: #f0f7ff;
-      border: 1.5px solid #0071e3;
-    }
-    .setup-tier-badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 3px 10px;
-      border-radius: 980px;
-      margin-bottom: 12px;
-      background: #e8e8ed;
-      color: #6e6e73;
-    }
-    .setup-tier.featured .setup-tier-badge {
-      background: #0071e3;
-      color: #fff;
-    }
-    .setup-tier-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .setup-tier-price {
-      font-size: 0.82rem;
-      color: #6e6e73;
-      margin-bottom: 14px;
-    }
-    .setup-tier-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .setup-tier-features li {
-      font-size: 0.85rem;
-      color: #1d1d1f;
-      padding-left: 18px;
-      position: relative;
-      line-height: 1.45;
-    }
-    .setup-tier-features li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: #34c759;
-      font-weight: 700;
-    }
-    .setup-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .setup-step {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      background: #f5f5f7;
-      border-radius: 14px;
-      padding: 16px 18px;
-    }
-    .setup-step-num {
-      width: 26px;
-      height: 26px;
-      background: #0071e3;
-      color: #fff;
+    .steps { display: flex; flex-direction: column; gap: 24px; }
+    .step { display: flex; gap: 16px; align-items: flex-start; }
+    .step-num {
+      width: 32px; height: 32px;
+      background: #0071e3; color: #fff;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.78rem;
-      flex-shrink: 0;
-      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
+      flex-shrink: 0; margin-top: 2px;
     }
-    .setup-step-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-    .setup-step-body {
-      font-size: 0.83rem;
-      color: #6e6e73;
-      line-height: 1.55;
-    }
-    .setup-step-body a { color: #0071e3; text-decoration: none; }
-    @media (max-width: 580px) {
-      .setup-tiers { grid-template-columns: 1fr; }
-    }
+    .step-content h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; }
+    .step-content p { font-size: 0.85rem; color: #6e6e73; line-height: 1.6; }
+    .step-content a { color: #0071e3; text-decoration: none; }
 
-    /* Mobile section */
-    .mobile-section {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    /* Follow along */
+    .follow-section {
+      background: #1d1d1f;
+      border-radius: 22px;
+      padding: 40px 36px;
+      margin-bottom: 20px;
       text-align: center;
     }
-    .mobile-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
+    .follow-section h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .follow-section p { font-size: 0.9rem; color: #aeaeb2; margin-bottom: 24px; line-height: 1.6; }
+    .follow-form { display: flex; gap: 10px; max-width: 380px; margin: 0 auto; }
+    .follow-form input[type="email"] {
+      flex: 1; padding: 12px 18px;
+      border-radius: 980px; border: none;
+      font-size: 0.92rem; font-family: inherit; outline: none;
     }
-    .mobile-section .sub {
-      font-size: 0.9rem;
-      color: #6e6e73;
-      margin-bottom: 32px;
+    .follow-form button {
+      background: #0071e3; color: #fff; border: none;
+      border-radius: 980px; padding: 12px 22px;
+      font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; white-space: nowrap;
     }
-    .mobile-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      text-align: left;
-      margin-bottom: 28px;
-    }
-    .mobile-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-    .mobile-step-num {
-      width: 32px;
-      height: 32px;
-      background: #1d1d1f;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .mobile-step-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-    .mobile-step-body {
-      font-size: 0.85rem;
-      color: #6e6e73;
-      line-height: 1.55;
-    }
-    .mobile-note {
-      background: #f5f5f7;
-      border-radius: 14px;
-      padding: 16px 18px;
-      font-size: 0.85rem;
-      color: #6e6e73;
-      line-height: 1.6;
-      text-align: left;
-    }
+    .follow-form button:hover { background: #0077ed; }
+    .follow-note { font-size: 0.76rem; color: #6e6e73; margin-top: 12px; }
 
-    /* Waitlist */
-    .waitlist-section {
-      background: #1d1d1f;
-      border-radius: 24px;
-      padding: 48px 40px;
-      margin-bottom: 24px;
-      text-align: center;
-    }
+    .footer { font-size: 0.8rem; color: #aeaeb2; margin-top: 8px; }
+    .footer a { color: #0071e3; text-decoration: none; }
 
-    .waitlist-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      margin-bottom: 10px;
-    }
-
-    .waitlist-section p {
-      font-size: 0.95rem;
-      color: #aeaeb2;
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-
-    .waitlist-form {
-      display: flex;
-      gap: 10px;
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    .waitlist-form input[type="email"] {
-      flex: 1;
-      padding: 12px 18px;
-      border-radius: 980px;
-      border: none;
-      font-size: 0.95rem;
-      font-family: inherit;
-      outline: none;
-    }
-
-    .waitlist-form button {
-      background: #0071e3;
-      color: #fff;
-      border: none;
-      border-radius: 980px;
-      padding: 12px 24px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-    }
-
-    .waitlist-form button:hover { background: #0077ed; }
-
-    .waitlist-note {
-      font-size: 0.78rem;
-      color: #6e6e73;
-      margin-top: 14px;
-    }
-
-    .footer {
-      font-size: 0.82rem;
-      color: #aeaeb2;
-      margin-top: 16px;
-    }
-
-    .footer a {
-      color: #0071e3;
-      text-decoration: none;
-    }
-
-    @media (max-width: 580px) {
-      .cards { grid-template-columns: 1fr; }
-      .paths { grid-template-columns: 1fr; }
-      .city-categories { grid-template-columns: 1fr; }
-      .waitlist-form { flex-direction: column; }
+    @media (max-width: 560px) {
+      body { padding: 40px 16px 60px; }
       h1 { font-size: 2rem; }
-      .how-section, .examples-section, .city-section, .waitlist-section, .mobile-section { padding: 32px 24px; }
+      .audience-split { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .how-section, .follow-section { padding: 28px 22px; }
+      .follow-form { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- Hero -->
-    <img src="avatar.jpg" alt="Carrie" class="avatar" />
-    <h1>Carrie ✈️☕</h1>
-    <p class="subtitle" id="hero-subtitle">Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.</p>
-    <div class="example-prompt" id="hero-prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
+  <!-- Hero -->
+  <img src="avatar.jpg" alt="Carrie" class="avatar" />
+  <h1>Carrie ✈️☕</h1>
+  <p class="subtitle" id="hero-subtitle">Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.</p>
+  <div class="example-prompt" id="hero-prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
 
-    <!-- Audience split -->
-    <p class="section-label">Who are you?</p>
-    <div class="audience-split">
-      <button class="audience-btn active" id="btn-self" onclick="setAudience('self')">
-        <span class="btn-emoji">🙋</span>
-        <span class="btn-title">I need an EA</span>
-        <span class="btn-desc">I'm a busy professional managing my own travel, calendar, and logistics.</span>
-      </button>
-      <button class="audience-btn" id="btn-ea" onclick="setAudience('ea')">
-        <span class="btn-emoji">💼</span>
-        <span class="btn-title">I am an EA</span>
-        <span class="btn-desc">I support executives and want to manage their preferences smarter.</span>
-      </button>
-      <button class="audience-btn" id="btn-smb" onclick="setAudience('smb')">
-        <span class="btn-emoji">🏪</span>
-        <span class="btn-title">I run a business</span>
-        <span class="btn-desc">I'm a small business owner who needs help with admin, clients, and day-to-day ops.</span>
-      </button>
+  <!-- Audience split -->
+  <p class="who-label">Who are you?</p>
+  <div class="audience-split">
+    <button class="audience-btn active" id="btn-self" onclick="setAudience('self')">
+      <span class="btn-emoji">🙋</span>
+      <span class="btn-title">I need an EA</span>
+      <span class="btn-desc">Busy professional managing my own travel and logistics.</span>
+    </button>
+    <button class="audience-btn" id="btn-ea" onclick="setAudience('ea')">
+      <span class="btn-emoji">💼</span>
+      <span class="btn-title">I am an EA</span>
+      <span class="btn-desc">I support executives and manage their preferences.</span>
+    </button>
+    <button class="audience-btn" id="btn-smb" onclick="setAudience('smb')">
+      <span class="btn-emoji">🏪</span>
+      <span class="btn-title">I run a business</span>
+      <span class="btn-desc">Small business owner who needs help with admin and ops.</span>
+    </button>
+  </div>
+
+  <!-- Quick Profile CTA -->
+  <a class="quick-cta" id="link-quick" href="quick_form.html?mode=self">
+    <div class="quick-cta-icon">⚡</div>
+    <div>
+      <div class="quick-cta-title">Start here — Quick Profile</div>
+      <div class="quick-cta-sub" id="quick-sub">5 questions. 2 minutes. Works on your phone.</div>
     </div>
+    <div class="quick-cta-arrow">→</div>
+  </a>
 
-    <!-- Get set up -->
-    <div class="setup-section">
-      <h2>What you'll need</h2>
-      <p class="sub">Two ways to use it — pick what fits.</p>
-
-      <div class="setup-tiers">
-        <div class="setup-tier">
-          <div class="setup-tier-badge">Free</div>
-          <div class="setup-tier-title">claude.ai</div>
-          <div class="setup-tier-price">Free plan · iPhone, Android & web</div>
-          <ul class="setup-tier-features">
-            <li>Instant preference lookups</li>
-            <li>Loyalty numbers on demand</li>
-            <li>Meeting notes → action items</li>
-            <li>Recommendations & research</li>
-            <li>Draft emails & messages</li>
-          </ul>
-        </div>
-        <div class="setup-tier featured">
-          <div class="setup-tier-badge">For booking</div>
-          <div class="setup-tier-title">Claude Code</div>
-          <div class="setup-tier-price">Claude Pro $20/mo · desktop</div>
-          <ul class="setup-tier-features">
-            <li>Everything in the free tier</li>
-            <li>Books flights on Google Flights</li>
-            <li>Searches hotels by loyalty program</li>
-            <li>Makes restaurant reservations</li>
-            <li>Creates calendar invites</li>
-          </ul>
-        </div>
-      </div>
-
-      <p style="font-size:0.82rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:#aeaeb2; margin-bottom:16px;">Step-by-step setup</p>
-      <div class="setup-steps">
-        <div class="setup-step">
-          <div class="setup-step-num">1</div>
-          <div>
-            <div class="setup-step-title">Create a free Claude account</div>
-            <div class="setup-step-body">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> and sign up. Free. Takes 2 minutes. Download the app on your phone too — search "Claude" in the App Store or Google Play.</div>
-          </div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-step-num">2</div>
-          <div>
-            <div class="setup-step-title">Fill out your profile</div>
-            <div class="setup-step-body">Use the ⚡ Quick Profile below (5 questions, 2 min) or fill out the full Travel or Food form. Download the file when you're done.</div>
-          </div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-step-num">3</div>
-          <div>
-            <div class="setup-step-title">Create a Claude Project and upload your file</div>
-            <div class="setup-step-body">In Claude, tap <strong>Projects → New Project</strong>. Upload your profile file. Claude now knows your preferences permanently — in every conversation in that project.</div>
-          </div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-step-num" style="background:#1d1d1f;">4</div>
-          <div>
-            <div class="setup-step-title">Optional: Install Claude Code for hands-on booking</div>
-            <div class="setup-step-body">Want Claude to actually book flights and hotels? Download <a href="https://claude.ai/download" target="_blank">Claude Code</a> (Mac/Windows/Linux) and upgrade to <a href="https://claude.ai/upgrade" target="_blank">Claude Pro</a> ($20/mo). Then just ask: "Book me a flight to NYC Tuesday."</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick profile banner -->
-    <a id="link-quick" href="quick_form.html?mode=self" style="display:flex; align-items:center; gap:16px; background:#0071e3; color:#fff; border-radius:18px; padding:20px 24px; margin-bottom:16px; text-decoration:none; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-      <div style="font-size:2rem;">⚡</div>
-      <div>
-        <div style="font-weight:700; font-size:1rem; margin-bottom:3px;">Quick Profile — 2 minutes on your phone</div>
-        <div style="font-size:0.85rem; opacity:0.85;">5 questions. Airline, seat, hotel, coffee, dietary. Done.</div>
-      </div>
-      <div style="margin-left:auto; font-size:1.2rem;">→</div>
-    </a>
-
-    <!-- Collect forms -->
-    <p class="section-label" id="forms-label">Or fill out the full profile</p>
+  <!-- More options -->
+  <button class="more-toggle" onclick="toggleMore(this)">More profile options ↓</button>
+  <div class="more-forms" id="more-forms">
     <div class="cards">
       <a class="card" id="link-travel" href="travel_form.html?mode=self">
         <div class="card-emoji">✈️</div>
         <div class="card-title">Travel Preferences</div>
-        <div class="card-desc" id="card-travel">Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.</div>
-        <div class="card-btn">Fill out form</div>
+        <div class="card-desc" id="card-travel">Seat, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.</div>
+        <div class="card-btn">Fill out</div>
       </a>
       <a class="card" id="link-food" href="food_form.html?mode=self">
         <div class="card-emoji">☕</div>
         <div class="card-title">Food & Coffee</div>
-        <div class="card-desc" id="card-food">Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.</div>
-        <div class="card-btn">Fill out form</div>
-      </a>
-      <a class="card" href="import.html">
-        <div class="card-emoji">📋</div>
-        <div class="card-title">Import Existing Notes</div>
-        <div class="card-desc">Already have preferences saved somewhere? Paste and convert instantly.</div>
-        <div class="card-btn">Import now</div>
-      </a>
-      <a class="card" href="meeting_notes.html">
-        <div class="card-emoji">📝</div>
-        <div class="card-title">Meeting Notes & Slack</div>
-        <div class="card-desc">Paste meeting notes or a Slack thread. Get action items and follow-ups drafted instantly.</div>
-        <div class="card-btn">Process notes</div>
+        <div class="card-desc" id="card-food">Coffee order, restaurants, dietary restrictions, delivery address.</div>
+        <div class="card-btn">Fill out</div>
       </a>
       <a class="card" href="business_quick_form.html">
         <div class="card-emoji">🏪</div>
-        <div class="card-title">Small Business Profile</div>
-        <div class="card-desc">Business basics, communication style, admin pain points, tools you use. Claude becomes your instant business assistant.</div>
-        <div class="card-btn">Fill out form</div>
+        <div class="card-title">Small Business</div>
+        <div class="card-desc">Business basics, communication style, admin pain points, tools you use.</div>
+        <div class="card-btn">Fill out</div>
+      </a>
+      <a class="card" href="import.html">
+        <div class="card-emoji">📋</div>
+        <div class="card-title">Import Notes</div>
+        <div class="card-desc">Already have preferences saved somewhere? Paste and convert instantly.</div>
+        <div class="card-btn">Import</div>
+      </a>
+      <a class="card" href="meeting_notes.html">
+        <div class="card-emoji">📝</div>
+        <div class="card-title">Meeting Notes</div>
+        <div class="card-desc">Paste a transcript. Get action items and a follow-up email drafted.</div>
+        <div class="card-btn">Process</div>
       </a>
     </div>
-
-    <script>
-    function setAudience(type) {
-      document.getElementById('btn-self').classList.toggle('active', type === 'self');
-      document.getElementById('btn-ea').classList.toggle('active', type === 'ea');
-      document.getElementById('btn-smb').classList.toggle('active', type === 'smb');
-
-      const subtitles = {
-        self: "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.",
-        ea:   "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.",
-        smb:  "Your AI business assistant. Handle emails, client updates, admin, and day-to-day ops — all through a simple chat with Claude."
-      };
-      const prompts = {
-        self: '"Book me a flight to NYC Tuesday — nonstop, aisle seat."',
-        ea:   '"Book Jamie a flight to NYC Tuesday — nonstop, aisle seat."',
-        smb:  '"Draft a follow-up email to my client about the estimate."'
-      };
-      const formsLabels = {
-        self: 'Step 1 — Set up your profile',
-        ea:   'Step 1 — Collect traveler profiles',
-        smb:  'Step 1 — Set up your business profile'
-      };
-      const travelDesc = {
-        self: 'Your seat preferences, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.',
-        ea:   'Flights, hotels, ground transport, loyalty numbers, dietary needs, and more — for every traveler.',
-        smb:  'Your seat preferences, loyalty numbers, and hotel preferences for business trips.'
-      };
-      const foodDesc = {
-        self: 'Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.',
-        ea:   'Exact coffee orders, favorite restaurants, dietary restrictions, delivery addresses — for your whole team.',
-        smb:  'Your coffee order, usual lunch spot, and dietary preferences — so Claude can handle the order.'
-      };
-      const step1 = {
-        self: ['Set up your profile once', 'Fill out your own preferences once — seat, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. Download the file when you\'re done.'],
-        ea:   ['Collect traveler profiles', 'Send each traveler a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. They send it back to you.'],
-        smb:  ['Fill out your business profile', 'Business name, what you do, communication style, admin pain points, tools you use. Download the file when you\'re done.']
-      };
-      const step2 = {
-        self: ['Upload to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. Claude now knows your preferences. No app to install.'],
-        ea:   ['Upload all profiles to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload every traveler\'s profile. Claude knows everyone\'s preferences.'],
-        smb:  ['Upload to a Claude Project', 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your business profile. Claude now knows your business context instantly.']
-      };
-      const step3 = {
-        self: ['Just ask — Claude handles the rest', '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find me a hotel in Chicago." Claude knows your preferences and handles it.'],
-        ea:   ['Instant answers — no more digging', '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel chain does Alex prefer?" Instant answers while you\'re booking — no more hunting through notes.'],
-        smb:  ['Ask Claude to help run your business', '"Draft a quote for this client." "Write a follow-up to a no-response." "Help me respond to this complaint." Claude knows your business and handles the words.']
-      };
-      const exampleTitles = {
-        self: 'What you can ask',
-        ea:   'What EAs actually ask',
-        smb:  'What business owners ask'
-      };
-      const exampleSubs = {
-        self: 'Just type it like you\'d say it to a colleague.',
-        ea:   'Instant answers while you\'re booking — no hunting through notes.',
-        smb:  'Just say what you need — Claude knows your business.'
-      };
-      const examplePrompts = {
-        self: `
-          <div class="prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
-          <div class="prompt">"Order my usual coffee to the office."</div>
-          <div class="prompt">"Find a hotel in Chicago that matches my loyalty program."</div>
-          <div class="prompt">"What's my Marriott loyalty number?"</div>
-          <div class="prompt">"Find a good client dinner spot in San Francisco."</div>
-          <div class="prompt">"Draft a follow-up email from these meeting notes."</div>
-          <div class="prompt">"What do I need to follow up on today?"</div>`,
-        ea: `
-          <div class="prompt">"What's Jamie's TSA PreCheck number?"</div>
-          <div class="prompt">"Does Sarah have Global Entry?"</div>
-          <div class="prompt">"What hotel chain does Alex prefer? What's his loyalty number?"</div>
-          <div class="prompt">"What are Carrie's dietary restrictions?"</div>
-          <div class="prompt">"What's the usual coffee order for the Tuesday morning team meeting?"</div>
-          <div class="prompt">"Process these meeting notes and draft a follow-up email."</div>
-          <div class="prompt">"What do I need to follow up on in Slack today?"</div>
-          <div class="prompt">"Send me a profile form link to onboard my new exec."</div>`,
-        smb: `
-          <div class="prompt">"Draft a professional quote for a new restoration project."</div>
-          <div class="prompt">"Write a follow-up to a client who hasn't responded in a week."</div>
-          <div class="prompt">"Help me respond to this customer complaint."</div>
-          <div class="prompt">"Write a caption for my Instagram post about this finished job."</div>
-          <div class="prompt">"Order my usual coffee to the shop."</div>
-          <div class="prompt">"Draft an out-of-office message for next week."</div>
-          <div class="prompt">"What should I charge for a job like this?"</div>`
-      };
-
-      document.getElementById('hero-subtitle').textContent = subtitles[type];
-      document.getElementById('hero-prompt').textContent = prompts[type];
-      document.getElementById('forms-label').textContent = formsLabels[type];
-      document.getElementById('card-travel').textContent = travelDesc[type];
-      document.getElementById('card-food').textContent = foodDesc[type];
-      document.getElementById('step1-title').textContent = step1[type][0];
-      document.getElementById('step1-body').textContent = step1[type][1];
-      document.getElementById('step2-title').textContent = step2[type][0];
-      document.getElementById('step2-body').innerHTML = step2[type][1];
-      document.getElementById('step3-title').textContent = step3[type][0];
-      document.getElementById('step3-body').textContent = step3[type][1];
-      document.getElementById('prompts-title').textContent = exampleTitles[type];
-      document.getElementById('prompts-sub').textContent = exampleSubs[type];
-      document.getElementById('prompts-list').innerHTML = examplePrompts[type];
-
-      const mode = type === 'ea' ? 'ea' : 'self';
-      document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
-      document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
-      document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
-    }
-    </script>
-
-    <!-- How it works -->
-    <div class="how-section">
-      <h2>How it works</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <h3 id="step1-title">Set up your profile once</h3>
-            <p id="step1-body">Fill out your preferences once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you're done.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <h3 id="step2-title">Upload to a Claude Project</h3>
-            <p id="step2-body">Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. That's it — Claude now knows your preferences. No app to install, no account to create.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <h3 id="step3-title">Just ask — like texting a colleague</h3>
-            <p id="step3-body">"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:28px; background:#f0f7ff; border-radius:14px; padding:20px 24px; display:flex; gap:14px; align-items:flex-start;">
-        <div style="font-size:1.4rem; flex-shrink:0;">💡</div>
-        <div>
-          <div style="font-weight:600; font-size:0.95rem; margin-bottom:4px;">You need a Claude account — free to start</div>
-          <div style="font-size:0.875rem; color:#6e6e73; line-height:1.6;">Sign up at <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a>. The free plan works for lookups and recommendations. For hands-on booking (flights, hotels, restaurants), you'll need <strong>Claude Code</strong> — see the setup guide below.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile section -->
-    <div class="mobile-section">
-      <div style="font-size:2rem; margin-bottom:12px;">📱</div>
-      <h2>Works from your phone</h2>
-      <p class="sub">No desktop required to get started.</p>
-      <div class="mobile-steps">
-        <div class="mobile-step">
-          <div class="mobile-step-num">1</div>
-          <div>
-            <div class="mobile-step-title">Fill out Quick Profile</div>
-            <div class="mobile-step-body">5 tap-friendly questions. Takes 2 minutes.</div>
-          </div>
-        </div>
-        <div class="mobile-step">
-          <div class="mobile-step-num">2</div>
-          <div>
-            <div class="mobile-step-title">Upload to Claude.ai</div>
-            <div class="mobile-step-body">Free app on iPhone & Android. Create a Project, upload your file.</div>
-          </div>
-        </div>
-        <div class="mobile-step">
-          <div class="mobile-step-num">3</div>
-          <div>
-            <div class="mobile-step-title">Ask Claude anything</div>
-            <div class="mobile-step-body">Your preferences, loyalty numbers, usual orders — Claude knows it all. From anywhere.</div>
-          </div>
-        </div>
-      </div>
-      <div class="mobile-note">
-        💻 <strong>Hands-on booking</strong> (flights, hotels, restaurants) works best on desktop with Claude Code. Mobile is perfect for lookups, recommendations, and drafting on the go.
-      </div>
-    </div>
-
-    <!-- Example prompts -->
-    <div class="examples-section">
-      <h2 id="prompts-title">What you can ask</h2>
-      <p class="sub" id="prompts-sub">Just type it like you'd say it to a colleague.</p>
-      <div class="prompts" id="prompts-list">
-        <div class="prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
-        <div class="prompt">"Order my usual coffee to the office."</div>
-        <div class="prompt">"Find a hotel in Chicago that matches my loyalty program."</div>
-        <div class="prompt">"What's my Marriott loyalty number?"</div>
-        <div class="prompt">"Find a good client dinner spot in San Francisco."</div>
-        <div class="prompt">"Draft a follow-up email from these meeting notes."</div>
-        <div class="prompt">"What do I need to follow up on today?"</div>
-      </div>
-    </div>
-
-    <!-- City guides — hidden until ready -->
-    <div class="city-section" style="display:none;">
-      <h2>🗺️ City Guides</h2>
-      <p class="sub">EA-vetted restaurants, hotels, and car services for top business travel cities.</p>
-
-      <div class="city-categories">
-        <div class="city-cat">
-          <div class="city-cat-emoji">🍽️</div>
-          <div class="city-cat-title">Restaurants</div>
-          <div class="city-cat-desc">Top client dinner spots, private dining rooms, and local favorites — by city.</div>
-        </div>
-        <div class="city-cat">
-          <div class="city-cat-emoji">🏨</div>
-          <div class="city-cat-title">Hotels</div>
-          <div class="city-cat-desc">Luxury and business hotels matched to loyalty programs and executive preferences.</div>
-        </div>
-        <div class="city-cat">
-          <div class="city-cat-emoji">🚗</div>
-          <div class="city-cat-title">Ground Transport</div>
-          <div class="city-cat-desc">Vetted car services and black car companies used by EAs every day.</div>
-        </div>
-      </div>
-
-      <div class="city-list">
-        <span class="city-pill">New York City</span>
-        <span class="city-pill">Los Angeles</span>
-        <span class="city-pill">San Francisco</span>
-        <span class="city-pill">Chicago</span>
-        <span class="city-pill">Austin</span>
-        <span class="city-pill">Charlotte</span>
-        <span class="city-pill">London</span>
-        <span class="city-pill">Seattle</span>
-        <span class="city-pill">Boston</span>
-        <span class="city-pill">Miami</span>
-        <span class="city-pill">Denver</span>
-        <span class="city-pill">Atlanta</span>
-        <span class="city-pill">Washington DC</span>
-        <span class="city-pill">Nashville</span>
-        <span class="city-pill">Toronto</span>
-      </div>
-    </div>
-
-    <!-- Follow the build -->
-    <div class="waitlist-section">
-      <h2>This is early.</h2>
-      <p>Things are changing fast. Drop your email if you want to follow the build — new features, what's working, what's not, and where this is headed.</p>
-      <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="waitlist" />
-        <input type="hidden" name="bot-field" />
-        <input type="email" name="email" placeholder="your@email.com" required />
-        <button type="submit">Follow along →</button>
-      </form>
-      <p class="waitlist-note">No spam. Unsubscribe anytime.</p>
-    </div>
-
-    <p class="footer">Built by an EA, for EAs &nbsp;·&nbsp; <a href="https://github.com/carrieve/carrie" target="_blank">GetCarrieAI on GitHub</a> &nbsp;·&nbsp; <a href="https://getcarrieai.com" target="_blank">getcarrieai.com</a></p>
   </div>
+
+  <!-- How it works -->
+  <div class="how-section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3 id="step1-title">Fill out your profile once</h3>
+          <p id="step1-body">Hit Start here above — 5 questions, 2 minutes. Or fill out the full Travel or Food form. Download the file when you're done.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3 id="step2-title">Upload to a Claude Project</h3>
+          <p id="step2-body">Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your file. Claude now knows your preferences permanently. For hands-on booking, add <a href="https://claude.ai/download" target="_blank">Claude Code</a> + Pro ($20/mo).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3 id="step3-title">Just ask — from anywhere</h3>
+          <p id="step3-body">"Book me a flight to NYC Tuesday." "Order my usual coffee." "Find a hotel in Chicago." Works on your phone via the Claude app, or on desktop with full booking automation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Follow along -->
+  <div class="follow-section">
+    <h2>This is early.</h2>
+    <p>Things are changing fast. Drop your email if you want to follow the build — new features, what's working, what's not, and where this is headed.</p>
+    <form class="follow-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="waitlist" />
+      <input type="hidden" name="bot-field" />
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <button type="submit">Follow along →</button>
+    </form>
+    <p class="follow-note">No spam. Unsubscribe anytime.</p>
+  </div>
+
+  <p class="footer">Built by an EA, for EAs &nbsp;·&nbsp; <a href="https://github.com/carrieve/carrie" target="_blank">GitHub</a> &nbsp;·&nbsp; <a href="https://getcarrieai.com" target="_blank">getcarrieai.com</a></p>
+</div>
+
+<script>
+  function toggleMore(btn) {
+    const forms = document.getElementById('more-forms');
+    forms.classList.toggle('open');
+    btn.textContent = forms.classList.contains('open') ? 'Less options ↑' : 'More profile options ↓';
+  }
+
+  function setAudience(type) {
+    document.getElementById('btn-self').classList.toggle('active', type === 'self');
+    document.getElementById('btn-ea').classList.toggle('active', type === 'ea');
+    document.getElementById('btn-smb').classList.toggle('active', type === 'smb');
+
+    const subtitles = {
+      self: "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.",
+      ea:   "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.",
+      smb:  "Your AI business assistant. Handle emails, client updates, admin, and day-to-day ops — all through a simple chat with Claude."
+    };
+    const prompts = {
+      self: '"Book me a flight to NYC Tuesday — nonstop, aisle seat."',
+      ea:   '"What\'s Jamie\'s TSA PreCheck number?"',
+      smb:  '"Draft a follow-up email to my client about the estimate."'
+    };
+    const quickSubs = {
+      self: '5 questions. 2 minutes. Works on your phone.',
+      ea:   'Build a traveler profile in 2 minutes.',
+      smb:  '5 questions. 2 minutes. Your business profile, done.'
+    };
+    const step1 = {
+      self: ['Fill out your profile once', 'Hit Start here above — 5 questions, 2 minutes. Or fill out the full Travel or Food form. Download the file when you\'re done.'],
+      ea:   ['Collect traveler profiles', 'Send each exec or traveler a form link. They fill it out once and send it back. Or fill it out for them in 2 minutes.'],
+      smb:  ['Fill out your business profile', 'Business name, what you do, communication style, admin pain points. Download the file when you\'re done.']
+    };
+    const step2 = {
+      self: ['Upload to a Claude Project', 'Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your file. Claude now knows your preferences. For hands-on booking, add <a href="https://claude.ai/download" target="_blank">Claude Code</a> + Pro ($20/mo).'],
+      ea:   ['Upload all profiles to a Claude Project', 'Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload every traveler\'s file. Claude knows everyone\'s preferences instantly.'],
+      smb:  ['Upload to a Claude Project', 'Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your business profile. Claude now knows your business context.']
+    };
+    const step3 = {
+      self: ['Just ask — from anywhere', '"Book me a flight to NYC Tuesday." "Order my usual coffee." "Find a hotel in Chicago." Works on your phone via the Claude app, or on desktop with full booking automation.'],
+      ea:   ['Instant answers — no more digging', '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel does Alex prefer?" Instant answers while you\'re booking — no hunting through notes.'],
+      smb:  ['Ask Claude to help run your business', '"Draft a quote for this client." "Write a follow-up to a no-response." "Help me respond to this complaint." Claude knows your business and handles the words.']
+    };
+
+    document.getElementById('hero-subtitle').textContent = subtitles[type];
+    document.getElementById('hero-prompt').textContent = prompts[type];
+    document.getElementById('quick-sub').textContent = quickSubs[type];
+    document.getElementById('step1-title').textContent = step1[type][0];
+    document.getElementById('step1-body').innerHTML = step1[type][1];
+    document.getElementById('step2-title').textContent = step2[type][0];
+    document.getElementById('step2-body').innerHTML = step2[type][1];
+    document.getElementById('step3-title').textContent = step3[type][0];
+    document.getElementById('step3-body').textContent = step3[type][1];
+
+    const mode = type === 'ea' ? 'ea' : 'self';
+    document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
+    document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
+    document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
+  }
+</script>
 </body>
 </html>
