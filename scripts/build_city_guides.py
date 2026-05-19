@@ -37,17 +37,22 @@ CATEGORIES   = {
         "client dinner recommendation",
         "where to eat recommendation",
         "best restaurant suggest",
+        "dinner reservation recommend",
     ],
     "hotels": [
         "hotel recommendation",
         "where to stay recommendation",
         "best hotel suggest",
+        "hotel suggest executive",
+        "hotel book exec",
+        "hotel prefer",
     ],
     "transport": [
         "car service recommendation",
         "black car recommend",
         "transportation recommend",
         "limo service suggest",
+        "car service prefer",
     ],
 }
 
@@ -181,7 +186,7 @@ def build_guide(city: str) -> dict:
             query = f"{city} {keyword}"
             posts = reddit_search(SUBREDDIT, query, limit=MAX_RESULTS)
             all_posts.extend(posts)
-            time.sleep(1)  # be polite to Reddit's API
+            time.sleep(3)  # be polite to Reddit's API — avoid 429s
 
         recommendations = extract_recommendations(all_posts, city)
         guide["categories"][category] = recommendations
