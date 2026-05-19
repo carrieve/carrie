@@ -1,0 +1,5 @@
+date,vendor,category,description,amount,billing_cycle,next_renewal,receipt_id,notes
+2026-05-18,GoDaddy,Domain,getcarrieai.com - 3-year domain registration,46.59,one-time,2029-05-18,4091659959,Auto-renews at $68.97 in 2029
+2026-05-18,Anthropic,Subscription,Claude Pro - monthly subscription,20.00,monthly,2026-06-18,KPRVKENX-0001,Receipt #2319-2557-5543
+2026-05-19,Netlify,Hosting,Netlify Pro - 3000 credits/month,20.00,monthly,2026-06-17,UABLNO-00002,Upgraded after hitting free tier limit
+2026-05-19,Anthropic,Usage,Prepaid extra usage - Individual plan,45.00,one-time,,2880-3943-5259,Receipt #2880-3943-5259
