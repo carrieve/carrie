@@ -548,6 +548,28 @@
       const mode = isSelf ? 'self' : 'ea';
       document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
       document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
+
+      // How it works steps
+      document.getElementById('step1-title').textContent = isSelf
+        ? 'Set up your profile once'
+        : 'Collect traveler profiles';
+      document.getElementById('step1-body').textContent = isSelf
+        ? 'Fill out your own preferences once — seat, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you\'re done.'
+        : 'Send each traveler a form link. They fill it out once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions. They download and send it back to you.';
+
+      document.getElementById('step2-title').textContent = isSelf
+        ? 'Upload to a Claude Project'
+        : 'Upload all profiles to a Claude Project';
+      document.getElementById('step2-body').innerHTML = isSelf
+        ? 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. That\'s it — Claude now knows your preferences. No app to install, no account to create.'
+        : 'Go to <strong>claude.ai → Projects → New Project</strong>. Upload every traveler\'s profile file. Claude now knows everyone\'s preferences. Add new travelers anytime.';
+
+      document.getElementById('step3-title').textContent = isSelf
+        ? 'Just ask — like texting a colleague'
+        : 'Ask Claude anything about your travelers';
+      document.getElementById('step3-body').textContent = isSelf
+        ? '"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.'
+        : '"Book Jamie a flight to NYC Tuesday, nonstop aisle." "What hotel chain does Sarah prefer?" "Order Alex his usual coffee." Claude knows every traveler and handles the rest.';
     }
     </script>
 
@@ -558,22 +580,22 @@
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-content">
-            <h3>Set up your profile once</h3>
-            <p>Fill out your preferences once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you're done.</p>
+            <h3 id="step1-title">Set up your profile once</h3>
+            <p id="step1-body">Fill out your preferences once — seat preferences, loyalty numbers, TSA PreCheck, coffee order, dietary restrictions, delivery address. Download the file when you're done.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-content">
-            <h3>Upload to a Claude Project</h3>
-            <p>Go to <strong>claude.ai → Projects → New Project</strong>. Upload each person's profile file. That's it — Claude now knows everything about your travelers. No app to install, no account to create.</p>
+            <h3 id="step2-title">Upload to a Claude Project</h3>
+            <p id="step2-body">Go to <strong>claude.ai → Projects → New Project</strong>. Upload your profile file. That's it — Claude now knows your preferences. No app to install, no account to create.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-content">
-            <h3>Just ask — like texting a colleague</h3>
-            <p>"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.</p>
+            <h3 id="step3-title">Just ask — like texting a colleague</h3>
+            <p id="step3-body">"Book me a flight to NYC Tuesday, nonstop aisle." "Order my usual coffee." "Find a dinner spot in Chicago." Claude knows your preferences and handles the rest.</p>
           </div>
         </div>
       </div>
