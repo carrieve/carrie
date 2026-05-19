@@ -214,12 +214,19 @@
     .toast.visible { display: block; }
 
     @media (max-width: 600px) {
-      body { padding: 48px 16px 80px; }
-      .page-header h1 { font-size: 2.2rem; }
-      .section-body { padding: 20px 20px 24px; }
+      body { padding: 40px 16px 80px; }
+      .page-header { margin-bottom: 40px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 20px 16px 24px; }
       .row.cols-2, .row.cols-3 { grid-template-columns: 1fr; }
       .repeatable-row.restaurant-row { grid-template-columns: 1fr 1fr; }
       .repeatable-row.restaurant-row .btn-remove { grid-column: span 2; justify-self: end; }
+      /* Prevent iOS auto-zoom on input focus */
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      select,
+      textarea { font-size: 1rem; padding: 13px 14px; }
     }
   </style>
 </head>

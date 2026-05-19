@@ -233,14 +233,22 @@
 
     /* ── Responsive ── */
     @media (max-width: 600px) {
-      body { padding: 48px 16px 80px; }
-      .page-header h1 { font-size: 2.2rem; }
-      .section-body { padding: 20px 20px 24px; }
+      body { padding: 40px 16px 80px; }
+      .page-header { margin-bottom: 40px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 20px 16px 24px; }
       .row.cols-2, .row.cols-3 { grid-template-columns: 1fr; }
       .repeatable-row.ff-row,
       .repeatable-row.hotel-loyalty-row { grid-template-columns: 1fr 1fr; }
       .repeatable-row.ff-row .btn-remove,
       .repeatable-row.hotel-loyalty-row .btn-remove { grid-column: span 2; justify-self: end; }
+      /* Prevent iOS auto-zoom on input focus */
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="date"],
+      select,
+      textarea { font-size: 1rem; padding: 13px 14px; }
     }
   </style>
 </head>
@@ -279,7 +287,7 @@
       <div class="row cols-2">
         <div class="field">
           <label>Full Legal Name <span class="req">*</span></label>
-          <input type="text" name="name" placeholder="e.g. Carolyn Dewart Van Epps — as on your ID" required />
+          <input type="text" name="name" placeholder="As it appears on your ID" required />
         </div>
         <div class="field">
           <label>Preferred Name <span class="hint">(nickname your EA uses)</span></label>
