@@ -231,8 +231,8 @@
   <!-- Hero -->
   <img src="avatar.jpg" alt="Carrie" class="avatar" />
   <h1>Carrie ✈️☕</h1>
-  <p class="subtitle" id="hero-subtitle">Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.</p>
-  <div class="example-prompt" id="hero-prompt">"Book me a flight to NYC Tuesday — nonstop, aisle seat."</div>
+  <p class="subtitle" id="hero-subtitle">Set up your preferences once. Claude remembers everything — so you never have to repeat yourself.</p>
+  <div class="example-prompt" id="hero-prompt">"What are my travel preferences for next week's trip?"</div>
 
   <!-- Audience split -->
   <p class="who-label">Who are you?</p>
@@ -322,8 +322,8 @@
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-content">
-          <h3 id="step3-title">Just ask — from anywhere</h3>
-          <p id="step3-body">"Book me a flight to NYC Tuesday." "Order my usual coffee." "Find a hotel in Chicago." Works on your phone via the Claude app, or on desktop with full booking automation.</p>
+          <h3 id="step3-title">Just ask — Claude already knows</h3>
+          <p id="step3-body">Claude has your preferences in every conversation. Ask from your phone or desktop — look up loyalty numbers, get recommendations, draft emails, or get guided step by step through a booking.</p>
         </div>
       </div>
     </div>
@@ -358,12 +358,12 @@
     document.getElementById('btn-smb').classList.toggle('active', type === 'smb');
 
     const subtitles = {
-      self: "Your AI assistant — without the overhead. Preferences, travel, meetings, and more — all through a simple chat with Claude.",
-      ea:   "AI tools for Executive Assistants. Manage traveler preferences, process meeting notes, and never ask the same question twice.",
-      smb:  "Your AI business assistant. Handle emails, client updates, admin, and day-to-day ops — all through a simple chat with Claude."
+      self: "Set up your preferences once. Claude remembers everything — so you never have to repeat yourself.",
+      ea:   "Store every traveler's preferences once. Claude gives you instant answers — no more hunting through notes.",
+      smb:  "Set up your business profile once. Claude knows your context — and helps you get through the admin faster."
     };
     const prompts = {
-      self: '"Book me a flight to NYC Tuesday — nonstop, aisle seat."',
+      self: '"What are my travel preferences for next week\'s trip?"',
       ea:   '"What\'s Jamie\'s TSA PreCheck number?"',
       smb:  '"Draft a follow-up email to my client about the estimate."'
     };
@@ -383,7 +383,7 @@
       smb:  ['Upload to a Claude Project', 'Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your business profile. Claude now knows your business context.']
     };
     const step3 = {
-      self: ['Just ask — from anywhere', '"Book me a flight to NYC Tuesday." "Order my usual coffee." "Find a hotel in Chicago." Works on your phone via the Claude app, or on desktop with full booking automation.'],
+      self: ['Just ask — Claude already knows', 'Claude has your preferences in every conversation. Ask from your phone or desktop — look up loyalty numbers, get recommendations, draft emails, or get guided step by step through a booking.'],
       ea:   ['Instant answers — no more digging', '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel does Alex prefer?" Instant answers while you\'re booking — no hunting through notes.'],
       smb:  ['Ask Claude to help run your business', '"Draft a quote for this client." "Write a follow-up to a no-response." "Help me respond to this complaint." Claude knows your business and handles the words.']
     };
