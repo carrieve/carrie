@@ -628,7 +628,8 @@
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const safeName = (data.name || 'person').toLowerCase().replace(/\s+/g, '_');
+      const displayName = data.preferred_name || (data.name || 'person').split(' ')[0];
+      const safeName = displayName.toLowerCase().replace(/\s+/g, '_');
       a.href = url;
       a.download = `${safeName}_food_profile.json`;
       a.click();
