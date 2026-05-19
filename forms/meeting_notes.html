@@ -239,10 +239,38 @@
 
     .footer a { color: #0071e3; text-decoration: none; }
 
+    /* Source toggle */
+    .source-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 2px solid #d2d2d7;
+      background: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      color: #6e6e73;
+      transition: all 0.15s;
+    }
+
+    .toggle-btn.active {
+      border-color: #0071e3;
+      color: #0071e3;
+      background: #e8f4fd;
+    }
+
     @media (max-width: 580px) {
       .field-row { grid-template-columns: 1fr; }
       h1 { font-size: 1.7rem; }
       .card, .output-card { padding: 24px; }
+      .source-toggle { flex-direction: column; }
     }
   </style>
 </head>
@@ -250,16 +278,22 @@
   <div class="container">
     <a class="back" href="/">← Back to Carrie</a>
 
-    <h1>📝 Meeting Notes</h1>
-    <p class="subtitle">Paste your notes or transcript. Carrie extracts every action item and drafts your follow-up email — ready to send.</p>
+    <h1 id="page-title">📝 Meeting Notes</h1>
+    <p class="subtitle" id="page-subtitle">Paste your notes or transcript. Carrie extracts every action item and drafts your follow-up email — ready to send.</p>
+
+    <!-- Source toggle -->
+    <div class="source-toggle">
+      <button class="toggle-btn active" id="toggle-meeting" onclick="setSource('meeting')">📝 Meeting Notes</button>
+      <button class="toggle-btn" id="toggle-slack" onclick="setSource('slack')">💬 Slack Thread</button>
+    </div>
 
     <!-- Input card -->
     <div class="card">
-      <h2>Meeting details</h2>
+      <h2 id="card-title">Meeting details</h2>
 
       <div class="field-row">
         <div class="field">
-          <label>Meeting name</label>
+          <label id="label-name">Meeting name</label>
           <input type="text" id="meeting-name" placeholder="Q2 Planning, 1:1 with CEO…" />
         </div>
         <div class="field">
@@ -269,13 +303,13 @@
       </div>
 
       <div class="field">
-        <label>Attendees</label>
+        <label id="label-attendees">Attendees</label>
         <input type="text" id="attendees" placeholder="Sarah, Jamie, Alex, Carrie…" />
       </div>
 
       <div class="field">
-        <label>Notes or transcript</label>
-        <textarea id="notes" rows="12" placeholder="Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
+        <label id="label-notes">Notes or transcript</label>
+        <textarea id="notes" rows="12" id="notes-textarea" placeholder="Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
 
 Example:
 Sarah will send the revised budget to the team by Friday.
@@ -284,7 +318,7 @@ We decided to push the launch to Q3. Alex owns the updated timeline.
 Next meeting: June 3rd at 2pm."></textarea>
       </div>
 
-      <button class="btn-primary" onclick="processNotes()">Extract action items & draft follow-up →</button>
+      <button class="btn-primary" id="process-btn" onclick="processNotes()">Extract action items & draft follow-up →</button>
     </div>
 
     <!-- Output section -->
@@ -300,8 +334,8 @@ Next meeting: June 3rd at 2pm."></textarea>
 
       <div class="output-card">
         <div class="output-header">
-          <h2>📧 Follow-up email</h2>
-          <button class="copy-btn" id="copy-email-btn" onclick="copyEmail()">Copy email</button>
+          <h2 id="output-email-title">📧 Follow-up email</h2>
+          <button class="copy-btn" id="copy-email-btn" onclick="copyEmail()">Copy</button>
         </div>
         <div class="email-output" id="email-output"></div>
       </div>
@@ -323,6 +357,56 @@ Next meeting: June 3rd at 2pm."></textarea>
   <script>
     // Set today's date as default
     document.getElementById('meeting-date').valueAsDate = new Date();
+
+    let currentSource = 'meeting';
+
+    function setSource(source) {
+      currentSource = source;
+
+      // Toggle buttons
+      document.getElementById('toggle-meeting').classList.toggle('active', source === 'meeting');
+      document.getElementById('toggle-slack').classList.toggle('active', source === 'slack');
+
+      if (source === 'slack') {
+        document.getElementById('page-title').textContent = '💬 Slack Thread';
+        document.getElementById('page-subtitle').textContent = 'Paste a Slack thread or conversation. Carrie pulls out every to-do and who owns it — so nothing gets lost.';
+        document.getElementById('card-title').textContent = 'Slack thread details';
+        document.getElementById('label-name').textContent = 'Thread topic';
+        document.getElementById('label-attendees').textContent = 'Channel or DM';
+        document.getElementById('label-notes').textContent = 'Paste Slack thread';
+        document.getElementById('meeting-name').placeholder = 'Project launch, Q2 budget discussion…';
+        document.getElementById('attendees').placeholder = '#general, #exec-team, DM with Sarah…';
+        document.getElementById('notes').placeholder = `Paste your Slack thread here…
+
+Example:
+[Sarah] Can you book flights to Austin for the team offsite? June 10-12.
+[Jamie] Also need to arrange the hotel — something downtown
+[CEO] Carrie can you send over the agenda template before Monday?
+[Sarah] And follow up with the vendor on the contract, they haven't responded
+[Jamie] +1 we need that by end of week`;
+        document.getElementById('process-btn').textContent = 'Extract Slack to-dos →';
+      } else {
+        document.getElementById('page-title').textContent = '📝 Meeting Notes';
+        document.getElementById('page-subtitle').textContent = 'Paste your notes or transcript. Carrie extracts every action item and drafts your follow-up email — ready to send.';
+        document.getElementById('card-title').textContent = 'Meeting details';
+        document.getElementById('label-name').textContent = 'Meeting name';
+        document.getElementById('label-attendees').textContent = 'Attendees';
+        document.getElementById('label-notes').textContent = 'Notes or transcript';
+        document.getElementById('meeting-name').placeholder = 'Q2 Planning, 1:1 with CEO…';
+        document.getElementById('attendees').placeholder = 'Sarah, Jamie, Alex, Carrie…';
+        document.getElementById('notes').placeholder = `Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
+
+Example:
+Sarah will send the revised budget to the team by Friday.
+Jamie is going to follow up with the vendor about the contract.
+We decided to push the launch to Q3. Alex owns the updated timeline.
+Next meeting: June 3rd at 2pm.`;
+        document.getElementById('process-btn').textContent = 'Extract action items & draft follow-up →';
+      }
+
+      // Hide output when switching
+      document.getElementById('output-section').classList.remove('visible');
+    }
 
     // Action item patterns
     const ACTION_PATTERNS = [
@@ -417,6 +501,7 @@ Next meeting: June 3rd at 2pm."></textarea>
         : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
       const items = extractActionItems(notes);
+      const isSlack = currentSource === 'slack';
 
       // Render action items
       const list = document.getElementById('action-items-list');
@@ -441,16 +526,26 @@ Next meeting: June 3rd at 2pm."></textarea>
         });
       }
 
-      // Draft follow-up email
+      // Draft output — email for meetings, Slack summary for threads
       const actionLines = items.map((item, i) =>
         `  ${i + 1}. ${item.task}${item.deadline ? ' (' + item.deadline + ')' : ''}`
       ).join('\n');
 
-      const attendeeGreeting = attendees
-        ? `Hi ${attendees.split(',').map(a => a.trim().split(' ')[0]).join(', ')},`
-        : 'Hi team,';
+      let email;
+      if (isSlack) {
+        const channel = attendees || 'the thread';
+        email = `Here's a summary of to-dos from ${channel}${meeting ? ' — ' + meeting : ''}:
 
-      const email = `${attendeeGreeting}
+${actionLines || '  (No to-dos detected — review the thread and add manually)'}
+
+Let me know if I missed anything or if priorities have changed.
+
+— Carrie`;
+      } else {
+        const attendeeGreeting = attendees
+          ? `Hi ${attendees.split(',').map(a => a.trim().split(' ')[0]).join(', ')},`
+          : 'Hi team,';
+        email = `${attendeeGreeting}
 
 Thank you for a productive ${meeting} on ${date}. Here's a summary of our action items:
 
@@ -460,8 +555,10 @@ Please let me know if I've missed anything or if you need any of these adjusted.
 
 Best,
 [Your name]`;
+      }
 
       document.getElementById('email-output').textContent = email;
+      document.getElementById('output-email-title').textContent = isSlack ? '💬 Slack summary' : '📧 Follow-up email';
 
       // Show output
       document.getElementById('output-section').classList.add('visible');
@@ -480,11 +577,24 @@ Best,
     }
 
     function copyClaudePrompt() {
-      const notes = document.getElementById('notes').value.trim();
-      const meeting = document.getElementById('meeting-name').value.trim() || 'this meeting';
+      const notes    = document.getElementById('notes').value.trim();
+      const meeting  = document.getElementById('meeting-name').value.trim() || 'this meeting';
       const attendees = document.getElementById('attendees').value.trim();
+      const isSlack  = currentSource === 'slack';
 
-      const prompt = `You are an experienced Executive Assistant. I need you to process the following meeting notes from ${meeting}${attendees ? ' with ' + attendees : ''}.
+      const prompt = isSlack
+        ? `You are an experienced Executive Assistant. I need you to process the following Slack thread from ${attendees || 'a channel'}${meeting ? ' about ' + meeting : ''}.
+
+Please:
+1. Extract ALL to-dos and action items, noting who is responsible for each
+2. Flag anything that needs a response or follow-up from the EA
+3. Draft a short Slack summary message I can post to confirm the to-dos with the team
+
+Slack thread:
+---
+${notes}
+---`
+        : `You are an experienced Executive Assistant. I need you to process the following meeting notes from ${meeting}${attendees ? ' with ' + attendees : ''}.
 
 Please:
 1. Extract ALL action items with the person responsible and any deadlines mentioned
