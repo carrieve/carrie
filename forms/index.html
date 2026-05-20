@@ -84,43 +84,19 @@
     .audience-btn .btn-title { font-size: 0.9rem; font-weight: 700; color: #1d1d1f; display: block; margin-bottom: 4px; }
     .audience-btn .btn-desc { font-size: 0.76rem; color: #6e6e73; line-height: 1.45; display: block; }
 
-    /* Quick Profile CTA */
-    .quick-cta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: #0071e3;
-      color: #fff;
-      border-radius: 18px;
-      padding: 22px 26px;
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .quick-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,113,227,0.28); }
-    .quick-cta-icon { font-size: 2rem; flex-shrink: 0; }
-    .quick-cta-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 3px; }
-    .quick-cta-sub { font-size: 0.85rem; opacity: 0.85; }
-    .quick-cta-arrow { margin-left: auto; font-size: 1.2rem; flex-shrink: 0; }
-
-    /* More options toggle */
-    .more-toggle {
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: 0.88rem;
-      color: #0071e3;
-      cursor: pointer;
-      padding: 10px 0;
-      margin-bottom: 24px;
-      display: block;
-      width: 100%;
+    /* Audience forms label */
+    .forms-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aeaeb2;
+      margin-bottom: 14px;
       text-align: center;
     }
-    .more-toggle:hover { opacity: 0.75; }
 
-    .more-forms { display: none; }
-    .more-forms.open { display: block; }
+    .audience-forms { display: none; }
+    .audience-forms.active { display: block; }
 
     .cards {
       display: grid;
@@ -317,42 +293,26 @@
     </button>
   </div>
 
-  <!-- Quick Profile CTA -->
-  <a class="quick-cta" id="link-quick" href="quick_form.html?mode=self">
-    <div class="quick-cta-icon">⚡</div>
-    <div>
-      <div class="quick-cta-title">Start here — Quick Profile</div>
-      <div class="quick-cta-sub" id="quick-sub">5 questions. 2 minutes. Works on your phone.</div>
-    </div>
-    <div class="quick-cta-arrow">→</div>
-  </a>
-
-  <!-- More options -->
-  <button class="more-toggle" onclick="toggleMore(this)">More profile options ↓</button>
-  <div class="more-forms" id="more-forms">
+  <!-- Forms: I need an EA -->
+  <div class="audience-forms active" id="forms-self">
+    <p class="forms-label">Your profiles</p>
     <div class="cards">
-      <a class="card" id="link-travel" href="travel_form.html?mode=self">
+      <a class="card" href="travel_form.html?mode=self">
         <div class="card-emoji">✈️</div>
         <div class="card-title">Travel Preferences</div>
-        <div class="card-desc" id="card-travel">Seat, loyalty numbers, TSA PreCheck, hotels — saved once, used every trip.</div>
+        <div class="card-desc">Airline, seat, loyalty numbers, TSA PreCheck, hotel chain — saved once, used every trip.</div>
         <div class="card-btn">Fill out</div>
       </a>
-      <a class="card" id="link-food" href="food_form.html?mode=self">
+      <a class="card" href="food_form.html?mode=self">
         <div class="card-emoji">☕</div>
         <div class="card-title">Food & Coffee</div>
-        <div class="card-desc" id="card-food">Coffee order, restaurants, dietary restrictions, delivery address.</div>
-        <div class="card-btn">Fill out</div>
-      </a>
-      <a class="card" href="business_quick_form.html">
-        <div class="card-emoji">🏪</div>
-        <div class="card-title">Small Business</div>
-        <div class="card-desc">Business basics, communication style, admin pain points, tools you use.</div>
+        <div class="card-desc">Your exact coffee order, favorite restaurants, dietary restrictions, delivery address.</div>
         <div class="card-btn">Fill out</div>
       </a>
       <a class="card" href="import.html">
         <div class="card-emoji">📋</div>
-        <div class="card-title">Import Notes</div>
-        <div class="card-desc">Already have preferences saved somewhere? Paste and convert instantly.</div>
+        <div class="card-title">Import Existing Notes</div>
+        <div class="card-desc">Already have preferences written down somewhere? Paste and convert instantly.</div>
         <div class="card-btn">Import</div>
       </a>
       <a class="card" href="meeting_notes.html">
@@ -360,6 +320,62 @@
         <div class="card-title">Meeting Notes</div>
         <div class="card-desc">Paste a transcript. Get action items and a follow-up email drafted.</div>
         <div class="card-btn">Process</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Forms: I am an EA -->
+  <div class="audience-forms" id="forms-ea">
+    <p class="forms-label">Traveler profiles</p>
+    <div class="cards">
+      <a class="card" href="travel_form.html?mode=ea">
+        <div class="card-emoji">✈️</div>
+        <div class="card-title">Travel Preferences</div>
+        <div class="card-desc">Collect each traveler's airline, seat, loyalty numbers, TSA PreCheck, and hotel preferences.</div>
+        <div class="card-btn">Fill out</div>
+      </a>
+      <a class="card" href="food_form.html?mode=ea">
+        <div class="card-emoji">☕</div>
+        <div class="card-title">Food & Coffee</div>
+        <div class="card-desc">Their exact coffee order, dietary restrictions, and delivery address. Never ask again.</div>
+        <div class="card-btn">Fill out</div>
+      </a>
+      <a class="card" href="import.html">
+        <div class="card-emoji">📋</div>
+        <div class="card-title">Import Existing Notes</div>
+        <div class="card-desc">Already have preferences in a doc or email? Paste and convert to a profile instantly.</div>
+        <div class="card-btn">Import</div>
+      </a>
+      <a class="card" href="meeting_notes.html">
+        <div class="card-emoji">📝</div>
+        <div class="card-title">Meeting Notes</div>
+        <div class="card-desc">Paste a transcript. Get action items and a follow-up email drafted in seconds.</div>
+        <div class="card-btn">Process</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Forms: I run a business -->
+  <div class="audience-forms" id="forms-smb">
+    <p class="forms-label">Your business profile</p>
+    <div class="cards">
+      <a class="card" href="business_quick_form.html">
+        <div class="card-emoji">🏪</div>
+        <div class="card-title">Business Profile</div>
+        <div class="card-desc">What you do, how you communicate, your admin pain points, and the tools you use.</div>
+        <div class="card-btn">Fill out</div>
+      </a>
+      <a class="card" href="meeting_notes.html">
+        <div class="card-emoji">📝</div>
+        <div class="card-title">Meeting Notes</div>
+        <div class="card-desc">Paste a client call transcript. Get action items and a follow-up email drafted.</div>
+        <div class="card-btn">Process</div>
+      </a>
+      <a class="card" href="import.html">
+        <div class="card-emoji">📋</div>
+        <div class="card-title">Import Existing Notes</div>
+        <div class="card-desc">Already have business info written down somewhere? Paste and convert instantly.</div>
+        <div class="card-btn">Import</div>
       </a>
     </div>
   </div>
@@ -381,12 +397,6 @@
 </div>
 
 <script>
-  function toggleMore(btn) {
-    const forms = document.getElementById('more-forms');
-    forms.classList.toggle('open');
-    btn.textContent = forms.classList.contains('open') ? 'Less options ↑' : 'More profile options ↓';
-  }
-
   function setAudience(type) {
     document.getElementById('btn-self').classList.toggle('active', type === 'self');
     document.getElementById('btn-ea').classList.toggle('active', type === 'ea');
@@ -402,41 +412,13 @@
       ea:   '"What\'s Jamie\'s TSA PreCheck number?"',
       smb:  '"Draft a follow-up email to my client about the estimate."'
     };
-    const quickSubs = {
-      self: '5 questions. 2 minutes. Works on your phone.',
-      ea:   'Build a traveler profile in 2 minutes.',
-      smb:  '5 questions. 2 minutes. Your business profile, done.'
-    };
-    const step1 = {
-      self: ['Fill out your profile once', 'Hit Start here above — 5 questions, 2 minutes. Or fill out the full Travel or Food form. Download the file when you\'re done.'],
-      ea:   ['Collect traveler profiles', 'Send each exec or traveler a form link. They fill it out once and send it back. Or fill it out for them in 2 minutes.'],
-      smb:  ['Fill out your business profile', 'Business name, what you do, communication style, admin pain points. Download the file when you\'re done.']
-    };
-    const step2 = {
-      self: ['Upload to a Claude Project', 'Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your file. Claude now knows your preferences. For hands-on booking, add <a href="https://claude.ai/download" target="_blank">Claude Code</a> + Pro ($20/mo).'],
-      ea:   ['Upload all profiles to a Claude Project', 'Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload every traveler\'s file. Claude knows everyone\'s preferences instantly.'],
-      smb:  ['Upload to a Claude Project', 'Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your business profile. Claude now knows your business context.']
-    };
-    const step3 = {
-      self: ['Just ask — Claude already knows', 'Claude has your preferences in every conversation. Ask from your phone or desktop — look up loyalty numbers, get recommendations, draft emails, or get guided step by step through a booking.'],
-      ea:   ['Instant answers — no more digging', '"What\'s Jamie\'s KTN?" "Does Sarah have Global Entry?" "What hotel does Alex prefer?" Instant answers while you\'re booking — no hunting through notes.'],
-      smb:  ['Ask Claude to help run your business', '"Draft a quote for this client." "Write a follow-up to a no-response." "Help me respond to this complaint." Claude knows your business and handles the words.']
-    };
 
     document.getElementById('hero-subtitle').textContent = subtitles[type];
     document.getElementById('hero-prompt').textContent = prompts[type];
-    document.getElementById('quick-sub').textContent = quickSubs[type];
-    document.getElementById('step1-title').textContent = step1[type][0];
-    document.getElementById('step1-body').innerHTML = step1[type][1];
-    document.getElementById('step2-title').textContent = step2[type][0];
-    document.getElementById('step2-body').innerHTML = step2[type][1];
-    document.getElementById('step3-title').textContent = step3[type][0];
-    document.getElementById('step3-body').textContent = step3[type][1];
 
-    const mode = type === 'ea' ? 'ea' : 'self';
-    document.getElementById('link-quick').href = `quick_form.html?mode=${mode}`;
-    document.getElementById('link-travel').href = `travel_form.html?mode=${mode}`;
-    document.getElementById('link-food').href = `food_form.html?mode=${mode}`;
+    // Show the right form section
+    document.querySelectorAll('.audience-forms').forEach(el => el.classList.remove('active'));
+    document.getElementById('forms-' + type).classList.add('active');
   }
 </script>
 </body>
