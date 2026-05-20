@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Aviation Profile — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 480px; }
+    .page-header .subtitle { font-size: 0.88rem; color: #6e6e73; margin-top: 6px; }
+
+    .privacy-notice {
+      background: #f5f0ff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: 0.84rem;
+      color: #3d3d3f;
+      line-height: 1.65;
+    }
+    .privacy-notice strong { color: #6b3fa0; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header { padding: 20px 28px 0; margin-bottom: 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; margin-bottom: 7px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 80px; resize: none; line-height: 1.55; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+
+    /* Conditional sections */
+    .conditional { display: none; }
+    .conditional.visible { display: flex; flex-direction: column; gap: 18px; }
+
+    /* FBO blocks */
+    .fbo-block {
+      background: #f9f9fb;
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .fbo-block .block-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6e6e73;
+    }
+    .add-btn {
+      background: none;
+      border: 1.5px dashed #d2d2d7;
+      border-radius: 12px;
+      padding: 12px;
+      width: 100%;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: #0071e3;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .add-btn:hover { border-color: #0071e3; background: #f0f7ff; }
+    .remove-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #aeaeb2;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .remove-btn:hover { color: #ff3b30; }
+
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #0077ed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+    }
+    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2, .row-3 { grid-template-columns: 1fr; }
+      input, select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Private Aviation Profile ✈️</h1>
+    <p>Everything an EA needs to manage private air travel — from how to book the flight to what's always on the plane. Fill this out once and Claude always knows the setup.</p>
+    <p class="subtitle">All fields are optional. Fill in what applies.</p>
+  </div>
+
+  <div class="privacy-notice">
+    <strong>A note on privacy:</strong> This file saves directly to your device — nothing is sent to a server. Tail numbers, account numbers, and crew contacts are sensitive. Upload only to a Claude Project you control.
+  </div>
+
+  <form id="aviation-form">
+
+    <!-- Section 1: Who This Is For -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">Who This Is For</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Principal's name</label>
+            <input type="text" name="principal_name" placeholder="e.g. Josh Allen Go Bills" />
+          </div>
+          <div>
+            <label>Your name <span class="hint">(EA filling this out)</span></label>
+            <input type="text" name="ea_name" placeholder="e.g. Your name" />
+          </div>
+        </div>
+        <div>
+          <label>Home airport(s) <span class="hint">(where they typically depart from)</span></label>
+          <input type="text" name="home_airports" placeholder="e.g. CLT, TEB (Teterboro), HPN (Westchester)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Aviation Setup -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Aviation Setup</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>How do they fly private? <span class="hint">(select all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleSetup(this,'owned')">Own aircraft</button>
+            <button type="button" class="chip" onclick="toggleSetup(this,'fractional')">Fractional ownership</button>
+            <button type="button" class="chip" onclick="toggleSetup(this,'jetcard')">Jet card</button>
+            <button type="button" class="chip" onclick="toggleSetup(this,'charter')">On-demand charter</button>
+          </div>
+        </div>
+
+        <!-- Owned Aircraft -->
+        <div class="conditional" id="setup-owned">
+          <div style="background:#f9f9fb;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6e6e73;">Owned / Leased Aircraft</div>
+            <div class="row-2">
+              <div>
+                <label>Tail number</label>
+                <input type="text" name="tail_number" placeholder="e.g. N123AB" />
+              </div>
+              <div>
+                <label>Aircraft type</label>
+                <input type="text" name="aircraft_type" placeholder="e.g. Gulfstream G650, Citation X" />
+              </div>
+            </div>
+            <div class="row-2">
+              <div>
+                <label>Based at</label>
+                <input type="text" name="aircraft_base" placeholder="e.g. CLT — Signature Aviation" />
+              </div>
+              <div>
+                <label>Passenger capacity</label>
+                <input type="text" name="pax_capacity" placeholder="e.g. 12 seats" />
+              </div>
+            </div>
+            <div>
+              <label>Captain / lead pilot</label>
+              <input type="text" name="captain" placeholder="e.g. Capt. Mike Torres — 704-555-0122" />
+            </div>
+            <div>
+              <label>First officer / co-pilot</label>
+              <input type="text" name="first_officer" placeholder="e.g. FO Sarah Chen — 704-555-0199" />
+            </div>
+            <div>
+              <label>Flight coordinator / ops contact</label>
+              <input type="text" name="flight_ops" placeholder="e.g. Ops line: 704-555-0100 — available 24/7" />
+            </div>
+            <div>
+              <label>Aircraft management company <span class="hint">(if applicable)</span></label>
+              <input type="text" name="mgmt_company" placeholder="e.g. Solairus Aviation, Latitude 33" />
+            </div>
+            <div>
+              <label>Hangar / maintenance notes</label>
+              <input type="text" name="hangar_notes" placeholder="e.g. Annual due March. Maintenance handled by AirFlite at CLT." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Fractional Ownership -->
+        <div class="conditional" id="setup-fractional">
+          <div style="background:#f9f9fb;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6e6e73;">Fractional Ownership</div>
+            <div class="row-2">
+              <div>
+                <label>Provider</label>
+                <div class="chip-group" style="margin-top:2px;">
+                  <button type="button" class="chip" onclick="toggleChip(this,'fractional_provider')">NetJets</button>
+                  <button type="button" class="chip" onclick="toggleChip(this,'fractional_provider')">Flexjet</button>
+                  <button type="button" class="chip" onclick="toggleChip(this,'fractional_provider')">Wheels Up</button>
+                  <button type="button" class="chip" onclick="toggleChip(this,'fractional_provider')">Other</button>
+                </div>
+              </div>
+              <div>
+                <label>Aircraft category / share</label>
+                <input type="text" name="fractional_share" placeholder="e.g. 1/8 share, Large cabin" />
+              </div>
+            </div>
+            <div class="row-2">
+              <div>
+                <label>Account number</label>
+                <input type="text" name="fractional_account" placeholder="e.g. NJ-123456" />
+              </div>
+              <div>
+                <label>Hours remaining <span class="hint">(or how to check)</span></label>
+                <input type="text" name="fractional_hours" placeholder="e.g. Check owner portal or call ops" />
+              </div>
+            </div>
+            <div>
+              <label>Account manager / owner services contact</label>
+              <input type="text" name="fractional_contact" placeholder="e.g. Jennifer Moore — jmoore@netjets.com — 614-555-0100" />
+            </div>
+            <div>
+              <label>How to book</label>
+              <input type="text" name="fractional_booking" placeholder="e.g. Call owner services or use the NetJets app — need 10 hrs notice for peak days" />
+            </div>
+            <div>
+              <label>Peak day restrictions or blackout notes</label>
+              <input type="text" name="fractional_blackouts" placeholder="e.g. Peak days require 96-hour notice. Thanksgiving week is always blocked." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Jet Card -->
+        <div class="conditional" id="setup-jetcard">
+          <div style="background:#f9f9fb;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6e6e73;">Jet Card</div>
+            <div class="row-2">
+              <div>
+                <label>Provider</label>
+                <input type="text" name="jetcard_provider" placeholder="e.g. Sentient Jet, XOJET, VistaJet" />
+              </div>
+              <div>
+                <label>Card type / hours</label>
+                <input type="text" name="jetcard_type" placeholder="e.g. 25-hr midsize card" />
+              </div>
+            </div>
+            <div class="row-2">
+              <div>
+                <label>Account / card number</label>
+                <input type="text" name="jetcard_account" placeholder="e.g. SJ-789012" />
+              </div>
+              <div>
+                <label>Hours balance <span class="hint">(or how to check)</span></label>
+                <input type="text" name="jetcard_hours" placeholder="e.g. Call rep or login to portal" />
+              </div>
+            </div>
+            <div>
+              <label>Primary rep / booking contact</label>
+              <input type="text" name="jetcard_contact" placeholder="e.g. David Park — dpark@sentientjet.com — 617-555-0133" />
+            </div>
+            <div>
+              <label>Lead time and booking process</label>
+              <input type="text" name="jetcard_booking" placeholder="e.g. Call David directly, 24-hour notice preferred, 4 hours minimum" />
+            </div>
+            <div>
+              <label>Card expiration / renewal notes</label>
+              <input type="text" name="jetcard_expiry" placeholder="e.g. Expires Dec 2025 — flag 60 days out to renew" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Charter -->
+        <div class="conditional" id="setup-charter">
+          <div style="background:#f9f9fb;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6e6e73;">On-Demand Charter</div>
+            <div>
+              <label>Preferred broker or operator</label>
+              <input type="text" name="charter_broker" placeholder="e.g. Air Charter Service, Jettly, or a specific local operator" />
+            </div>
+            <div>
+              <label>Booking contact</label>
+              <input type="text" name="charter_contact" placeholder="e.g. Rachel at ACS — rachel@aircharter.com — 212-555-0177" />
+            </div>
+            <div>
+              <label>Preferred aircraft category</label>
+              <div class="chip-group" style="margin-top:2px;">
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Light jet</button>
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Midsize jet</button>
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Super midsize</button>
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Heavy jet</button>
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Ultra long range</button>
+                <button type="button" class="chip" onclick="toggleChip(this,'charter_category')">Whatever fits the trip</button>
+              </div>
+            </div>
+            <div>
+              <label>How far in advance do they typically book?</label>
+              <input type="text" name="charter_lead" placeholder="e.g. Usually 24–72 hours. Always get 3 quotes." />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Booking a Flight -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">How to Book a Flight</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Step-by-step booking process <span class="hint">(what a new EA needs to know)</span></label>
+          <textarea name="booking_process" placeholder="e.g. 1. Call ops line with trip details. 2. Confirm pax list and catering 24 hours out. 3. Send manifest to crew by 6pm the night before. 4. Arrange ground transport at both ends."></textarea>
+        </div>
+        <div>
+          <label>What info do you need to book? <span class="hint">(check all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Departure date and time</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Origin and destination airports</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Full passenger list</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Passport numbers for international</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Catering order</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Luggage count</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Ground transport at destination</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Pet on board</button>
+          </div>
+        </div>
+        <div>
+          <label>Manifest / passenger info requirements</label>
+          <textarea name="manifest_notes" placeholder="e.g. Full legal name, DOB, and passport number required for all international passengers. Domestic only needs name and DOB. Send to crew@flightops.com by 6pm the night before."></textarea>
+        </div>
+        <div>
+          <label>Minimum notice required</label>
+          <input type="text" name="min_notice" placeholder="e.g. 4 hours for domestic, 48 hours for international, 10 hours on peak days" />
+        </div>
+        <div>
+          <label>Who approves the flight? <span class="hint">(besides the principal)</span></label>
+          <input type="text" name="flight_approver" placeholder="e.g. EA can book directly. CFO cc'd on all legs over 4 hours. Principal approves international." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: FBO Preferences -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">FBO Preferences</p>
+      </div>
+      <div class="section-body">
+        <p style="font-size:0.82rem;color:#6e6e73;line-height:1.6;">FBOs (Fixed Base Operators) are the private terminals where passengers arrive and depart. Regulars have preferences — add the ones that matter.</p>
+        <div id="fbo-container"></div>
+        <button type="button" class="add-btn" onclick="addFBO()">+ Add an FBO</button>
+        <div>
+          <label>General FBO notes</label>
+          <textarea name="fbo_notes" placeholder="e.g. Always use Signature over Atlantic Aviation when both are available. Tip the line crew — principal always does $20/person. Member of the Signature Elite program."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Catering -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">Catering & On-Board Preferences</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Always on the plane <span class="hint">(standing order — every flight)</span></label>
+          <textarea name="catering_always" placeholder="e.g. Still water (still, never sparkling), Topo Chico, Cliff bars, fresh fruit, nuts (no peanuts), dark chocolate. Coffee setup — black, no sugar."></textarea>
+        </div>
+        <div>
+          <label>Dietary restrictions for the principal</label>
+          <input type="text" name="principal_dietary" placeholder="e.g. No shellfish, gluten-free when possible, no red meat" />
+        </div>
+        <div>
+          <label>Who orders catering?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'catering_who')">EA orders directly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'catering_who')">FBO handles it</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'catering_who')">Flight ops team orders</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'catering_who')">Fractional/card provider handles</button>
+          </div>
+        </div>
+        <div>
+          <label>Catering vendor / ordering contact <span class="hint">(if EA orders)</span></label>
+          <input type="text" name="catering_vendor" placeholder="e.g. CLT: Flying Food Group — 704-555-0155. TEB: Order through Signature." />
+        </div>
+        <div>
+          <label>Catering cutoff time</label>
+          <input type="text" name="catering_cutoff" placeholder="e.g. Order by 5pm the day before. Same-day available for an upcharge." />
+        </div>
+        <div>
+          <label>Alcohol on board?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'alcohol')">Yes — always stocked</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'alcohol')">Yes — on request only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'alcohol')">No</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'alcohol')">Depends on the trip</button>
+          </div>
+        </div>
+        <div>
+          <label>Alcohol preferences <span class="hint">(if applicable)</span></label>
+          <input type="text" name="alcohol_prefs" placeholder="e.g. Tito's vodka, Caymus Cabernet, Veuve Clicquot for celebrations" />
+        </div>
+        <div>
+          <label>Special catering requests or notes</label>
+          <textarea name="catering_notes" placeholder="e.g. Always warm nuts on departure. If flying with spouse, add her order (see Family Profile). Kids get Goldfish crackers and apple juice. No strong-smelling foods on long flights."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Who's on Board -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 6</p>
+        <p class="section-title">Who Travels & How</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Regular passengers <span class="hint">(beyond the principal)</span></label>
+          <textarea name="regular_pax" placeholder="e.g. Spouse travels on ~50% of personal trips. COO joins on all investor roadshows. Nanny travels on all family trips with kids."></textarea>
+        </div>
+        <div>
+          <label>Do pets fly?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'pets_fly')">Yes — regularly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'pets_fly')">Occasionally</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'pets_fly')">Never</button>
+          </div>
+        </div>
+        <div>
+          <label>Pet travel notes</label>
+          <input type="text" name="pet_notes" placeholder="e.g. Baxter (golden retriever, 70 lbs) — always in cabin, no crate needed. FBO must be notified." />
+        </div>
+        <div>
+          <label>Typical party size</label>
+          <input type="text" name="typical_pax" placeholder="e.g. Usually 2–4 people. Roadshows can be 6–8." />
+        </div>
+        <div>
+          <label>Luggage norms</label>
+          <input type="text" name="luggage_notes" placeholder="e.g. Always 4–6 bags minimum. Oversized golf clubs on golf trips. Ski equipment in winter." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Ground Transport -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 7</p>
+        <p class="section-title">Ground Transport</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Who arranges ground transport?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'ground_who')">EA arranges at both ends</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'ground_who')">FBO arranges at destination</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'ground_who')">Flight ops handles it</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'ground_who')">Principal handles own transport</button>
+          </div>
+        </div>
+        <div>
+          <label>Home-base car service <span class="hint">(for departure and return)</span></label>
+          <input type="text" name="home_car_service" placeholder="e.g. James (personal driver) — 704-555-0188. Text night before, confirm 2 hours out." />
+        </div>
+        <div>
+          <label>Vehicle preference at destination</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'vehicle_pref')">Black car / Escalade</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'vehicle_pref')">Sprinter van for groups</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'vehicle_pref')">Rental car</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'vehicle_pref')">Whatever's available</button>
+          </div>
+        </div>
+        <div>
+          <label>City-specific car services</label>
+          <textarea name="city_car_services" placeholder="e.g. NYC: Carey Limousine — account #4421. LA: Dav El. Miami: call FBO for referral. Always use an account, never out-of-pocket."></textarea>
+        </div>
+        <div>
+          <label>Transport timing notes</label>
+          <input type="text" name="transport_timing" placeholder="e.g. Car should be wheels-down + 15 min at FBO. Departure: arrive 20 min before block time." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 8: International Travel -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 8</p>
+        <p class="section-title">International Travel</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Do they fly internationally on private?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'intl')">Yes — regularly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'intl')">Occasionally</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'intl')">Rarely / never</button>
+          </div>
+        </div>
+        <div>
+          <label>Who handles customs and overflight permits?</label>
+          <input type="text" name="customs_handler" placeholder="e.g. International Air Response (IAR) — contact Sarah: 800-555-0100. Flight ops coordinates directly." />
+        </div>
+        <div>
+          <label>Customs handling preferences</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'customs_pref')">CBP on the ramp (preferred)</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'customs_pref')">GOES / Global Entry</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'customs_pref')">Standard customs — no preference</button>
+          </div>
+        </div>
+        <div>
+          <label>Countries visited regularly <span class="hint">(any entry/visa notes)</span></label>
+          <textarea name="intl_countries" placeholder="e.g. UK — no visa needed. UAE — visa on arrival. Israel — separate passport preferred. Always carry both passports."></textarea>
+        </div>
+        <div>
+          <label>Passport and document notes for passengers</label>
+          <textarea name="intl_docs" placeholder="e.g. Principal has two passports — US (expires 2028) and Israeli (expires 2026). Spouse's passport expires 2025 — flag 6 months out. Kids on spouse's passport."></textarea>
+        </div>
+        <div>
+          <label>International lead time</label>
+          <input type="text" name="intl_lead" placeholder="e.g. Overflight permits need 48–72 hrs. APIS submission 60 min before departure." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 9: Notes -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 9</p>
+        <p class="section-title">Anything Else</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Things that have gone wrong before <span class="hint">(so they don't happen again)</span></label>
+          <textarea name="lessons_learned" placeholder="e.g. Never book TEB on Fridays in summer — always delayed. Always confirm catering 4 hours out, not just the night before. Don't forget to notify FBO about the dog."></textarea>
+        </div>
+        <div>
+          <label>What the principal cares most about on a flight</label>
+          <textarea name="principal_priorities" placeholder="e.g. Being on time is non-negotiable. WiFi must work — confirm before every leg. Hates being surprised — always send a full trip sheet the night before."></textarea>
+        </div>
+        <div>
+          <label>Anything else a new EA absolutely needs to know</label>
+          <textarea name="other_notes" placeholder="e.g. The plane's WiFi password is 'tailnumber2024'. Insurance binder is on file with the FBO. Annual inspection due every October."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download Aviation Profile →</button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Profile saved!</h2>
+    <p>Your aviation profile just downloaded. This file contains sensitive information — store and share it carefully.</p>
+    <div class="steps">
+      💡 <strong>What to do next:</strong><br><br>
+      1. Go to <a href="https://claude.ai" target="_blank">claude.ai</a> — it's free to sign up.<br>
+      2. Open your Executive Project (or create a new one for this principal). Add this file alongside the Executive and Family profiles.<br>
+      3. Now ask Claude anything — "what's the booking process for a same-day domestic flight?" "what does catering always include?" "who do I call at TEB?" It already knows.
+    </div>
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+  const setupActive = {};
+  let fboCount = 0;
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el) {
+    el.classList.toggle('selected');
+  }
+
+  function toggleSetup(el, type) {
+    el.classList.toggle('selected');
+    setupActive[type] = el.classList.contains('selected');
+    const section = document.getElementById(`setup-${type}`);
+    if (section) section.classList.toggle('visible', setupActive[type]);
+  }
+
+  function addFBO() {
+    fboCount++;
+    const id = fboCount;
+    const container = document.getElementById('fbo-container');
+    const block = document.createElement('div');
+    block.className = 'fbo-block';
+    block.id = `fbo-${id}`;
+    block.style.marginBottom = '12px';
+    block.innerHTML = `
+      <button type="button" class="remove-btn" onclick="removeFBO(${id})" title="Remove">✕</button>
+      <div class="block-label">FBO ${id}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="margin-bottom:6px;">Airport</label>
+          <input type="text" name="fbo_${id}_airport" placeholder="e.g. TEB, LAX, SFO" />
+        </div>
+        <div>
+          <label style="margin-bottom:6px;">FBO name</label>
+          <input type="text" name="fbo_${id}_name" placeholder="e.g. Signature, Atlantic, Jet Aviation" />
+        </div>
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Contact / phone</label>
+        <input type="text" name="fbo_${id}_contact" placeholder="e.g. 201-555-0100 — ask for the crew desk" />
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Notes</label>
+        <input type="text" name="fbo_${id}_notes" placeholder="e.g. Account on file. Has crew car available. Fuel discount agreement." />
+      </div>
+    `;
+    container.appendChild(block);
+  }
+
+  function removeFBO(id) {
+    const block = document.getElementById(`fbo-${id}`);
+    if (block) block.remove();
+  }
+
+  document.getElementById('aviation-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'private_aviation', updated_at: new Date().toISOString() };
+
+    // Setup types
+    data.aviation_setup = Object.entries(setupActive).filter(([,v]) => v).map(([k]) => k);
+
+    // All text/textarea fields
+    const textFields = [
+      'principal_name','ea_name','home_airports',
+      'tail_number','aircraft_type','aircraft_base','pax_capacity','captain','first_officer',
+      'flight_ops','mgmt_company','hangar_notes',
+      'fractional_share','fractional_account','fractional_hours','fractional_contact',
+      'fractional_booking','fractional_blackouts',
+      'jetcard_provider','jetcard_type','jetcard_account','jetcard_hours',
+      'jetcard_contact','jetcard_booking','jetcard_expiry',
+      'charter_broker','charter_contact','charter_lead',
+      'booking_process','manifest_notes','min_notice','flight_approver',
+      'fbo_notes',
+      'catering_always','principal_dietary','catering_vendor','catering_cutoff','alcohol_prefs','catering_notes',
+      'regular_pax','pet_notes','typical_pax','luggage_notes',
+      'home_car_service','city_car_services','transport_timing',
+      'customs_handler','intl_countries','intl_docs','intl_lead',
+      'lessons_learned','principal_priorities','other_notes'
+    ];
+    textFields.forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    // Single-select chips
+    ['fractional_provider','charter_category','catering_who','alcohol','pets_fly',
+     'ground_who','vehicle_pref','intl','customs_pref','catering_who'
+    ].forEach(group => {
+      if (selections[group]) data[`pref_${group}`] = selections[group];
+    });
+
+    // Multi-select chips
+    const bookingInfo = [];
+    document.querySelectorAll('.chip[onclick="toggleChipMulti(this)"].selected').forEach(el => {
+      bookingInfo.push(el.textContent.trim());
+    });
+    if (bookingInfo.length) data.booking_info_needed = bookingInfo;
+
+    // FBO blocks
+    const fbos = [];
+    document.querySelectorAll('.fbo-block').forEach(block => {
+      const blockId = block.id.replace('fbo-', '');
+      const fbo = {};
+      ['airport','name','contact','notes'].forEach(field => {
+        const el = form.elements[`fbo_${blockId}_${field}`];
+        const val = el?.value.trim();
+        if (val) fbo[field] = val;
+      });
+      if (Object.keys(fbo).length) fbos.push(fbo);
+    });
+    if (fbos.length) data.fbo_preferences = fbos;
+
+    const name = (data.principal_name || 'aviation').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name}_aviation_profile.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('aviation-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
