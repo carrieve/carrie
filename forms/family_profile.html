@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family & Household Profile — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 480px; }
+    .page-header .subtitle { font-size: 0.88rem; color: #6e6e73; margin-top: 6px; }
+
+    .privacy-notice {
+      background: #f5f0ff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: 0.84rem;
+      color: #3d3d3f;
+      line-height: 1.65;
+    }
+    .privacy-notice strong { color: #6b3fa0; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header { padding: 20px 28px 0; margin-bottom: 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    .subsection-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aeaeb2;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 2px;
+    }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; margin-bottom: 7px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 80px; resize: none; line-height: 1.55; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+
+    /* Repeating child blocks */
+    .child-block {
+      background: #f9f9fb;
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+    .child-block .child-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6e6e73;
+      margin-bottom: 2px;
+    }
+    .add-btn {
+      background: none;
+      border: 1.5px dashed #d2d2d7;
+      border-radius: 12px;
+      padding: 12px;
+      width: 100%;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: #0071e3;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .add-btn:hover { border-color: #0071e3; background: #f0f7ff; }
+    .remove-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #aeaeb2;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .remove-btn:hover { color: #ff3b30; }
+
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #0077ed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+    }
+    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2, .row-3 { grid-template-columns: 1fr; }
+      input, select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Family & Household Profile 🏡</h1>
+    <p>The information that makes the difference between a good EA and a great one. Fill this out once and Claude always knows who matters, what they like, and when the important dates are.</p>
+    <p class="subtitle">All fields are optional. Fill in what's useful to you.</p>
+  </div>
+
+  <div class="privacy-notice">
+    <strong>A note on privacy:</strong> This file saves directly to your device — nothing is sent to a server. You control it. Upload it only to a Claude Project you trust, just like you'd handle any sensitive client file.
+  </div>
+
+  <form id="family-form">
+
+    <!-- Section 1: Household Basics -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">Household Basics</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Executive / Principal's name</label>
+            <input type="text" name="principal_name" placeholder="e.g. Josh Allen Go Bills" />
+          </div>
+          <div>
+            <label>Your name <span class="hint">(EA filling this out)</span></label>
+            <input type="text" name="ea_name" placeholder="e.g. Your name" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Primary residence city</label>
+            <input type="text" name="home_city" placeholder="e.g. Charlotte, NC" />
+          </div>
+          <div>
+            <label>Additional homes <span class="hint">(cities)</span></label>
+            <input type="text" name="other_homes" placeholder="e.g. Hamptons, Aspen" />
+          </div>
+        </div>
+        <div>
+          <label>Pets</label>
+          <input type="text" name="pets" placeholder="e.g. Baxter — golden retriever, stays with nanny when traveling" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Spouse / Partner -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Spouse / Partner</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Full name</label>
+            <input type="text" name="spouse_name" placeholder="e.g. Lauren Bills" />
+          </div>
+          <div>
+            <label>Preferred name</label>
+            <input type="text" name="spouse_preferred" placeholder="e.g. Lauren" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Birthday</label>
+            <input type="text" name="spouse_birthday" placeholder="e.g. March 14" />
+          </div>
+          <div>
+            <label>Wedding anniversary</label>
+            <input type="text" name="anniversary" placeholder="e.g. June 22, 2018" />
+          </div>
+        </div>
+        <div>
+          <label>What she/he/they does <span class="hint">(work, focus, context)</span></label>
+          <input type="text" name="spouse_work" placeholder="e.g. Runs a nonprofit, stays home with the kids, works in finance" />
+        </div>
+        <div>
+          <label>Dietary restrictions or preferences</label>
+          <input type="text" name="spouse_dietary" placeholder="e.g. Vegetarian, no shellfish, loves Italian" />
+        </div>
+        <div>
+          <label>What she/he/they loves <span class="hint">(interests, hobbies, what makes a good gift)</span></label>
+          <textarea name="spouse_likes" placeholder="e.g. Loves interior design, Peloton, anything from Aesop or Le Labo, always appreciates a good candle or flowers, big reader — fiction"></textarea>
+        </div>
+        <div>
+          <label>Favorite restaurants</label>
+          <input type="text" name="spouse_restaurants" placeholder="e.g. Nobu, local Italian spots, anywhere with a good wine list" />
+        </div>
+        <div>
+          <label>Gift notes <span class="hint">(sizes, brands, what's been given before, what to avoid)</span></label>
+          <textarea name="spouse_gift_notes" placeholder="e.g. Wears size 6 shoes, loves Cartier jewelry, already has the Love bracelet, not into surprises — prefers experiences over things, spent $500 last birthday on a spa day"></textarea>
+        </div>
+        <div>
+          <label>Travel preferences</label>
+          <input type="text" name="spouse_travel" placeholder="e.g. Prefers warm weather, always books business class, needs a king bed, loves a resort with a spa" />
+        </div>
+        <div>
+          <label>How to reach her/him <span class="hint">(for coordination — not for urgent exec matters)</span></label>
+          <input type="text" name="spouse_contact" placeholder="e.g. Text only, responds quickly. lauren@email.com for anything formal." />
+        </div>
+        <div>
+          <label>Anything else the EA should know</label>
+          <textarea name="spouse_notes" placeholder="e.g. Handles all school pickups Mon/Wed, don't schedule anything that conflicts with her book club on Thursday evenings, very private — don't discuss family matters with external vendors"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Children -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Children</p>
+      </div>
+      <div class="section-body">
+        <div id="children-container">
+          <!-- Children added dynamically -->
+        </div>
+        <button type="button" class="add-btn" onclick="addChild()">+ Add a child</button>
+      </div>
+    </div>
+
+    <!-- Section 4: Important Dates -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Important Dates</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Recurring family dates to protect or prepare for</label>
+          <textarea name="important_dates" placeholder="e.g. Spring break — always travel as a family (book 6 months out)&#10;June 22 — anniversary (dinner reservation + flowers, confirm 2 weeks ahead)&#10;Dec 25 — principal's birthday, not Christmas — easy to miss&#10;School graduation — May 2027, coordinate travel for out-of-town family"></textarea>
+        </div>
+        <div>
+          <label>Lead time for gifts <span class="hint">(how far in advance do you order/arrange?)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'gift_lead')">1 week is fine</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'gift_lead')">2 weeks minimum</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'gift_lead')">1 month for anything custom</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'gift_lead')">Remind me 6 weeks out</button>
+          </div>
+        </div>
+        <div>
+          <label>Any dates that sneak up every year? <span class="hint">(put a flag here)</span></label>
+          <input type="text" name="sneaky_dates" placeholder="e.g. Mother-in-law's birthday always gets missed — May 3rd" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Key Household Contacts -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">Key Household Contacts</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Nanny / childcare</label>
+          <input type="text" name="nanny" placeholder="e.g. Maria — 917-555-0100, Mon–Fri, travels with family on long trips" />
+        </div>
+        <div>
+          <label>Housekeeper / house manager</label>
+          <input type="text" name="housekeeper" placeholder="e.g. Rosa — Tues/Fri, has key and alarm code" />
+        </div>
+        <div>
+          <label>Personal driver / car service</label>
+          <input type="text" name="driver" placeholder="e.g. James — 704-555-0188, preferred for all family airport runs" />
+        </div>
+        <div>
+          <label>Personal chef / meal service</label>
+          <input type="text" name="chef" placeholder="e.g. Meal prep delivered Sundays from Green Apron, or Chef Marco on Thursdays" />
+        </div>
+        <div>
+          <label>Estate / property manager</label>
+          <input type="text" name="estate_manager" placeholder="e.g. Brad at Hamptons property — 631-555-0144" />
+        </div>
+        <div>
+          <label>Other household staff or key vendors</label>
+          <textarea name="other_staff" placeholder="e.g. Dog walker (Rover — Jake, Tues/Thurs), landscaper (comes Wednesdays), pool service (monthly)"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Professional Advisors -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 6</p>
+        <p class="section-title">Professional Advisors & Medical</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Family doctor / GP</label>
+            <input type="text" name="doctor" placeholder="e.g. Dr. Smith — NYC Presbyterian" />
+          </div>
+          <div>
+            <label>Pediatrician</label>
+            <input type="text" name="pediatrician" placeholder="e.g. Dr. Lee — Charlotte" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Dentist</label>
+            <input type="text" name="dentist" placeholder="e.g. Dr. Patel" />
+          </div>
+          <div>
+            <label>Other specialists</label>
+            <input type="text" name="specialists" placeholder="e.g. Orthopedist, therapist" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Estate attorney</label>
+            <input type="text" name="attorney" placeholder="e.g. Jennifer Cole @ Smith LLP" />
+          </div>
+          <div>
+            <label>Accountant / CPA</label>
+            <input type="text" name="accountant" placeholder="e.g. Mark Torres, personal + business" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Financial advisor / family office</label>
+            <input type="text" name="financial_advisor" placeholder="e.g. Merrill Lynch — Tom Hughes" />
+          </div>
+          <div>
+            <label>Insurance broker</label>
+            <input type="text" name="insurance" placeholder="e.g. Andrew at AIG Private Client" />
+          </div>
+        </div>
+        <div>
+          <label>Notes on any of the above <span class="hint">(who the EA can call directly vs. who the principal handles)</span></label>
+          <textarea name="advisor_notes" placeholder="e.g. EA can call Dr. Smith's office directly for appointments. Financial advisor — principal handles all calls personally, never CC the EA."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Family Travel -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 7</p>
+        <p class="section-title">Family Travel</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>How family travel differs from solo business travel</label>
+          <textarea name="family_travel_notes" placeholder="e.g. Always books 2+ connecting rooms, nanny travels on longer trips (needs her own room), kids need aisle seats, no red-eyes with young kids, always rents an SUV not a sedan"></textarea>
+        </div>
+        <div>
+          <label>Favorite family destinations</label>
+          <input type="text" name="family_destinations" placeholder="e.g. Turks & Caicos (Amanyara), ski trips to Deer Valley, summer in Nantucket" />
+        </div>
+        <div>
+          <label>Annual or recurring family trips</label>
+          <input type="text" name="recurring_trips" placeholder="e.g. Spring break — always Caribbean. Christmas — ski. Summer — Europe every other year." />
+        </div>
+        <div>
+          <label>Travel loyalty programs for spouse / family</label>
+          <input type="text" name="family_loyalty" placeholder="e.g. Spouse: Delta SkyMiles #123456, Marriott Bonvoy #789012" />
+        </div>
+        <div>
+          <label>Passport / travel doc notes</label>
+          <input type="text" name="passport_notes" placeholder="e.g. Kids' passports expire 2026 — flag 6 months out. Spouse has Global Entry." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 8: Gifting & Occasions -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 8</p>
+        <p class="section-title">Gifting & Occasions</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Go-to gift vendors or sources</label>
+          <textarea name="gift_vendors" placeholder="e.g. Flowers — always FiftyFlowers or local florist (not 1-800-Flowers). Jewelry — Tiffany or Cartier. Experiences — OpenTable for restaurant, SpaFinder for spa days. Kids — Amazon or local toy store."></textarea>
+        </div>
+        <div>
+          <label>Occasions they always acknowledge <span class="hint">(beyond family — clients, staff, etc.)</span></label>
+          <textarea name="acknowledgment_occasions" placeholder="e.g. Sends holiday gifts to top 20 clients every December (budget $200/person). Acknowledges births and deaths in exec's network with a personal note. Staff birthdays always get a card."></textarea>
+        </div>
+        <div>
+          <label>Gifting budget guidance</label>
+          <input type="text" name="gift_budget" placeholder="e.g. Spouse — up to $500 for birthday, $200 for no reason. Kids — $150 each. Close friends — $100–200." />
+        </div>
+        <div>
+          <label>Preferred card / note style</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'card_style')">Handwritten — always</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'card_style')">Typed is fine</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'card_style')">Email is OK for most</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'card_style')">No notes — just the gift</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 9: Anything Else -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 9</p>
+        <p class="section-title">Anything Else</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Things the EA should always know but might not think to ask</label>
+          <textarea name="other_notes" placeholder="e.g. Principal's mother calls every Sunday — always put through. The family is very private — no photos of kids on social media. Mother-in-law visits every March for 2 weeks — block extra buffer on calendar. They observe Passover — no business dinners first two nights."></textarea>
+        </div>
+        <div>
+          <label>What the family values most in an EA <span class="hint">(helps Claude give context-aware advice)</span></label>
+          <textarea name="ea_values" placeholder="e.g. Discretion above all. Proactive — don't wait to be asked. Never double-books the exec's personal time. Remembers everything so the principal never has to repeat themselves."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download Family Profile →</button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Profile saved!</h2>
+    <p>Your family profile file just downloaded. Keep it somewhere safe — it contains sensitive household information.</p>
+    <div class="steps">
+      💡 <strong>What to do next:</strong><br><br>
+      1. Go to <a href="https://claude.ai" target="_blank">claude.ai</a> — it's free to sign up.<br>
+      2. Open your Executive Project (or create a new one). Add this file alongside the Executive Profile.<br>
+      3. Now ask Claude anything — "when is Lauren's birthday and what should I get her?" "draft a note for the Smiths' new baby" "remind me what restaurants the family loves in NYC." It already knows.
+    </div>
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+  let childCount = 0;
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function addChild() {
+    childCount++;
+    const id = childCount;
+    const container = document.getElementById('children-container');
+    const block = document.createElement('div');
+    block.className = 'child-block';
+    block.id = `child-${id}`;
+    block.innerHTML = `
+      <button type="button" class="remove-btn" onclick="removeChild(${id})" title="Remove">✕</button>
+      <div class="child-label">Child ${id}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="margin-bottom:6px;">Name</label>
+          <input type="text" name="child_${id}_name" placeholder="e.g. Emma" />
+        </div>
+        <div>
+          <label style="margin-bottom:6px;">Birthday</label>
+          <input type="text" name="child_${id}_birthday" placeholder="e.g. Aug 4, 2017" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="margin-bottom:6px;">School</label>
+          <input type="text" name="child_${id}_school" placeholder="e.g. Charlotte Latin School" />
+        </div>
+        <div>
+          <label style="margin-bottom:6px;">Grade</label>
+          <input type="text" name="child_${id}_grade" placeholder="e.g. 3rd grade" />
+        </div>
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Activities & interests</label>
+        <input type="text" name="child_${id}_activities" placeholder="e.g. Soccer Saturdays, piano lessons Tues, obsessed with Legos" />
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Gift notes</label>
+        <input type="text" name="child_${id}_gifts" placeholder="e.g. Loves art supplies and books, wears size 8 kids, no more stuffed animals" />
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Dietary or medical notes</label>
+        <input type="text" name="child_${id}_medical" placeholder="e.g. Nut allergy — epipen always with nanny. No dairy." />
+      </div>
+      <div>
+        <label style="margin-bottom:6px;">Other notes</label>
+        <input type="text" name="child_${id}_notes" placeholder="e.g. Best friend is Lily Torres — her mom Sarah is a good contact for playdates" />
+      </div>
+    `;
+    container.appendChild(block);
+  }
+
+  function removeChild(id) {
+    const block = document.getElementById(`child-${id}`);
+    if (block) block.remove();
+  }
+
+  document.getElementById('family-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'family_household', updated_at: new Date().toISOString() };
+
+    // Text/textarea fields
+    ['principal_name','ea_name','home_city','other_homes','pets',
+     'spouse_name','spouse_preferred','spouse_birthday','anniversary','spouse_work',
+     'spouse_dietary','spouse_likes','spouse_restaurants','spouse_gift_notes',
+     'spouse_travel','spouse_contact','spouse_notes',
+     'important_dates','sneaky_dates',
+     'nanny','housekeeper','driver','chef','estate_manager','other_staff',
+     'doctor','pediatrician','dentist','specialists','attorney','accountant',
+     'financial_advisor','insurance','advisor_notes',
+     'family_travel_notes','family_destinations','recurring_trips','family_loyalty','passport_notes',
+     'gift_vendors','acknowledgment_occasions','gift_budget',
+     'other_notes','ea_values'
+    ].forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    // Single-select chips
+    ['gift_lead','card_style'].forEach(group => {
+      if (selections[group]) data[`pref_${group}`] = selections[group];
+    });
+
+    // Children
+    const children = [];
+    document.querySelectorAll('.child-block').forEach((block, idx) => {
+      const n = idx + 1;
+      // find the actual child number from the block id
+      const blockId = block.id.replace('child-', '');
+      const child = {};
+      ['name','birthday','school','grade','activities','gifts','medical','notes'].forEach(field => {
+        const el = form.elements[`child_${blockId}_${field}`];
+        const val = el?.value.trim();
+        if (val) child[field] = val;
+      });
+      if (Object.keys(child).length) children.push(child);
+    });
+    if (children.length) data.children = children;
+
+    const name = (data.principal_name || 'family').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name}_family_profile.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('family-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

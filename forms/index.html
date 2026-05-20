@@ -287,7 +287,7 @@
     <button class="audience-btn" id="btn-ea" onclick="setAudience('ea')">
       <span class="btn-emoji">💼</span>
       <span class="btn-title">I am an EA</span>
-      <span class="btn-desc">I support executives and manage their preferences.</span>
+      <span class="btn-desc">I support executives, principals, or high-net-worth families.</span>
     </button>
     <button class="audience-btn" id="btn-smb" onclick="setAudience('smb')">
       <span class="btn-emoji">🏪</span>
@@ -329,12 +329,18 @@
 
   <!-- Forms: I am an EA -->
   <div class="audience-forms" id="forms-ea">
-    <p class="forms-label">Profiles for your executives & travelers</p>
+    <p class="forms-label">Profiles for your executives, principals & travelers</p>
     <div class="cards">
       <a class="card" href="executive_form.html">
         <div class="card-emoji">💼</div>
         <div class="card-title">Executive Profile</div>
-        <div class="card-desc">Communication style, email rules, calendar preferences, working style. One profile per exec.</div>
+        <div class="card-desc">Communication style, email rules, calendar priorities, meeting conflict rules, working style. One profile per exec.</div>
+        <div class="card-btn">Fill out</div>
+      </a>
+      <a class="card" href="family_profile.html">
+        <div class="card-emoji">🏡</div>
+        <div class="card-title">Family & Household Profile</div>
+        <div class="card-desc">Spouse, kids, birthdays, gift preferences, household staff, advisors, family travel. Built for EAs who support the whole life — not just the office.</div>
         <div class="card-btn">Fill out</div>
       </a>
       <a class="card" href="travel_form.html?mode=ea">
@@ -445,12 +451,12 @@
 
     const subtitles = {
       self: "Set up your preferences once. Claude remembers everything — so you never have to repeat yourself.",
-      ea:   "Store every traveler's preferences once. Claude gives you instant answers — no more hunting through notes.",
+      ea:   "One profile per person. Claude knows your exec's calendar rules, their spouse's birthday, and their kids' dietary restrictions — so you always have the answer.",
       smb:  "Set up your business profile once. Claude knows your context — and helps you get through the admin faster."
     };
     const prompts = {
       self: '"What are my travel preferences for next week\'s trip?"',
-      ea:   '"What\'s Jamie\'s TSA PreCheck number?"',
+      ea:   '"What does Sarah like for her birthday — and what did we get her last year?"',
       smb:  '"Draft a follow-up email to my client about the estimate."'
     };
 
