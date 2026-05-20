@@ -157,35 +157,66 @@
       align-self: flex-start;
     }
 
+    /* Social proof */
+    .social-proof {
+      font-size: 0.82rem;
+      color: #aeaeb2;
+      margin-bottom: 40px;
+      letter-spacing: 0.01em;
+    }
+
     /* How it works */
     .how-section {
       background: #fff;
       border-radius: 22px;
-      padding: 40px 36px;
-      margin-bottom: 16px;
+      padding: 32px 28px;
+      margin-bottom: 32px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
       text-align: left;
     }
     .how-section h2 {
-      font-size: 1.3rem;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
       text-align: center;
+      color: #6e6e73;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
     }
-    .steps { display: flex; flex-direction: column; gap: 24px; }
-    .step { display: flex; gap: 16px; align-items: flex-start; }
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 12px;
+      border-radius: 14px;
+      background: #f5f5f7;
+    }
     .step-num {
-      width: 32px; height: 32px;
+      width: 36px; height: 36px;
       background: #0071e3; color: #fff;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem;
-      flex-shrink: 0; margin-top: 2px;
+      font-weight: 700; font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-bottom: 12px;
     }
-    .step-content h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; }
-    .step-content p { font-size: 0.85rem; color: #6e6e73; line-height: 1.6; }
+    .step-content h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 5px; color: #1d1d1f; }
+    .step-content p { font-size: 0.78rem; color: #6e6e73; line-height: 1.55; }
     .step-content a { color: #0071e3; text-decoration: none; }
+
+    @media (max-width: 560px) {
+      .steps { grid-template-columns: 1fr; gap: 8px; }
+      .step { flex-direction: row; text-align: left; gap: 14px; align-items: flex-start; }
+      .step-num { margin-bottom: 0; flex-shrink: 0; }
+    }
 
     /* Follow along */
     .follow-section {
@@ -222,6 +253,9 @@
       .cards { grid-template-columns: 1fr; }
       .how-section, .follow-section { padding: 28px 22px; }
       .follow-form { flex-direction: column; }
+      .steps { grid-template-columns: 1fr; gap: 8px; }
+      .step { flex-direction: row; text-align: left; gap: 14px; align-items: flex-start; }
+      .step-num { margin-bottom: 0; flex-shrink: 0; }
     }
   </style>
 </head>
@@ -233,6 +267,35 @@
   <h1>Carrie ✈️☕</h1>
   <p class="subtitle" id="hero-subtitle">Set up your preferences once. Claude remembers everything — so you never have to repeat yourself.</p>
   <div class="example-prompt" id="hero-prompt">"What are my travel preferences for next week's trip?"</div>
+  <p class="social-proof">Built by an EA who supported C-suite at a16z, Yuga Labs, and Bank of America</p>
+
+  <!-- How it works -->
+  <div class="how-section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3 id="step1-title">Fill out a form</h3>
+          <p id="step1-body">5 questions, 2 minutes. Works on your phone — type or use voice dictation. Download the file when you're done.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3 id="step2-title">Upload to Claude</h3>
+          <p id="step2-body">Free account at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your file. No installation needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3 id="step3-title">Just ask</h3>
+          <p id="step3-body">Claude knows your preferences in every conversation. Ask from your phone or desktop — anytime.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Audience split -->
   <p class="who-label">Who are you?</p>
@@ -298,34 +361,6 @@
         <div class="card-desc">Paste a transcript. Get action items and a follow-up email drafted.</div>
         <div class="card-btn">Process</div>
       </a>
-    </div>
-  </div>
-
-  <!-- How it works -->
-  <div class="how-section">
-    <h2>How it works</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <h3 id="step1-title">Fill out your profile once</h3>
-          <p id="step1-body">Hit Start here above — 5 questions, 2 minutes. Or fill out the full Travel or Food form. Download the file when you're done.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <h3 id="step2-title">Upload to a Claude Project</h3>
-          <p id="step2-body">Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → Projects → New Project. Upload your file. Claude now knows your preferences permanently. For hands-on booking, add <a href="https://claude.ai/download" target="_blank">Claude Code</a> + Pro ($20/mo).</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <h3 id="step3-title">Just ask — Claude already knows</h3>
-          <p id="step3-body">Claude has your preferences in every conversation. Ask from your phone or desktop — look up loyalty numbers, get recommendations, draft emails, or get guided step by step through a booking.</p>
-        </div>
-      </div>
     </div>
   </div>
 
