@@ -47,6 +47,16 @@ When recommending hotels, restaurants, ground transport, or any city-specific se
 
 5. Present 3 options. Include the property or restaurant name, why it fits this principal (loyalty program match, EA community mentioned it, fits their known preferences), price range, and one reason to pick or skip it.
 
+### Hotel and Housing Proximity — Always Ask First
+
+Never recommend hotels for a city in general. Always ask: "Where is the meeting, venue, or office?" before suggesting anything.
+
+- For individual business travel: recommend hotels within walking distance or a 10-minute ride from the specific meeting location or venue. Note the distance and estimated travel time for each option.
+- For offsites and group travel: prioritize properties that can serve as both lodging AND meeting space — one venue for the whole group avoids split logistics and wasted transit time between hotel and meeting room. Check whether the property has breakout rooms, AV, catering, and outdoor space if the offsite profile calls for it.
+- For conference travel: recommend hotels attached to or directly across from the conference venue first. Note whether a room block exists.
+- For extended stays or executive housing: look for corporate apartment options (Furnished Finder, Sonder, Blueground, ApartmentSearch) in addition to extended-stay hotels — often better value and more comfortable for stays over 4 nights.
+- Always flag if the exec's preferred loyalty property is not near the meeting location — give them the tradeoff: "Marriott Bonvoy property is 20 min away. Closest option is a Hilton 2 blocks from the venue — want me to show both?"
+
 ---
 
 ## HOW TO PRESENT OPTIONS
