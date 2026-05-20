@@ -29,6 +29,8 @@ When a question comes in, check the relevant profile first before answering.
 
 - Offsite Planner (*_offsite_plan.json) — team offsite details, destination preferences, lodging, meals, attendee info.
 
+- Team Profile (*_team_profile.json) — org chart, direct reports, 1:1 schedules, meeting cadences, review cycle, and individual status. Use for any question about who reports to the exec, when 1:1s are, what review timelines look like, or what a specific team member owns.
+
 If the answer is in a profile, use it. Don't guess and don't ask if it's already there.
 
 ---

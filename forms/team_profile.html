@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Profile — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 480px; }
+    .page-header .subtitle { font-size: 0.88rem; color: #6e6e73; margin-top: 6px; }
+
+    .notice {
+      background: #f0f7ff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: 0.84rem;
+      color: #3d3d3f;
+      line-height: 1.65;
+    }
+    .notice strong { color: #0071e3; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header { padding: 20px 28px 0; margin-bottom: 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; margin-bottom: 7px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 72px; resize: none; line-height: 1.55; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 7px 14px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+    .chip.selected.warn { border-color: #e3720b; background: #e3720b; }
+    .chip.selected.flag { border-color: #ff3b30; background: #ff3b30; }
+
+    /* Person blocks */
+    .person-block {
+      background: #f9f9fb;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .person-block .person-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aeaeb2;
+    }
+    .person-label { font-size: 0.8rem; font-weight: 600; color: #3d3d3f; margin-bottom: 6px; display: block; }
+    .remove-btn {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #aeaeb2;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .remove-btn:hover { color: #ff3b30; }
+
+    .add-btn {
+      background: none;
+      border: 1.5px dashed #d2d2d7;
+      border-radius: 12px;
+      padding: 12px;
+      width: 100%;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: #0071e3;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .add-btn:hover { border-color: #0071e3; background: #f0f7ff; }
+
+    /* Status colors */
+    .status-on-track.selected { border-color: #34c759; background: #34c759; }
+    .status-ramping.selected { border-color: #5856d6; background: #5856d6; }
+    .status-attention.selected { border-color: #ff9500; background: #ff9500; }
+    .status-promotion.selected { border-color: #0071e3; background: #0071e3; }
+    .status-concern.selected { border-color: #ff3b30; background: #ff3b30; }
+
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #0077ed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+    }
+    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2 { grid-template-columns: 1fr; }
+      input, select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Team Profile 🗂️</h1>
+    <p>Who reports to the exec, how they meet, what each person owns, and when review season hits. Fill this out once and your AI always has the full picture — no more hunting through notes before a 1:1.</p>
+    <p class="subtitle">All fields are optional. Add as many or as few team members as useful.</p>
+  </div>
+
+  <div class="notice">
+    <strong>What this unlocks:</strong> Ask your AI "who hasn't had a 1:1 in over 3 weeks?" or "draft a prep doc for Sarah's review" or "what is Marcus working on right now?" — it already knows. You still run the meetings. Claude helps you prepare and stay on top of the cadence.
+  </div>
+
+  <form id="team-form">
+
+    <!-- Section 1: Basics -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">The Basics</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Executive's name</label>
+            <input type="text" name="exec_name" placeholder="e.g. Josh Allen Go Bills" />
+          </div>
+          <div>
+            <label>Your name <span class="hint">(EA filling this out)</span></label>
+            <input type="text" name="ea_name" placeholder="e.g. Your name" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Team or org name</label>
+            <input type="text" name="team_name" placeholder="e.g. Product, Revenue, Leadership Team" />
+          </div>
+          <div>
+            <label>Total team size <span class="hint">(including exec)</span></label>
+            <input type="text" name="team_size" placeholder="e.g. 8" />
+          </div>
+        </div>
+        <div>
+          <label>How often does the full team meet?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'team_cadence')">Daily standup</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'team_cadence')">Weekly all-hands</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'team_cadence')">Biweekly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'team_cadence')">Monthly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'team_cadence')">No standing team meeting</button>
+          </div>
+        </div>
+        <div>
+          <label>Any notes on the team overall</label>
+          <textarea name="team_notes" placeholder="e.g. Mostly remote, two time zones. Team went through a reorg in Q1 — still settling. Strong performers across the board but one open headcount."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Direct Reports -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Direct Reports & Key Team Members</p>
+      </div>
+      <div class="section-body">
+        <div id="people-container"></div>
+        <button type="button" class="add-btn" onclick="addPerson()">+ Add a team member</button>
+      </div>
+    </div>
+
+    <!-- Section 3: Standing Meetings -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Standing Meetings & Recurring Cadences</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Staff meeting / team meeting</label>
+          <input type="text" name="staff_meeting" placeholder="e.g. Every Monday 9–10am ET — exec runs it, EA sends agenda Friday before" />
+        </div>
+        <div>
+          <label>All-hands</label>
+          <input type="text" name="all_hands" placeholder="e.g. Monthly, last Thursday, 30 min — EA owns slides and logistics" />
+        </div>
+        <div>
+          <label>Skip-level meetings</label>
+          <input type="text" name="skip_levels" placeholder="e.g. Quarterly with each skip — EA schedules in advance, no prep needed from exec" />
+        </div>
+        <div>
+          <label>Leadership / exec team meetings</label>
+          <input type="text" name="leadership_meetings" placeholder="e.g. Weekly ELT on Tuesdays — exec attends, EA preps materials by Monday noon" />
+        </div>
+        <div>
+          <label>Board meetings</label>
+          <input type="text" name="board_meetings" placeholder="e.g. Quarterly — EA coordinates materials 2 weeks out, travel for in-person sessions" />
+        </div>
+        <div>
+          <label>Other recurring meetings EA manages</label>
+          <textarea name="other_meetings" placeholder="e.g. Investor update calls monthly (first Tuesday). Analyst briefings quarterly. Weekly sync with comms team."></textarea>
+        </div>
+        <div>
+          <label>EA's role in standing meetings</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Sends agendas</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Takes notes</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Sends follow-ups</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Owns logistics</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Preps exec materials</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Attends and observes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Review Cycles -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Performance Review Cycle</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Review frequency</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'review_freq')">Annual</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_freq')">Biannual</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_freq')">Quarterly</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_freq')">Continuous / no formal cycle</button>
+          </div>
+        </div>
+        <div>
+          <label>When does review season typically start?</label>
+          <input type="text" name="review_start" placeholder="e.g. HR kicks off in November for a December close. Self-reviews due Dec 1." />
+        </div>
+        <div>
+          <label>Key deadlines EA needs to track</label>
+          <textarea name="review_deadlines" placeholder="e.g. Self-reviews due Dec 1 · Manager reviews due Dec 15 · Calibration sessions Dec 18–20 · Conversations with team Jan 6–17 · Comp letters out Jan 20"></textarea>
+        </div>
+        <div>
+          <label>Does EA schedule review conversations?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'review_scheduling')">Yes — EA owns all scheduling</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_scheduling')">Partially — EA schedules some</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_scheduling')">No — exec or HR handles it</button>
+          </div>
+        </div>
+        <div>
+          <label>Calibration sessions</label>
+          <input type="text" name="calibration" placeholder="e.g. Cross-functional calibration with HR and peer managers — EA schedules room and sends materials" />
+        </div>
+        <div>
+          <label>Does exec need prep time before review conversations?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'review_prep')">Yes — block 30 min before each</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_prep')">Yes — block the morning before</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'review_prep')">No — they prep themselves</button>
+          </div>
+        </div>
+        <div>
+          <label>Mid-year check-ins or pulse reviews</label>
+          <input type="text" name="midyear" placeholder="e.g. Informal mid-year in June — not scored, just a conversation. EA schedules but doesn't track." />
+        </div>
+        <div>
+          <label>Anything else about review season EA should know</label>
+          <textarea name="review_notes" placeholder="e.g. Exec always runs long on review conversations — block extra buffer. HR system is Workday — login is saved. Ratings are confidential until comp letters go out."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Anything Else -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">Anything Else</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Open headcount or pending hires</label>
+          <textarea name="open_headcount" placeholder="e.g. One open senior engineer role — interviews in progress. New Chief of Staff starting June 1 — needs onboarding calendar."></textarea>
+        </div>
+        <div>
+          <label>Recent org changes to be aware of</label>
+          <textarea name="org_changes" placeholder="e.g. Marketing moved under this exec in Q1 — still integrating. Two people from the old team report in dotted line only."></textarea>
+        </div>
+        <div>
+          <label>What the exec cares most about on their team</label>
+          <textarea name="exec_priorities" placeholder="e.g. 1:1s are sacred — never move them unless exec initiates. Hates being surprised about team issues — flag early. Promotion conversations happen in writing first, then in person."></textarea>
+        </div>
+        <div>
+          <label>Anything else the AI should know to be useful here</label>
+          <textarea name="other_notes" placeholder="e.g. The team uses Notion for project tracking — useful context. Exec has a preference for async updates over status meetings. One direct report is in a different time zone and 1:1s rotate weekly."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download Team Profile →</button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Team profile saved!</h2>
+    <p>Your file just downloaded. Add it to the same Project as the Executive Profile.</p>
+    <div class="steps">
+      💡 <strong>What to do next:</strong><br><br>
+      1. Upload this file to your AI — works with <a href="https://claude.ai" target="_blank">Claude</a>, ChatGPT, Grok, Gemini, or Copilot.<br>
+      2. <strong>Claude recommended:</strong> add this to the same Project as the Executive Profile. Now Claude knows the exec AND their team.<br>
+      3. Ask anything — "who hasn't had a 1:1 recently?" "draft a prep doc for Marcus's review" "what is Sarah working on right now?" "when does review season start and what are the deadlines?" It already knows.
+    </div>
+    <div style="background:#f5f5f7;border-radius:14px;padding:16px 20px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;text-align:left;">
+      <p style="font-size:0.82rem;color:#3d3d3f;line-height:1.5;"><strong>Also upload:</strong> the AI Instructions file — tells your AI how to use these profiles and what sources to check for recommendations.</p>
+      <a href="ai_instructions.txt" download style="flex-shrink:0;display:inline-block;background:#1d1d1f;color:#fff;border-radius:980px;padding:9px 18px;font-size:0.8rem;font-weight:600;text-decoration:none;white-space:nowrap;">⬇ AI Instructions</a>
+    </div>
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+  let personCount = 0;
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el) {
+    el.classList.toggle('selected');
+  }
+
+  function addPerson() {
+    personCount++;
+    const id = personCount;
+    const container = document.getElementById('people-container');
+    const block = document.createElement('div');
+    block.className = 'person-block';
+    block.id = `person-${id}`;
+    block.innerHTML = `
+      <button type="button" class="remove-btn" onclick="removePerson(${id})" title="Remove">✕</button>
+      <div class="person-num">Team member ${id}</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label class="person-label">Name</label>
+          <input type="text" name="p${id}_name" placeholder="e.g. Sarah Chen" />
+        </div>
+        <div>
+          <label class="person-label">Title</label>
+          <input type="text" name="p${id}_title" placeholder="e.g. VP of Engineering" />
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label class="person-label">Relationship to exec</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_rel')">Direct report</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_rel')">Skip-level</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_rel')">Dotted line</button>
+          </div>
+        </div>
+        <div>
+          <label class="person-label">Employment type</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_type')">Full-time</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_type')">Part-time</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_type')">Contractor</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label class="person-label">1:1 frequency</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_freq')">Weekly</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_freq')">Biweekly</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_freq')">Monthly</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_freq')">Ad hoc</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_freq')">Not set yet</button>
+          </div>
+        </div>
+        <div>
+          <label class="person-label">1:1 length</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_len')">15 min</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_len')">30 min</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_len')">45 min</button>
+            <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_len')">60 min</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="person-label">Prep time needed before 1:1?</label>
+        <div class="chip-group">
+          <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_prep')">Yes — block 15 min before</button>
+          <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_prep')">Yes — block 30 min before</button>
+          <button type="button" class="chip" onclick="toggleChipInBlock(this,'p${id}_prep')">No — exec comes prepared</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="person-label">What they own / current focus</label>
+        <input type="text" name="p${id}_owns" placeholder="e.g. Owns product roadmap and Q3 launch. Currently heads down on API redesign." />
+      </div>
+
+      <div>
+        <label class="person-label">How long with the exec / tenure</label>
+        <input type="text" name="p${id}_tenure" placeholder="e.g. 2 years. New hire — started March 2025." />
+      </div>
+
+      <div>
+        <label class="person-label">Status</label>
+        <div class="chip-group">
+          <button type="button" class="chip status-on-track" onclick="toggleChipInBlock(this,'p${id}_status')">On track</button>
+          <button type="button" class="chip status-ramping" onclick="toggleChipInBlock(this,'p${id}_status')">New — still ramping</button>
+          <button type="button" class="chip status-attention" onclick="toggleChipInBlock(this,'p${id}_status')">Needs attention</button>
+          <button type="button" class="chip status-promotion" onclick="toggleChipInBlock(this,'p${id}_status')">Promotion conversation coming</button>
+          <button type="button" class="chip status-concern" onclick="toggleChipInBlock(this,'p${id}_status')">Performance concern</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="person-label">Anything else the AI should know about this person</label>
+        <input type="text" name="p${id}_notes" placeholder="e.g. Exec is very protective of this relationship — never move their 1:1. Or: going through a tough time personally, exec is giving extra support." />
+      </div>
+    `;
+    container.appendChild(block);
+  }
+
+  function removePerson(id) {
+    const block = document.getElementById(`person-${id}`);
+    if (block) block.remove();
+  }
+
+  // Chip toggle scoped to a block (so chips in different person blocks don't interfere)
+  function toggleChipInBlock(el, group) {
+    const block = el.closest('.person-block');
+    block.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  document.getElementById('team-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'team_profile', updated_at: new Date().toISOString() };
+
+    // Top-level fields
+    ['exec_name','ea_name','team_name','team_size','team_notes',
+     'staff_meeting','all_hands','skip_levels','leadership_meetings','board_meetings','other_meetings',
+     'review_start','review_deadlines','calibration','midyear','review_notes',
+     'open_headcount','org_changes','exec_priorities','other_notes'
+    ].forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    // Single-select chips
+    ['team_cadence','review_freq','review_scheduling','review_prep'].forEach(group => {
+      if (selections[group]) data[`pref_${group}`] = selections[group];
+    });
+
+    // Multi-select chips (EA role in meetings)
+    const eaRoles = [];
+    const roleOptions = ['Sends agendas','Takes notes','Sends follow-ups','Owns logistics','Preps exec materials','Attends and observes'];
+    document.querySelectorAll('#team-form .chip[onclick="toggleChipMulti(this)"].selected').forEach(el => {
+      const text = el.textContent.trim();
+      if (roleOptions.includes(text)) eaRoles.push(text);
+    });
+    if (eaRoles.length) data.ea_meeting_role = eaRoles;
+
+    // People
+    const people = [];
+    document.querySelectorAll('.person-block').forEach(block => {
+      const pid = block.id.replace('person-', '');
+      const person = {};
+
+      ['name','title','owns','tenure','notes'].forEach(field => {
+        const el = form.elements[`p${pid}_${field}`];
+        const val = el?.value.trim();
+        if (val) person[field] = val;
+      });
+
+      // Per-person chip selections
+      ['rel','type','freq','len','prep','status'].forEach(group => {
+        const selected = block.querySelector(`.chip[onclick*="'p${pid}_${group}'"].selected`);
+        if (selected) person[group] = selected.textContent.trim();
+      });
+
+      if (Object.keys(person).length > 0) people.push(person);
+    });
+    if (people.length) data.team_members = people;
+
+    const safeName = (data.exec_name || 'team').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${safeName}_team_profile.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('team-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
