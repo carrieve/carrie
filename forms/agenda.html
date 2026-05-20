@@ -88,6 +88,17 @@
 
     .back-link { text-align: center; margin-top: 24px; }
     .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+
+    .btn-pdf { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; font-family: inherit; border: none; background: #f0f7ff; color: #0071e3; border: 1px solid #d0e8ff; transition: all 0.15s; }
+    .btn-pdf:hover { background: #dceeff; }
+
+    @media print {
+      body { background: #fff; padding: 20px; }
+      .output-section.visible { display: block !important; }
+      #agenda-form, .back-link, .output-actions { display: none !important; }
+      .output-box { box-shadow: none; border: none; padding: 0; font-size: 0.85rem; }
+      h1, .subtitle { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -217,6 +228,7 @@
     <div class="output-box" id="outputBox"></div>
     <div class="output-actions">
       <button class="btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn-pdf" onclick="window.print()">⬇ Save / Print PDF</button>
       <button class="btn-reset" onclick="resetForm()">Start over</button>
     </div>
   </div>
