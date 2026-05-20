@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executive Profile — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 48px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 480px; }
+    .subtitle { font-size: 0.88rem; color: #6e6e73; margin-top: 6px; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 20px 28px 0;
+      margin-bottom: 20px;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #aeaeb2;
+      margin-bottom: 4px;
+    }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #3d3d3f;
+      margin-bottom: 7px;
+    }
+    .hint {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #aeaeb2;
+      margin-left: 4px;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 90px; resize: none; line-height: 1.55; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Chips */
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+
+    /* Notice */
+    .notice {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .notice strong { color: #0071e3; }
+    .notice a { color: #0071e3; text-decoration: none; }
+
+    /* Submit */
+    .submit-section { margin-top: 8px; }
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-download:hover { background: #0077ed; }
+    .btn-download:active { transform: scale(0.99); }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+    }
+    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2 { grid-template-columns: 1fr; }
+      input[type="text"], input[type="email"], select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Executive Profile 💼</h1>
+    <p>Fill this out once for each executive you support. Claude will know exactly how they work, how they communicate, and what they care about — so you always have instant answers.</p>
+    <p class="subtitle">All fields except the executive's name are optional.</p>
+  </div>
+
+  <form id="exec-form">
+
+    <!-- The Basics -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">The Basics</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Executive's full name <span style="color:#e3720b">*</span></label>
+            <input type="text" name="exec_name" placeholder="e.g. Josh Allen Go Bills" required />
+          </div>
+          <div>
+            <label>What to call them <span class="hint">(preferred name)</span></label>
+            <input type="text" name="exec_preferred_name" placeholder="e.g. Josh Allen" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Title / Role</label>
+            <input type="text" name="exec_title" placeholder="e.g. CEO, Managing Partner" />
+          </div>
+          <div>
+            <label>Company</label>
+            <input type="text" name="exec_company" placeholder="e.g. Acme Corp" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Work email</label>
+            <input type="email" name="exec_email" placeholder="e.g. josh@company.com" />
+          </div>
+          <div>
+            <label>Time zone</label>
+            <input type="text" name="exec_timezone" placeholder="e.g. Eastern, Pacific, GMT" />
+          </div>
+        </div>
+        <div>
+          <label>Your name <span class="hint">(the EA filling this out)</span></label>
+          <input type="text" name="ea_name" placeholder="e.g. Your name" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication Style -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Communication Style</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Email tone</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'tone')">Very formal</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'tone')">Professional</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'tone')">Warm & professional</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'tone')">Casual & direct</button>
+          </div>
+        </div>
+        <div>
+          <label>Preferred email length</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'length')">As short as possible</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'length')">Brief but complete</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'length')">Detailed is fine</button>
+          </div>
+        </div>
+        <div>
+          <label>Standard email sign-off</label>
+          <input type="text" name="email_signoff" placeholder="e.g. Best, Thanks, Warm regards" />
+        </div>
+        <div>
+          <label>People who always get a same-day reply</label>
+          <textarea name="priority_contacts" placeholder="e.g. Board members, key investors, their spouse, specific clients"></textarea>
+        </div>
+        <div>
+          <label>Topics or senders to flag immediately</label>
+          <textarea name="flag_immediately" placeholder="e.g. anything from the CFO, legal matters, press inquiries, anything marked urgent"></textarea>
+        </div>
+        <div>
+          <label>Things they never want to deal with <span class="hint">(handle or decline without asking)</span></label>
+          <textarea name="never_bother" placeholder="e.g. cold sales emails, LinkedIn recruiter messages, newsletter subscriptions"></textarea>
+        </div>
+        <div>
+          <label>How they like information presented</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'info')">Bullet points</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'info')">Short paragraphs</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'info')">Executive summary first</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'info')">Just the decision needed</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar & Scheduling -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Calendar & Scheduling</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Preferred meeting times</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'meettime')">Mornings only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meettime')">Afternoons preferred</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meettime')">Flexible</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meettime')">After 9am, before 5pm</button>
+          </div>
+        </div>
+        <div>
+          <label>No-meeting days <span class="hint">(protected focus days)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Monday</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Tuesday</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Wednesday</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Thursday</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Friday</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">None</button>
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Default meeting length</label>
+            <select name="default_meeting_length">
+              <option value="">Select...</option>
+              <option>15 minutes</option>
+              <option>30 minutes</option>
+              <option>45 minutes</option>
+              <option>60 minutes</option>
+              <option>90 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label>Buffer time between meetings</label>
+            <select name="meeting_buffer">
+              <option value="">Select...</option>
+              <option>None needed</option>
+              <option>5 minutes</option>
+              <option>10 minutes</option>
+              <option>15 minutes</option>
+              <option>30 minutes</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label>Max meetings per day</label>
+          <input type="text" name="max_meetings" placeholder="e.g. No more than 4, or no back-to-backs" />
+        </div>
+        <div>
+          <label>Preferred video platform</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'video')">Zoom</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'video')">Google Meet</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'video')">Microsoft Teams</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'video')">Phone call</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'video')">In person preferred</button>
+          </div>
+        </div>
+        <div>
+          <label>Protected time blocks <span class="hint">(never schedule over these)</span></label>
+          <textarea name="protected_blocks" placeholder="e.g. Every Friday 12-2pm is focus time. No meetings before 8am. Lunch is sacred noon-1pm."></textarea>
+        </div>
+        <div>
+          <label>Other time zones they regularly work with</label>
+          <input type="text" name="other_timezones" placeholder="e.g. London (GMT), San Francisco (PT)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Working Style -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Working Style & Preferences</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>How to reach them urgently</label>
+          <input type="text" name="urgent_contact" placeholder="e.g. text their cell, Slack DM, call the office" />
+        </div>
+        <div>
+          <label>What they handle themselves <span class="hint">(don't schedule or draft for these)</span></label>
+          <textarea name="handles_themselves" placeholder="e.g. All investor communications, anything related to their family, direct reports' performance reviews"></textarea>
+        </div>
+        <div>
+          <label>Pet peeves / things that stress them out</label>
+          <textarea name="pet_peeves" placeholder="e.g. being double-booked, last-minute schedule changes, long emails, being late to anything"></textarea>
+        </div>
+        <div>
+          <label>How they prefer to receive updates from you</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'updates')">Morning briefing</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'updates')">Slack/text only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'updates')">Email summary</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'updates')">Only if urgent</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'updates')">Weekly check-in</button>
+          </div>
+        </div>
+        <div>
+          <label>Anything else Claude should know about how they work</label>
+          <textarea name="other_notes" placeholder="e.g. They never read attachments. Always needs 10 minutes before a big meeting. Hates small talk in emails."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+      <button type="submit" class="btn-download">Download Executive Profile →</button>
+    </div>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Profile saved!</h2>
+    <p>Your executive profile file just downloaded.</p>
+    <div class="steps">
+      💡 <strong>What to do next:</strong><br><br>
+      1. Go to <a href="https://claude.ai" target="_blank">claude.ai</a> — it's free to sign up.<br>
+      2. Look for <strong>Projects</strong> in the menu. Create a new one — think of it like a folder that remembers your exec.<br>
+      3. Add the file you just downloaded to that Project.<br>
+      4. Now ask Claude anything — "what are Josh Allen's calendar rules?" "draft a reply declining this meeting" "flag anything urgent in these emails." It already knows.
+    </div>
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el) {
+    el.classList.toggle('selected');
+  }
+
+  document.getElementById('exec-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'executive', updated_at: new Date().toISOString() };
+
+    // Text fields
+    ['exec_name','exec_preferred_name','exec_title','exec_company','exec_email',
+     'exec_timezone','ea_name','email_signoff','priority_contacts','flag_immediately',
+     'never_bother','max_meetings','protected_blocks','other_timezones',
+     'urgent_contact','handles_themselves','pet_peeves','other_notes'
+    ].forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    // Select fields
+    ['default_meeting_length','meeting_buffer'].forEach(name => {
+      const val = form.elements[name]?.value;
+      if (val) data[name] = val;
+    });
+
+    // Single-select chips
+    ['tone','length','info','meettime','video','updates'].forEach(group => {
+      if (selections[group]) data[`pref_${group}`] = selections[group];
+    });
+
+    // Multi-select chips (no-meeting days)
+    const noMeetingDays = [];
+    document.querySelectorAll('.chip[onclick="toggleChipMulti(this)"].selected').forEach(el => {
+      noMeetingDays.push(el.textContent.trim());
+    });
+    if (noMeetingDays.length) data.no_meeting_days = noMeetingDays;
+
+    // Download
+    const execName = (data.exec_name || 'executive').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${execName}_executive_profile.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // Show success
+    document.getElementById('exec-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
