@@ -450,10 +450,74 @@
       </div>
     </div>
 
-    <!-- Section 7: Family Travel -->
+    <!-- Section 7: Personal Security -->
     <div class="section">
       <div class="section-header">
         <p class="section-label">Section 7</p>
+        <p class="section-title">Personal Security</p>
+      </div>
+      <div class="section-body">
+        <p style="font-size:0.8rem; color:#6e6e73; margin-bottom:4px;">Leave blank if not applicable. Only fill what's relevant to your situation.</p>
+        <div>
+          <label>Does the principal use a security detail?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'security_detail')">Always</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_detail')">International travel only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_detail')">High-risk situations only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_detail')">Domestic travel only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_detail')">Never</button>
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Security firm</label>
+            <input type="text" name="security_firm" placeholder="e.g. Gavin de Becker & Associates" />
+          </div>
+          <div>
+            <label>Lead agent name + contact</label>
+            <input type="text" name="security_agent" placeholder="e.g. Marcus Webb — 212-555-0191 (cell, 24/7)" />
+          </div>
+        </div>
+        <div>
+          <label>Does security travel on the jet?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'security_on_jet')">Yes — always</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_on_jet')">Yes — international only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_on_jet')">No — meets at destination</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'security_on_jet')">N/A</button>
+          </div>
+        </div>
+        <div>
+          <label>Advance protocol <span class="hint">(does someone pre-check hotels, venues, or routes before principal arrives?)</span></label>
+          <input type="text" name="security_advance" placeholder="e.g. Marcus advances all international hotel stays — needs 72 hours notice. Domestic — no advance required." />
+        </div>
+        <div>
+          <label>Vehicle & ground transport security</label>
+          <input type="text" name="security_transport" placeholder="e.g. Armored Suburban only in NYC and DC. Vetted drivers through XYZ firm — never use Uber. Driver Marcus provides on all international trips." />
+        </div>
+        <div>
+          <label>Home security</label>
+          <input type="text" name="security_home" placeholder="e.g. ADT monitored — contact: 800-555-0100, account #12345. Estate manager handles day-to-day. EA contacts Marcus if incident occurs after hours." />
+        </div>
+        <div>
+          <label>Digital security / IT contact</label>
+          <input type="text" name="security_digital" placeholder="e.g. Black Cipher Security — Dan Liu — 212-555-0144. Handles all devices, account breaches, suspicious emails." />
+        </div>
+        <div>
+          <label>Emergency protocol <span class="hint">(who to call first, and in what order)</span></label>
+          <textarea name="security_emergency" placeholder="e.g. 1. Call 911. 2. Call Marcus (lead agent). 3. Call spouse. 4. Call estate attorney Jennifer Cole. Never contact press or post on social media. Principal's location is never to be disclosed to unverified callers."></textarea>
+        </div>
+        <div>
+          <label>Other security notes</label>
+          <textarea name="security_notes" placeholder="e.g. Principal's schedule is never to be shared externally beyond 24 hours in advance. All meeting locations confirmed through EA only — never assistant-to-assistant for Tier 1 meetings. Family photos not to be shared publicly."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 8: Family Travel -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 8</p>
         <p class="section-title">Family Travel</p>
       </div>
       <div class="section-body">
@@ -480,10 +544,10 @@
       </div>
     </div>
 
-    <!-- Section 8: Gifting & Occasions -->
+    <!-- Section 9: Gifting & Occasions -->
     <div class="section">
       <div class="section-header">
-        <p class="section-label">Section 8</p>
+        <p class="section-label">Section 9</p>
         <p class="section-title">Gifting & Occasions</p>
       </div>
       <div class="section-body">
@@ -511,10 +575,10 @@
       </div>
     </div>
 
-    <!-- Section 9: Anything Else -->
+    <!-- Section 10: Anything Else -->
     <div class="section">
       <div class="section-header">
-        <p class="section-label">Section 9</p>
+        <p class="section-label">Section 10</p>
         <p class="section-title">Anything Else</p>
       </div>
       <div class="section-body">
@@ -635,6 +699,8 @@
      'doctor','concierge_doctor','pediatrician','dentist','specialists',
      'pharmacy','health_insurance',
      'attorney','accountant','financial_advisor','insurance','advisor_notes',
+     'security_firm','security_agent','security_advance','security_transport',
+     'security_home','security_digital','security_emergency','security_notes',
      'family_travel_notes','family_destinations','recurring_trips','family_loyalty','passport_notes',
      'gift_vendors','acknowledgment_occasions','gift_budget',
      'other_notes','ea_values'
@@ -644,7 +710,7 @@
     });
 
     // Single-select chips
-    ['gift_lead','card_style'].forEach(group => {
+    ['gift_lead','card_style','security_detail','security_on_jet'].forEach(group => {
       if (selections[group]) data[`pref_${group}`] = selections[group];
     });
 
