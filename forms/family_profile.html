@@ -384,52 +384,68 @@
     <div class="section">
       <div class="section-header">
         <p class="section-label">Section 6</p>
-        <p class="section-title">Professional Advisors & Medical</p>
+        <p class="section-title">Medical & Professional Advisors</p>
       </div>
       <div class="section-body">
+        <p style="font-size:0.8rem; color:#6e6e73; margin-bottom:4px;">Include name, practice, and phone so Claude can surface the right contact instantly.</p>
+
         <div class="row-2">
           <div>
             <label>Family doctor / GP</label>
-            <input type="text" name="doctor" placeholder="e.g. Dr. Smith — NYC Presbyterian" />
+            <input type="text" name="doctor" placeholder="e.g. Dr. Sarah Kim — NYC Presbyterian — 212-555-0140. Scheduling: call front desk, mention principal by name." />
           </div>
           <div>
-            <label>Pediatrician</label>
-            <input type="text" name="pediatrician" placeholder="e.g. Dr. Lee — Charlotte" />
+            <label>Concierge / direct-access medicine <span class="hint">(if applicable)</span></label>
+            <input type="text" name="concierge_doctor" placeholder="e.g. One Medical VIP — direct line 212-555-0199. Can reach Dr. Kim on cell for non-emergencies." />
           </div>
         </div>
         <div class="row-2">
           <div>
-            <label>Dentist</label>
-            <input type="text" name="dentist" placeholder="e.g. Dr. Patel" />
+            <label>Pediatrician</label>
+            <input type="text" name="pediatrician" placeholder="e.g. Dr. James Lee — Atrium Pediatrics Charlotte — 704-555-0122" />
           </div>
           <div>
-            <label>Other specialists</label>
-            <input type="text" name="specialists" placeholder="e.g. Orthopedist, therapist" />
+            <label>Dentist</label>
+            <input type="text" name="dentist" placeholder="e.g. Dr. Patel — SouthPark Dental — 704-555-0133. Family cleanings every 6 months." />
+          </div>
+        </div>
+        <div>
+          <label>Specialists <span class="hint">(list all — include name, specialty, phone)</span></label>
+          <textarea name="specialists" placeholder="e.g. Dr. Cohen — orthopedist — 212-555-0144 (principal's right shoulder, annual check-in). Dr. Rivera — therapist — principal handles scheduling directly, do not contact. Dr. Nguyen — dermatologist — 704-555-0166, annual skin check every spring."></textarea>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Pharmacy</label>
+            <input type="text" name="pharmacy" placeholder="e.g. CVS Pharmacy — SouthPark — 704-555-0177. Prescriptions under Josh Allen. Delivery enabled." />
+          </div>
+          <div>
+            <label>Health insurance <span class="hint">(carrier + member ID for scheduling)</span></label>
+            <input type="text" name="health_insurance" placeholder="e.g. Blue Cross Blue Shield — member ID: XYZ123456. Group: 789. EA can use for scheduling only." />
           </div>
         </div>
         <div class="row-2">
           <div>
             <label>Estate attorney</label>
-            <input type="text" name="attorney" placeholder="e.g. Jennifer Cole @ Smith LLP" />
+            <input type="text" name="attorney" placeholder="e.g. Jennifer Cole — Smith & Associates LLP — 212-555-0155. Principal handles all calls directly." />
           </div>
           <div>
             <label>Accountant / CPA</label>
-            <input type="text" name="accountant" placeholder="e.g. Mark Torres, personal + business" />
+            <input type="text" name="accountant" placeholder="e.g. Mark Torres — personal + business — 704-555-0166. Tax season: Feb–April, expect high volume." />
           </div>
         </div>
         <div class="row-2">
           <div>
             <label>Financial advisor / family office</label>
-            <input type="text" name="financial_advisor" placeholder="e.g. Merrill Lynch — Tom Hughes" />
+            <input type="text" name="financial_advisor" placeholder="e.g. Tom Hughes — Merrill Lynch Private Banking — 212-555-0177" />
           </div>
           <div>
             <label>Insurance broker</label>
-            <input type="text" name="insurance" placeholder="e.g. Andrew at AIG Private Client" />
+            <input type="text" name="insurance" placeholder="e.g. Andrew Reese — AIG Private Client — 212-555-0188. Handles home, auto, umbrella, art." />
           </div>
         </div>
         <div>
-          <label>Notes on any of the above <span class="hint">(who the EA can call directly vs. who the principal handles)</span></label>
-          <textarea name="advisor_notes" placeholder="e.g. EA can call Dr. Smith's office directly for appointments. Financial advisor — principal handles all calls personally, never CC the EA."></textarea>
+          <label>Access notes <span class="hint">(who the EA can contact directly vs. who the principal handles personally)</span></label>
+          <textarea name="advisor_notes" placeholder="e.g. EA can call Dr. Kim and pediatrician directly to schedule. Therapist — principal only, never contact. Financial advisor — principal handles all calls, EA can email Tom's assistant for scheduling only. Attorney — call Jennifer's assistant Rachel."></textarea>
         </div>
       </div>
     </div>
@@ -616,8 +632,9 @@
      'spouse_travel','spouse_contact','spouse_notes',
      'important_dates','sneaky_dates',
      'nanny','housekeeper','driver','chef','estate_manager','other_staff',
-     'doctor','pediatrician','dentist','specialists','attorney','accountant',
-     'financial_advisor','insurance','advisor_notes',
+     'doctor','concierge_doctor','pediatrician','dentist','specialists',
+     'pharmacy','health_insurance',
+     'attorney','accountant','financial_advisor','insurance','advisor_notes',
      'family_travel_notes','family_destinations','recurring_trips','family_loyalty','passport_notes',
      'gift_vendors','acknowledgment_occasions','gift_budget',
      'other_notes','ea_values'

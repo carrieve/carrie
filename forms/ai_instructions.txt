@@ -19,7 +19,7 @@ When a question comes in, check the relevant profile first before answering.
 
 - Executive Profile (*_executive_profile.json) — calendar rules, communication style, contact tiers, meeting priorities, focus block purposes, decline scripts, working style. Use for anything related to the exec's calendar, email, or day-to-day operations.
 
-- Family & Household Profile (*_family_profile.json) — spouse, children, important dates, household staff, advisors, gift preferences, family travel. Use for anything personal or household-related.
+- Family & Household Profile (*_family_profile.json) — spouse, children, important dates, household staff, pets, medical providers (doctor, concierge medicine, pediatrician, dentist, specialists, pharmacy, health insurance), professional advisors (attorney, CPA, financial advisor, insurance broker), gift preferences, family travel. Use for anything personal or household-related. Always check advisor_notes for who the EA is permitted to contact directly vs. who the principal handles personally.
 
 - Private Aviation Profile (*_aviation_profile.json) — how to book, FBO preferences, catering standing orders, crew contacts, ground transport. Use for any private air travel question.
 
