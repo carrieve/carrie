@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offsite Attendee Info — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 500px; }
+
+    .notice {
+      background: #f0f7ff;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.7;
+    }
+    .notice strong { color: #0071e3; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header { padding: 20px 28px 0; margin-bottom: 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; margin-bottom: 7px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 80px; resize: none; line-height: 1.55; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #0077ed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    .success-msg .steps strong { color: #0071e3; }
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2 { grid-template-columns: 1fr; }
+      input, select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Offsite Attendee Info ✈️</h1>
+    <p>Fill this out so your planner can pull everyone's preferences into one place. Takes about 2 minutes. Works on your phone — type or speak.</p>
+  </div>
+
+  <div class="notice">
+    <strong>How this works:</strong> Your planner will add your file to the offsite planning folder in Claude. Claude can then flag dietary conflicts, suggest travel logistics, and help draft communications — all based on what the group actually needs. <strong>You send this file to your planner — they handle the rest.</strong>
+  </div>
+
+  <form id="attendee-form">
+
+    <!-- About You -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">About You</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Your name</label>
+            <input type="text" name="attendee_name" placeholder="e.g. Josh Allen Go Bills" />
+          </div>
+          <div>
+            <label>Your role / team</label>
+            <input type="text" name="role" placeholder="e.g. Engineering, Design" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Email <span class="hint">(for planner)</span></label>
+            <input type="email" name="email" placeholder="e.g. you@company.com" />
+          </div>
+          <div>
+            <label>Phone <span class="hint">(optional)</span></label>
+            <input type="tel" name="phone" placeholder="e.g. 555-555-5555" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Travel -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Getting There</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Home city</label>
+            <input type="text" name="home_city" placeholder="e.g. Charlotte, NC" />
+          </div>
+          <div>
+            <label>Home airport <span class="hint">(code)</span></label>
+            <input type="text" name="home_airport" placeholder="e.g. CLT" />
+          </div>
+        </div>
+        <div>
+          <label>How are you getting there?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_mode')">Flying</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_mode')">Driving</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_mode')">Train / Amtrak</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_mode')">Not sure yet</button>
+          </div>
+        </div>
+        <div>
+          <label>Travel constraints <span class="hint">(anything your planner should know)</span></label>
+          <textarea name="travel_constraints" placeholder="e.g. can't fly out before 9am, need to be home by Sunday night, traveling with a connection in DFW, need wheelchair assistance"></textarea>
+        </div>
+        <div>
+          <label>TSA PreCheck / Global Entry / CLEAR?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">TSA PreCheck</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Global Entry</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">CLEAR</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">None</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lodging -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Room Preferences</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Room preference</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'room_pref')">Private room — I need my own space</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'room_pref')">Fine sharing if needed</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'room_pref')">No preference</button>
+          </div>
+        </div>
+        <div>
+          <label>Bed preference <span class="hint">(if sharing)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'bed_pref')">King</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'bed_pref')">Queen</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'bed_pref')">Two singles / twins</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'bed_pref')">No preference</button>
+          </div>
+        </div>
+        <div>
+          <label>Accessibility needs</label>
+          <input type="text" name="accessibility" placeholder="e.g. wheelchair accessible, ground floor, walk-in shower, none" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Food -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Food & Dietary</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Dietary restrictions or allergies <span class="hint">(be specific — this matters)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Vegetarian</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Vegan</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Gluten-free</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Dairy-free</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Nut allergy</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Shellfish allergy</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Halal</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Kosher</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">No restrictions</button>
+          </div>
+        </div>
+        <div>
+          <label>Anything else about food? <span class="hint">(preferences, strong dislikes, other allergies)</span></label>
+          <textarea name="food_notes" placeholder="e.g. I'm pescatarian, strongly dislike mushrooms, allergic to sesame"></textarea>
+        </div>
+        <div>
+          <label>Coffee / morning drink order <span class="hint">(optional but helpful)</span></label>
+          <input type="text" name="coffee_order" placeholder="e.g. oat milk latte, no sugar — or black coffee" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Extras -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">A Few More Things</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>T-shirt size <span class="hint">(in case of swag)</span></label>
+            <select name="tshirt_size">
+              <option value="">—</option>
+              <option>XS</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+              <option>2XL</option>
+              <option>3XL</option>
+            </select>
+          </div>
+          <div>
+            <label>Preferred pronoun <span class="hint">(optional)</span></label>
+            <input type="text" name="pronoun" placeholder="e.g. she/her, he/him, they/them" />
+          </div>
+        </div>
+        <div>
+          <label>Activities — anything you'd love or want to skip?</label>
+          <textarea name="activity_notes" placeholder="e.g. love hiking and cooking classes, not into golf or karaoke — or no preferences"></textarea>
+        </div>
+        <div>
+          <label>Anything else your planner should know?</label>
+          <textarea name="other_notes" placeholder="e.g. I have a medical appointment and can't arrive until Thursday evening, I have a mobility issue, I'll need a quiet space to take calls"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download My Info →</button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Got it!</h2>
+    <p>Your info file just downloaded. Now just send it to whoever is planning the offsite.</p>
+
+    <div class="steps">
+      <strong>What to do with your file:</strong><br><br>
+      1. Find the downloaded file on your phone or computer — it's named something like <em>yourname_attendee.json</em>.<br>
+      2. Send it to your planner by email, Slack, or text — wherever your team communicates.<br>
+      3. That's it. Your planner will load everyone's files into Claude so it can help flag conflicts and plan around the whole group.
+    </div>
+
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el) {
+    el.classList.toggle('selected');
+  }
+
+  document.getElementById('attendee-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'offsite_attendee', updated_at: new Date().toISOString() };
+
+    ['attendee_name','role','email','phone','home_city','home_airport',
+     'travel_constraints','accessibility','food_notes','coffee_order',
+     'activity_notes','other_notes','pronoun'
+    ].forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    // Single-select chips
+    ['travel_mode','room_pref','bed_pref'].forEach(group => {
+      if (selections[group]) data[group] = selections[group];
+    });
+
+    // T-shirt size
+    const tshirt = form.elements['tshirt_size']?.value;
+    if (tshirt) data.tshirt_size = tshirt;
+
+    // Multi-select chips
+    const multiGroups = {
+      trusted_traveler: ['TSA PreCheck','Global Entry','CLEAR','None'],
+      dietary_restrictions: ['Vegetarian','Vegan','Gluten-free','Dairy-free','Nut allergy','Shellfish allergy','Halal','Kosher','No restrictions'],
+    };
+
+    document.querySelectorAll('.chip.selected').forEach(el => {
+      const text = el.textContent.trim();
+      Object.entries(multiGroups).forEach(([key, options]) => {
+        if (options.includes(text)) {
+          if (!data[key]) data[key] = [];
+          if (!data[key].includes(text)) data[key].push(text);
+        }
+      });
+    });
+
+    const safeName = (data.attendee_name || 'attendee').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${safeName}_offsite_attendee.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('attendee-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

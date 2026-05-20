@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offsite Planner — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
+    .page-header p { font-size: 0.95rem; color: #6e6e73; line-height: 1.6; max-width: 500px; }
+
+    /* What Claude does vs what you do */
+    .explainer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .explainer-box {
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+    .explainer-box.can {
+      background: #e8faf0;
+    }
+    .explainer-box.cant {
+      background: #fff8e8;
+    }
+    .explainer-box h3 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 10px;
+    }
+    .explainer-box.can h3 { color: #1a7f4b; }
+    .explainer-box.cant h3 { color: #a35c00; }
+    .explainer-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .explainer-box ul li {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      padding-left: 16px;
+      position: relative;
+      color: #3d3d3f;
+    }
+    .explainer-box.can ul li::before { content: "✓"; position: absolute; left: 0; color: #1a7f4b; font-weight: 700; }
+    .explainer-box.cant ul li::before { content: "→"; position: absolute; left: 0; color: #a35c00; font-weight: 700; }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .section-header { padding: 20px 28px 0; margin-bottom: 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; margin-bottom: 7px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], input[type="number"], select, textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e5e5ea;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    textarea { min-height: 90px; resize: none; line-height: 1.55; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border: 1.5px solid #d2d2d7;
+      border-radius: 980px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+
+    .btn-download {
+      width: 100%;
+      padding: 18px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #0077ed; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .success-msg .check {
+      width: 56px; height: 56px;
+      background: #34c759; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-msg .check svg { width: 26px; height: 26px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+    .success-msg .steps {
+      background: #f0f7ff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+    .success-msg .next-steps {
+      background: #fff8e8;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+      color: #3d3d3f;
+      line-height: 1.9;
+      text-align: left;
+    }
+    .success-msg .next-steps h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #a35c00; margin-bottom: 8px; }
+    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px 80px; }
+      .page-header h1 { font-size: 2rem; }
+      .section-body { padding: 0 16px 24px; }
+      .section-header { padding: 20px 16px 0; }
+      .row-2 { grid-template-columns: 1fr; }
+      .explainer { grid-template-columns: 1fr; }
+      input, select, textarea { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Offsite Planner 🏔️</h1>
+    <p>Fill this out once for your offsite. Claude will help you plan — destination ideas, logistics, communications, and checklists. The actual booking still happens outside Claude.</p>
+  </div>
+
+  <!-- What Claude does vs what you do -->
+  <div class="explainer">
+    <div class="explainer-box can">
+      <h3>Claude helps with</h3>
+      <ul>
+        <li>Destination suggestions based on where everyone is flying from</li>
+        <li>Comparing hotel vs Airbnb for your group size</li>
+        <li>Drafting the offsite announcement email</li>
+        <li>Building a logistics checklist</li>
+        <li>Flagging dietary conflicts across the group</li>
+        <li>Drafting vendor outreach emails</li>
+        <li>Creating a day-by-day agenda template</li>
+        <li>Budget breakdown suggestions</li>
+      </ul>
+    </div>
+    <div class="explainer-box cant">
+      <h3>You still handle</h3>
+      <ul>
+        <li>Booking individual flights</li>
+        <li>Reserving the hotel or Airbnb</li>
+        <li>Collecting attendee RSVPs</li>
+        <li>Paying vendors and deposits</li>
+        <li>Restaurant reservations</li>
+        <li>Ground transport coordination</li>
+      </ul>
+    </div>
+  </div>
+
+  <form id="offsite-form">
+
+    <!-- The Basics -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">The Basics</p>
+      </div>
+      <div class="section-body">
+        <div class="row-2">
+          <div>
+            <label>Company / Team name</label>
+            <input type="text" name="company" placeholder="e.g. Acme Corp — Marketing Team" />
+          </div>
+          <div>
+            <label>Number of attendees</label>
+            <input type="number" name="attendee_count" placeholder="e.g. 12" min="2" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Offsite dates</label>
+            <input type="text" name="dates" placeholder="e.g. Sept 15–18, 2025" />
+          </div>
+          <div>
+            <label>Total budget <span class="hint">(approximate)</span></label>
+            <input type="text" name="budget" placeholder="e.g. $25,000 or $2,000/person" />
+          </div>
+        </div>
+        <div>
+          <label>Who is planning this? <span class="hint">(your name)</span></label>
+          <input type="text" name="planner_name" placeholder="e.g. Your name" />
+        </div>
+        <div>
+          <label>Decision maker <span class="hint">(who approves the final plan)</span></label>
+          <input type="text" name="decision_maker" placeholder="e.g. CEO, Head of People" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Where People Are Coming From -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Where People Are Flying From</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Origin cities / airports <span class="hint">(list all)</span></label>
+          <textarea name="origin_cities" placeholder="e.g. New York (JFK/LGA) — 4 people&#10;San Francisco (SFO) — 3 people&#10;Charlotte (CLT) — 2 people&#10;London (LHR) — 3 people"></textarea>
+        </div>
+        <div>
+          <label>Any attendees who can't fly? <span class="hint">(driving, train, etc.)</span></label>
+          <input type="text" name="no_fly" placeholder="e.g. 2 attendees driving from Boston" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Destination Preferences -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Destination Preferences</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Any destination already decided?</label>
+          <input type="text" name="destination_decided" placeholder="Leave blank if you need suggestions" />
+        </div>
+        <div>
+          <label>Destination vibe <span class="hint">(select all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Beach / warm</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Mountains / outdoors</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">City</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Resort</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Domestic only</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">International OK</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Easy flights for everyone</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Somewhere new</button>
+          </div>
+        </div>
+        <div>
+          <label>Max travel time from furthest attendee</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'traveltime')">2 hours</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'traveltime')">4 hours</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'traveltime')">6 hours</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'traveltime')">No limit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lodging -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Lodging</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Lodging preference</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'lodging')">Hotel block</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'lodging')">Airbnb / house rental</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'lodging')">Resort</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'lodging')">No preference</button>
+          </div>
+        </div>
+        <div>
+          <label>Room setup</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'rooms')">Everyone gets their own room</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'rooms')">Some sharing is fine</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'rooms')">Shared house / communal</button>
+          </div>
+        </div>
+        <div>
+          <label>Meeting space needed on-site?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'meetspace')">Yes — full day sessions</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meetspace')">Yes — half day only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meetspace')">Minimal — mostly social</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'meetspace')">No meetings planned</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Food & Meals -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">Food & Meals</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Meals to plan for <span class="hint">(select all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Welcome dinner</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Daily breakfast</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Working lunches</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Group dinners</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Farewell meal</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Snacks / coffee only</button>
+          </div>
+        </div>
+        <div>
+          <label>Known dietary restrictions across the group</label>
+          <textarea name="dietary" placeholder="e.g. 2 vegetarians, 1 vegan, 1 gluten-free, 1 nut allergy — or upload attendee forms for full breakdown"></textarea>
+        </div>
+        <div>
+          <label>Food vibe</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'foodvibe')">Nice restaurants</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'foodvibe')">Casual and fun</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'foodvibe')">Catered in</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'foodvibe')">Mix of everything</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offsite Goals -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 6</p>
+        <p class="section-title">Goals & Vibe</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Primary purpose of the offsite <span class="hint">(select all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Strategic planning</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Team building</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Celebration / reward</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Kickoff / launch</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Leadership alignment</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">All hands</button>
+          </div>
+        </div>
+        <div>
+          <label>Activities or experiences wanted</label>
+          <textarea name="activities" placeholder="e.g. one group activity, evenings free, no forced fun — or spa day, cooking class, hiking, etc."></textarea>
+        </div>
+        <div>
+          <label>Anything to avoid</label>
+          <input type="text" name="avoid" placeholder="e.g. no extreme sports, no late nights, no shared bedrooms" />
+        </div>
+        <div>
+          <label>Anything else Claude should know</label>
+          <textarea name="other_notes" placeholder="e.g. we have a remote-first team that rarely meets, this is our first offsite, we have a mix of introverts and extroverts"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download Offsite Plan →</button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success-msg" id="successMsg">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Offsite profile saved!</h2>
+    <p>Your planning file just downloaded. Here's what to do next.</p>
+
+    <div class="steps">
+      💡 <strong>Get Claude's help:</strong><br><br>
+      1. Go to <a href="https://claude.ai" target="_blank">claude.ai</a> — free to sign up.<br>
+      2. Start a Project → add this file + any attendee profile files.<br>
+      3. Ask Claude anything — "suggest 3 destinations for our group," "draft the announcement email," "build us a logistics checklist," "flag any dietary conflicts."
+    </div>
+
+    <div class="next-steps" style="margin-top:12px;">
+      <h4>You still handle outside Claude</h4>
+      Book flights for each attendee · Reserve the hotel or Airbnb · Collect RSVPs · Pay vendors · Make restaurant reservations · Arrange ground transport
+    </div>
+
+    <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+  </div>
+
+</div>
+
+<script>
+  const selections = {};
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el) {
+    el.classList.toggle('selected');
+  }
+
+  document.getElementById('offsite-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = { profile_type: 'offsite_planner', updated_at: new Date().toISOString() };
+
+    ['company','attendee_count','dates','budget','planner_name','decision_maker',
+     'origin_cities','no_fly','destination_decided','dietary','activities','avoid','other_notes'
+    ].forEach(name => {
+      const val = form.elements[name]?.value.trim();
+      if (val) data[name] = val;
+    });
+
+    ['traveltime','lodging','rooms','meetspace','foodvibe'].forEach(group => {
+      if (selections[group]) data[`pref_${group}`] = selections[group];
+    });
+
+    // Multi-select chips
+    const multiGroups = {
+      destination_vibe: ['Beach / warm','Mountains / outdoors','City','Resort','Domestic only','International OK','Easy flights for everyone','Somewhere new'],
+      meals: ['Welcome dinner','Daily breakfast','Working lunches','Group dinners','Farewell meal','Snacks / coffee only'],
+      offsite_purpose: ['Strategic planning','Team building','Celebration / reward','Kickoff / launch','Leadership alignment','All hands'],
+    };
+
+    document.querySelectorAll('.chip.selected').forEach(el => {
+      const text = el.textContent.trim();
+      Object.entries(multiGroups).forEach(([key, options]) => {
+        if (options.includes(text)) {
+          if (!data[key]) data[key] = [];
+          if (!data[key].includes(text)) data[key].push(text);
+        }
+      });
+    });
+
+    const name = (data.company || 'offsite').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name}_offsite_plan.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    document.getElementById('offsite-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
