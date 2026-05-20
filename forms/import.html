@@ -3,211 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Import Preferences — Carrie</title>
+  <title>Import Notes — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-      background: #f5f5f7;
-      color: #1d1d1f;
+      background: #f5f5f7; color: #1d1d1f;
       padding: 72px 20px 100px;
       -webkit-font-smoothing: antialiased;
     }
-
-    .page-header {
-      max-width: 680px;
-      margin: 0 auto 48px;
-      text-align: center;
-    }
-    .page-header h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      color: #1d1d1f;
-    }
-    .page-header .subtitle {
-      margin-top: 14px;
-      color: #6e6e73;
-      font-size: 1.05rem;
-      line-height: 1.65;
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    .page-header { max-width: 680px; margin: 0 auto 48px; text-align: center; }
+    .page-header h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.04em; }
+    .page-header .subtitle { margin-top: 14px; color: #6e6e73; font-size: 1.05rem; line-height: 1.65; max-width: 520px; margin-left: auto; margin-right: auto; }
 
     .container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
 
-    .section {
-      background: #fff;
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-    }
+    .section { background: #fff; border-radius: 20px; padding: 28px; box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
+    .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #1d1d1f; }
 
-    .section h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: #1d1d1f;
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .type-btn {
+      padding: 14px 10px; border-radius: 12px; border: 2px solid #e8e8ed;
+      background: #fff; font-size: 0.82rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all 0.2s; text-align: center; line-height: 1.4;
     }
+    .type-btn .type-emoji { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+    .type-btn.active { border-color: #0071e3; background: #e3effd; color: #0071e3; }
 
     textarea {
-      width: 100%;
-      min-height: 200px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: #f5f5f7;
-      color: #1d1d1f;
-      resize: vertical;
-      line-height: 1.6;
+      width: 100%; min-height: 200px; padding: 14px;
+      border: none; border-radius: 10px; font-size: 0.95rem;
+      font-family: inherit; background: #f5f5f7; color: #1d1d1f;
+      resize: vertical; line-height: 1.6;
     }
     textarea:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,113,227,0.25); }
 
-    .notice {
-      background: #e3effd;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-size: 0.88rem;
-      color: #0a3d7a;
-      line-height: 1.6;
-      margin-top: 12px;
-    }
+    .notice { background: #e3effd; border-radius: 12px; padding: 14px 18px; font-size: 0.88rem; color: #0a3d7a; line-height: 1.6; margin-top: 12px; }
+    .notice-green { background: #e8f8ed; border-radius: 12px; padding: 14px 18px; font-size: 0.88rem; color: #1a5c2a; line-height: 1.6; margin-top: 12px; }
 
-    .btn {
-      display: inline-block;
-      padding: 13px 28px;
-      border-radius: 980px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      transition: background 0.2s;
-    }
+    .btn { display: inline-block; padding: 13px 28px; border-radius: 980px; font-size: 0.95rem; font-weight: 600; font-family: inherit; cursor: pointer; border: none; transition: background 0.2s; }
     .btn-primary { background: #0071e3; color: #fff; }
     .btn-primary:hover { background: #0077ed; }
     .btn-secondary { background: #e8e8ed; color: #1d1d1f; }
     .btn-secondary:hover { background: #d8d8dd; }
     .btn-success { background: #34c759; color: #fff; }
     .btn-success:hover { background: #2fb350; }
-
     .btn-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
-
-    .profile-type-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .type-btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 12px;
-      border: 2px solid #e8e8ed;
-      background: #fff;
-      font-size: 0.9rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
-    .type-btn.active { border-color: #0071e3; background: #e3effd; color: #0071e3; }
 
     .results { display: none; }
     .results.visible { display: block; }
 
-    .field-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field.full { grid-column: 1 / -1; }
     label { font-size: 0.8rem; font-weight: 600; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.05em; }
-
     input[type="text"], input[type="email"], input[type="tel"] {
-      padding: 10px 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      background: #f5f5f7;
-      color: #1d1d1f;
-      width: 100%;
+      padding: 10px 12px; border: none; border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; background: #f5f5f7; color: #1d1d1f; width: 100%;
     }
     input:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,113,227,0.25); }
 
-    .tag { display: inline-block; background: #e3effd; color: #0a3d7a; border-radius: 6px; padding: 3px 8px; font-size: 0.8rem; margin: 2px; }
+    .prompt-box {
+      background: #f5f5f7; border-radius: 12px; padding: 16px;
+      font-size: 0.88rem; color: #1d1d1f; line-height: 1.7;
+      font-family: 'SF Mono', monospace; margin-top: 12px; white-space: pre-wrap;
+    }
 
     .back-link { text-align: center; margin-top: 24px; }
     .back-link a { color: #0071e3; text-decoration: none; font-size: 0.9rem; }
 
-    .toast {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: #1d1d1f;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 980px;
-      font-size: 0.9rem;
-      opacity: 0;
-      transition: all 0.3s;
-      pointer-events: none;
-      z-index: 1000;
-      white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1d1d1f; color: #fff; padding: 14px 24px; border-radius: 980px; font-size: 0.9rem; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 1000; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 560px) {
+      .type-grid { grid-template-columns: 1fr 1fr; }
+      .field-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: 1; }
+    }
   </style>
 </head>
 <body>
 
   <div class="page-header">
-    <h1>📋 Import Preferences</h1>
-    <p class="subtitle">Already have someone's preferences in a Google Doc, email, or notes? Paste them here and Carrie will convert them automatically.</p>
+    <h1>📋 Import Your Notes</h1>
+    <p class="subtitle">Have notes on an exec, a household, or a business already written down? Paste them here — messy is fine. We'll package them for your AI.</p>
   </div>
 
   <div class="container">
 
-    <!-- Step 1: Paste -->
     <div class="section" id="step1">
-      <h2>Step 1 — What type of profile?</h2>
-      <div class="profile-type-row">
-        <button class="type-btn active" onclick="setType('travel', this)">✈️ Travel Profile</button>
-        <button class="type-btn" onclick="setType('food', this)">☕ Food & Coffee Profile</button>
+      <h2>Step 1 — What type of notes are these?</h2>
+      <div class="type-grid">
+        <button class="type-btn active" onclick="setType('travel', this)"><span class="type-emoji">✈️</span>Travel Profile</button>
+        <button class="type-btn" onclick="setType('food', this)"><span class="type-emoji">☕</span>Food & Coffee</button>
+        <button class="type-btn" onclick="setType('executive', this)"><span class="type-emoji">💼</span>Executive Profile</button>
+        <button class="type-btn" onclick="setType('family', this)"><span class="type-emoji">🏡</span>Family & Household</button>
+        <button class="type-btn" onclick="setType('business', this)"><span class="type-emoji">🏪</span>Business Profile</button>
+        <button class="type-btn" onclick="setType('braindump', this)"><span class="type-emoji">🧠</span>Brain Dump</button>
       </div>
 
-      <h2>Step 2 — Paste their preferences</h2>
-      <textarea id="raw-text" placeholder="Paste anything here — a Google Doc, an email, bullet points, notes. For example:
-
-Josh Allen Go Bills
-joshallen@gobills.com
-Flies United, always aisle seat, TSA PreCheck #ABC123
-Marriott preferred, high floor, king bed
-No shellfish, gluten free
-United MileagePlus #XY123456"></textarea>
-
-      <div class="notice">
-        💡 Don't worry about formatting — paste it exactly as it is. Claude will figure out the rest.
-      </div>
+      <h2>Step 2 — Paste your notes</h2>
+      <textarea id="raw-text" placeholder="Paste anything here — a Google Doc, an email, bullet points, a notes app export. Messy is fine."></textarea>
+      <div class="notice" id="type-hint">💡 Don't worry about formatting — paste it exactly as it is. Claude will figure out the rest.</div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="parseProfile()">Parse Preferences →</button>
+        <button class="btn btn-primary" onclick="parseProfile()">Package Notes →</button>
       </div>
     </div>
 
-    <!-- Step 2: Review -->
-    <div class="section results" id="results-section">
+    <!-- Review: Travel (existing parse + review) -->
+    <div class="section results" id="results-travel">
       <h2>Step 3 — Review & download</h2>
-      <p style="color:#6e6e73; font-size:0.9rem; margin-bottom:20px;">Check the extracted info below. Edit anything that looks wrong, then download.</p>
-
-      <div id="travel-fields" class="field-grid">
+      <p style="color:#6e6e73; font-size:0.9rem; margin-bottom:20px;">Check what was extracted. Edit anything wrong, then download.</p>
+      <div class="field-grid">
         <div class="field"><label>Full Name</label><input type="text" id="f-name" /></div>
         <div class="field"><label>Preferred Name</label><input type="text" id="f-preferred-name" /></div>
         <div class="field"><label>Email</label><input type="email" id="f-email" /></div>
@@ -228,15 +136,24 @@ United MileagePlus #XY123456"></textarea>
         <div class="field full"><label>Dietary Restrictions</label><input type="text" id="f-dietary" /></div>
         <div class="field full"><label>Additional Notes</label><input type="text" id="f-notes" /></div>
       </div>
+      <div class="btn-row">
+        <button class="btn btn-success" onclick="downloadProfile()">⬇️ Download Profile</button>
+        <button class="btn btn-secondary" onclick="resetForm()">Start over</button>
+      </div>
+    </div>
 
-      <div id="food-fields" class="field-grid" style="display:none;">
+    <!-- Review: Food (existing parse + review) -->
+    <div class="section results" id="results-food">
+      <h2>Step 3 — Review & download</h2>
+      <p style="color:#6e6e73; font-size:0.9rem; margin-bottom:20px;">Check what was extracted. Edit anything wrong, then download.</p>
+      <div class="field-grid">
         <div class="field"><label>Full Name</label><input type="text" id="ff-name" /></div>
         <div class="field"><label>Preferred Name</label><input type="text" id="ff-preferred-name" /></div>
         <div class="field"><label>Email</label><input type="email" id="ff-email" /></div>
         <div class="field"><label>Phone</label><input type="tel" id="ff-phone" /></div>
         <div class="field full"><label>Coffee Chain</label><input type="text" id="ff-chain" placeholder="Starbucks, Dunkin', etc." /></div>
-        <div class="field full"><label>Exact Coffee Order</label><input type="text" id="ff-coffee" placeholder="e.g. Grande iced oat milk latte, 2 pumps vanilla" /></div>
-        <div class="field"><label>Coffee Size</label><input type="text" id="ff-size" placeholder="small / medium / large" /></div>
+        <div class="field full"><label>Exact Coffee Order</label><input type="text" id="ff-coffee" /></div>
+        <div class="field"><label>Coffee Size</label><input type="text" id="ff-size" /></div>
         <div class="field"><label>Temperature</label><input type="text" id="ff-temp" placeholder="hot / iced" /></div>
         <div class="field"><label>Milk Preference</label><input type="text" id="ff-milk" /></div>
         <div class="field"><label>Sweetener</label><input type="text" id="ff-sweetener" /></div>
@@ -247,28 +164,53 @@ United MileagePlus #XY123456"></textarea>
         <div class="field full"><label>Home Delivery Address</label><input type="text" id="ff-home" /></div>
         <div class="field full"><label>Additional Notes</label><input type="text" id="ff-notes" /></div>
       </div>
-
       <div class="btn-row">
         <button class="btn btn-success" onclick="downloadProfile()">⬇️ Download Profile</button>
         <button class="btn btn-secondary" onclick="resetForm()">Start over</button>
       </div>
     </div>
 
+    <!-- Direct download: Executive / Family / Business / Brain Dump -->
+    <div class="section results" id="results-direct">
+      <h2>✅ Notes packaged — ready to download</h2>
+      <p style="color:#6e6e73; font-size:0.9rem; margin-bottom:16px;">Your notes are wrapped in a structured file your AI can read. Download it, then upload to Claude or ChatGPT with this prompt:</p>
+      <div class="prompt-box" id="ai-prompt-text"></div>
+      <div class="notice-green" style="margin-top:16px;">💡 Claude will do the organizing — no need to reformat anything before uploading.</div>
+      <div class="btn-row">
+        <button class="btn btn-success" onclick="downloadProfile()">⬇️ Download File</button>
+        <button class="btn btn-secondary" onclick="resetForm()">Start over</button>
+      </div>
+    </div>
+
   </div>
 
-  <div class="back-link">
-    <a href="/">← Back to Carrie</a>
-  </div>
-
+  <div class="back-link"><a href="/">← Back to GetCarrieAI</a></div>
   <div class="toast" id="toast"></div>
 
 <script>
   let currentType = 'travel';
 
+  const typeHints = {
+    travel: '💡 Don\'t worry about formatting — paste it exactly as it is. Claude will figure out the rest.',
+    food: '💡 Paste their coffee order, dietary notes, favorite spots — any format works.',
+    executive: '💡 Paste anything you know — calendar rules, communication style, quirks, preferences. Bullet points, paragraphs, whatever you have.',
+    family: '💡 Paste spouse info, kids\' names and birthdays, pet info, gift preferences — all of it. Messy is fine.',
+    business: '💡 Paste your business overview, how you communicate, what drives you crazy, tools you use — anything.',
+    braindump: '💡 Paste everything you know. No structure needed. Claude will sort it out when you upload.'
+  };
+
+  const aiPrompts = {
+    executive: 'I\'ve attached my executive notes file. Please read through everything and organize it into a clear, structured profile I can reference — covering calendar rules, communication style, working preferences, and anything else you find. Ask me if anything is unclear.',
+    family: 'I\'ve attached my household notes file. Please organize this into a structured family profile — covering each person, key dates, preferences, and anything else relevant. Ask me if you need clarification.',
+    business: 'I\'ve attached my business notes file. Please organize this into a clear business profile I can reference — covering what we do, how I work, admin needs, and anything else you find.',
+    braindump: 'I\'ve attached a brain dump of everything I know about this person/business. Please read through it and organize it into a clean, structured profile I can reference and build on. Ask me if anything is unclear.'
+  };
+
   function setType(type, btn) {
     currentType = type;
     document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('type-hint').textContent = typeHints[type];
   }
 
   function showToast(msg) {
@@ -278,150 +220,97 @@ United MileagePlus #XY123456"></textarea>
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  function extract(text, patterns) {
-    for (const pattern of patterns) {
-      const m = text.match(pattern);
-      if (m) return m[1]?.trim() || m[0]?.trim();
-    }
-    return '';
+  function hideAllResults() {
+    document.querySelectorAll('.results').forEach(el => el.classList.remove('visible'));
   }
 
   function parseProfile() {
     const text = document.getElementById('raw-text').value;
-    if (!text.trim()) { showToast('Please paste some text first!'); return; }
-
+    if (!text.trim()) { showToast('Please paste some notes first!'); return; }
     const lower = text.toLowerCase();
+    hideAllResults();
 
     if (currentType === 'travel') {
-      // Name
-      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) ||
-                        text.match(/name[:\s]+([A-Za-z ]+)/i);
+      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) || text.match(/name[:\s]+([A-Za-z ]+)/i);
       document.getElementById('f-name').value = nameMatch ? nameMatch[1].trim() : '';
-
-      // Email
       const email = text.match(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
       document.getElementById('f-email').value = email ? email[0] : '';
-
-      // Phone
       const phone = text.match(/(\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4})/);
       document.getElementById('f-phone').value = phone ? phone[1] : '';
-
-      // Airlines
-      const airlines = ['united', 'american', 'delta', 'southwest', 'jetblue', 'alaska', 'frontier', 'spirit', 'lufthansa', 'british airways', 'emirates'];
-      const foundAirlines = airlines.filter(a => lower.includes(a)).map(a => a.charAt(0).toUpperCase() + a.slice(1));
-      document.getElementById('f-airlines').value = foundAirlines.join(', ');
-
-      // Seat
+      const airlines = ['united','american','delta','southwest','jetblue','alaska','frontier','spirit','lufthansa','british airways','emirates'];
+      document.getElementById('f-airlines').value = airlines.filter(a => lower.includes(a)).map(a => a.charAt(0).toUpperCase()+a.slice(1)).join(', ');
       if (lower.includes('aisle')) document.getElementById('f-seat').value = 'aisle';
       else if (lower.includes('window')) document.getElementById('f-seat').value = 'window';
-      else if (lower.includes('middle')) document.getElementById('f-seat').value = 'middle';
-
-      // Class
-      if (lower.includes('first class') || lower.includes('first-class')) document.getElementById('f-class').value = 'first';
+      if (lower.includes('first class')) document.getElementById('f-class').value = 'first';
       else if (lower.includes('business')) document.getElementById('f-class').value = 'business';
-      else if (lower.includes('premium economy') || lower.includes('premium_economy')) document.getElementById('f-class').value = 'premium_economy';
       else if (lower.includes('economy')) document.getElementById('f-class').value = 'economy';
-
-      // KTN
       const ktn = text.match(/(?:ktn|precheck|pre-check|known traveler)[:\s#]+([A-Z0-9]+)/i);
       document.getElementById('f-ktn').value = ktn ? ktn[1] : '';
-
-      // Frequent flyer
       const ff = text.match(/(?:mileageplus|aadvantage|skymiles|rapid rewards|frequent flyer|ff#?)[:\s#]+([A-Z0-9]+)/i);
       document.getElementById('f-ff-number').value = ff ? ff[1] : '';
-
-      // Hotels
-      const hotels = ['marriott', 'hilton', 'hyatt', 'ihg', 'westin', 'sheraton', 'ritz', 'four seasons', 'kimpton'];
-      const foundHotels = hotels.filter(h => lower.includes(h)).map(h => h.charAt(0).toUpperCase() + h.slice(1));
-      document.getElementById('f-hotels').value = foundHotels.join(', ');
-
-      // Bed
+      const hotels = ['marriott','hilton','hyatt','ihg','westin','sheraton','ritz','four seasons','kimpton'];
+      document.getElementById('f-hotels').value = hotels.filter(h => lower.includes(h)).map(h => h.charAt(0).toUpperCase()+h.slice(1)).join(', ');
       if (lower.includes('king')) document.getElementById('f-bed').value = 'king';
       else if (lower.includes('queen')) document.getElementById('f-bed').value = 'queen';
-
-      // Floor
       if (lower.includes('high floor')) document.getElementById('f-floor').value = 'high';
-      else if (lower.includes('low floor')) document.getElementById('f-floor').value = 'low';
-
-      // Dietary
       const dietary = [];
       if (lower.includes('vegetarian')) dietary.push('vegetarian');
       if (lower.includes('vegan')) dietary.push('vegan');
       if (lower.includes('gluten')) dietary.push('gluten-free');
-      if (lower.includes('kosher')) dietary.push('kosher');
-      if (lower.includes('halal')) dietary.push('halal');
       if (lower.includes('shellfish')) dietary.push('shellfish-free');
       if (lower.includes('dairy')) dietary.push('dairy-free');
       if (lower.includes('nut') || lower.includes('peanut')) dietary.push('nut-free');
       document.getElementById('f-dietary').value = dietary.join(', ');
+      document.getElementById('results-travel').classList.add('visible');
+      document.getElementById('results-travel').scrollIntoView({ behavior: 'smooth' });
+      showToast('Parsed! Review the fields and download.');
 
-      // Show travel fields
-      document.getElementById('travel-fields').style.display = 'grid';
-      document.getElementById('food-fields').style.display = 'none';
-
-    } else {
-      // Food profile parsing
-      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) ||
-                        text.match(/name[:\s]+([A-Za-z ]+)/i);
+    } else if (currentType === 'food') {
+      const nameMatch = text.match(/^([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)/m) || text.match(/name[:\s]+([A-Za-z ]+)/i);
       document.getElementById('ff-name').value = nameMatch ? nameMatch[1].trim() : '';
-
       const email = text.match(/[\w.+-]+@[\w-]+\.[a-z]{2,}/i);
       document.getElementById('ff-email').value = email ? email[0] : '';
-
-      // Coffee chain
-      const chains = ['starbucks', "dunkin'", 'dunkin', 'peets', "peet's", 'dutch bros', 'caribou', 'tim hortons'];
+      const chains = ['starbucks',"dunkin'",'dunkin',"peet's",'dutch bros'];
       const foundChain = chains.find(c => lower.includes(c));
-      document.getElementById('ff-chain').value = foundChain ? foundChain.charAt(0).toUpperCase() + foundChain.slice(1) : '';
-
-      // Coffee order
-      const coffeeOrder = text.match(/(?:coffee order|usual order|order)[:\s]+([^\n]+)/i) ||
-                          text.match(/(?:latte|cappuccino|americano|macchiato|espresso|cold brew|frappuccino)[^\n]*/i);
+      document.getElementById('ff-chain').value = foundChain ? foundChain.charAt(0).toUpperCase()+foundChain.slice(1) : '';
+      const coffeeOrder = text.match(/(?:latte|cappuccino|americano|macchiato|espresso|cold brew|frappuccino)[^\n]*/i);
       document.getElementById('ff-coffee').value = coffeeOrder ? coffeeOrder[0].trim() : '';
-
-      // Milk
-      const milks = ['oat milk', 'oat', 'almond milk', 'almond', 'soy milk', 'soy', 'whole milk', 'whole', 'skim milk', 'skim', 'coconut milk', 'coconut'];
-      const foundMilk = milks.find(m => lower.includes(m));
-      document.getElementById('ff-milk').value = foundMilk || '';
-
-      // Size
+      const milks = ['oat milk','almond milk','soy milk','whole milk','skim milk','coconut milk','oat','almond','soy'];
+      document.getElementById('ff-milk').value = milks.find(m => lower.includes(m)) || '';
       if (lower.includes('grande')) document.getElementById('ff-size').value = 'grande (medium)';
       else if (lower.includes('venti')) document.getElementById('ff-size').value = 'venti (large)';
-      else if (lower.includes('tall')) document.getElementById('ff-size').value = 'tall (small)';
       else if (lower.includes('large')) document.getElementById('ff-size').value = 'large';
       else if (lower.includes('medium')) document.getElementById('ff-size').value = 'medium';
-      else if (lower.includes('small')) document.getElementById('ff-size').value = 'small';
-
-      // Temp
       if (lower.includes('iced') || lower.includes('cold')) document.getElementById('ff-temp').value = 'iced';
       else if (lower.includes('hot')) document.getElementById('ff-temp').value = 'hot';
-
-      // Dietary
       const dietary = [];
-      if (lower.includes('vegetarian')) dietary.push('vegetarian');
-      if (lower.includes('vegan')) dietary.push('vegan');
       if (lower.includes('gluten')) dietary.push('gluten-free');
       if (lower.includes('shellfish')) dietary.push('shellfish-free');
       if (lower.includes('dairy')) dietary.push('dairy-free');
       if (lower.includes('nut') || lower.includes('peanut')) dietary.push('nut-free');
       document.getElementById('ff-dietary').value = dietary.join(', ');
+      document.getElementById('results-food').classList.add('visible');
+      document.getElementById('results-food').scrollIntoView({ behavior: 'smooth' });
+      showToast('Parsed! Review the fields and download.');
 
-      // Show food fields
-      document.getElementById('food-fields').style.display = 'grid';
-      document.getElementById('travel-fields').style.display = 'none';
+    } else {
+      // Executive, Family, Business, Brain Dump — package as-is, let Claude organize
+      document.getElementById('ai-prompt-text').textContent = aiPrompts[currentType];
+      document.getElementById('results-direct').classList.add('visible');
+      document.getElementById('results-direct').scrollIntoView({ behavior: 'smooth' });
+      showToast('Ready to download!');
     }
-
-    document.getElementById('results-section').classList.add('visible');
-    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-    showToast('Parsed! Review the fields and download.');
   }
 
   function downloadProfile() {
+    const text = document.getElementById('raw-text').value;
     let data = { updated_at: new Date().toISOString() };
-    let name, suffix;
+    let filename;
 
     if (currentType === 'travel') {
-      name = document.getElementById('f-name').value || 'traveler';
-      suffix = 'travel_profile';
+      const name = document.getElementById('f-name').value || 'traveler';
+      const safe = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      data.profile_type = 'travel_profile';
       data.name = document.getElementById('f-name').value;
       data.preferred_name = document.getElementById('f-preferred-name').value;
       data.email = document.getElementById('f-email').value;
@@ -433,24 +322,17 @@ United MileagePlus #XY123456"></textarea>
       data.home_airports = document.getElementById('f-airport').value;
       data.ktn = document.getElementById('f-ktn').value;
       data.food_allergies = document.getElementById('f-allergies').value;
-      data.dietary_restrictions = document.getElementById('f-dietary').value.split(',').map(s => s.trim()).filter(Boolean);
+      data.dietary_restrictions = document.getElementById('f-dietary').value.split(',').map(s=>s.trim()).filter(Boolean);
       data.preferred_hotels = document.getElementById('f-hotels').value;
       data.bed_pref = document.getElementById('f-bed').value;
       data.floor_pref = document.getElementById('f-floor').value;
       data.additional_notes = document.getElementById('f-notes').value;
-      const ffAirline = document.getElementById('f-ff-airline').value;
-      const ffNumber = document.getElementById('f-ff-number').value;
-      if (ffAirline || ffNumber) {
-        data.frequent_flyer = [{ airline: ffAirline, number: ffNumber }];
-      }
-      const hotelChain = document.getElementById('f-hotels').value;
-      const hotelLoyalty = document.getElementById('f-hotel-loyalty').value;
-      if (hotelChain || hotelLoyalty) {
-        data.hotel_loyalty = [{ chain: hotelChain, number: hotelLoyalty }];
-      }
-    } else {
-      name = document.getElementById('ff-name').value || 'person';
-      suffix = 'food_profile';
+      filename = `${safe}_travel_profile.json`;
+
+    } else if (currentType === 'food') {
+      const name = document.getElementById('ff-name').value || 'person';
+      const safe = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      data.profile_type = 'food_profile';
       data.name = document.getElementById('ff-name').value;
       data.preferred_name = document.getElementById('ff-preferred-name').value;
       data.email = document.getElementById('ff-email').value;
@@ -462,32 +344,34 @@ United MileagePlus #XY123456"></textarea>
       data.milk_pref = document.getElementById('ff-milk').value;
       data.sweetener = document.getElementById('ff-sweetener').value;
       data.food_allergies = document.getElementById('ff-allergies').value;
-      data.dietary_restrictions = document.getElementById('ff-dietary').value.split(',').map(s => s.trim()).filter(Boolean);
+      data.dietary_restrictions = document.getElementById('ff-dietary').value.split(',').map(s=>s.trim()).filter(Boolean);
       data.fav_cuisines = document.getElementById('ff-restaurants').value;
       data.address_office = document.getElementById('ff-office').value;
       data.address_home = document.getElementById('ff-home').value;
       data.additional_notes = document.getElementById('ff-notes').value;
+      filename = `${safe}_food_profile.json`;
+
+    } else {
+      const typeLabels = { executive: 'executive_profile', family: 'family_profile', business: 'business_profile', braindump: 'brain_dump' };
+      data.profile_type = typeLabels[currentType];
+      data.raw_notes = text;
+      data.ai_instructions = aiPrompts[currentType];
+      filename = `${typeLabels[currentType]}_notes.json`;
     }
 
     // Remove empty fields
-    Object.keys(data).forEach(k => {
-      if (data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k];
-    });
+    Object.keys(data).forEach(k => { if (data[k] === '' || (Array.isArray(data[k]) && data[k].length === 0)) delete data[k]; });
 
-    const displayName = data.preferred_name || (name || 'person').split(' ')[0];
-    const safeName = displayName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `${safeName}_${suffix}.json`;
-    a.click();
-    showToast(`Downloaded ${safeName}_${suffix}.json!`);
+    a.href = url; a.download = filename; a.click();
+    showToast(`Downloaded ${filename}!`);
   }
 
   function resetForm() {
     document.getElementById('raw-text').value = '';
-    document.getElementById('results-section').classList.remove('visible');
+    hideAllResults();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
