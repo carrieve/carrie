@@ -225,8 +225,20 @@
           </div>
         </div>
         <div>
-          <label>Pets</label>
-          <input type="text" name="pets" placeholder="e.g. Baxter — golden retriever, stays with nanny when traveling" />
+          <label>Pets <span class="hint">(name, breed, any basics)</span></label>
+          <input type="text" name="pets" placeholder="e.g. Baxter — golden retriever, 4 years old. Luna — tabby cat." />
+        </div>
+        <div>
+          <label>Vet <span class="hint">(name, clinic, phone)</span></label>
+          <input type="text" name="pets_vet" placeholder="e.g. Dr. Kim at Southpark Animal Hospital — 704-555-0132" />
+        </div>
+        <div>
+          <label>Boarding / pet sitter preference</label>
+          <input type="text" name="pets_boarding" placeholder="e.g. Baxter stays with the nanny when family travels. Luna has a pet sitter — Jess, 704-555-0188." />
+        </div>
+        <div>
+          <label>Special needs, meds, or instructions</label>
+          <input type="text" name="pets_needs" placeholder="e.g. Baxter takes Apoquel daily for allergies — stored in mudroom cabinet. No rawhide. Luna needs wet food only." />
         </div>
       </div>
     </div>
@@ -598,7 +610,7 @@
     const data = { profile_type: 'family_household', updated_at: new Date().toISOString() };
 
     // Text/textarea fields
-    ['principal_name','ea_name','home_city','other_homes','pets',
+    ['principal_name','ea_name','home_city','other_homes','pets','pets_vet','pets_boarding','pets_needs',
      'spouse_name','spouse_preferred','spouse_birthday','anniversary','spouse_work',
      'spouse_dietary','spouse_likes','spouse_restaurants','spouse_gift_notes',
      'spouse_travel','spouse_contact','spouse_notes',

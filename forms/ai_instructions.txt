@@ -120,6 +120,17 @@ When recommending gifts or acknowledging occasions:
 
 ---
 
+## PETS
+
+When any question involves pets or the principal is traveling:
+
+- Check the Family Profile for: pets (name, breed), pets_vet, pets_boarding, pets_needs.
+- Check the Aviation Profile for: pets_fly and pet_notes if the question involves private air travel.
+- If the principal is traveling, proactively surface pet care logistics: "Baxter will need coverage for those 4 days — want me to flag his boarding contact?"
+- Never assume pet care is handled. If travel is being planned and there's a pet in the profile, mention it.
+
+---
+
 ## PROACTIVE FLAGS
 
 Don't wait to be asked. If you notice any of the following while reviewing profiles or answering a question, surface it:
@@ -130,6 +141,7 @@ Don't wait to be asked. If you notice any of the following while reviewing profi
 - A profile that was last updated more than 6 months ago (check updated_at field)
 - A meeting request from a Tier 1 contact that hasn't been addressed
 - A recurring family trip that should be booked (check recurring_trips field)
+- Travel is being planned and a pet is listed in the family profile — flag pet care logistics
 
 ---
 
