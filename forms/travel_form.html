@@ -260,6 +260,12 @@
   <div class="notice" id="form-notice">
     📎 When you click <strong>Save My Travel Profile</strong>, a file will download to your computer. <strong>Email that file back to your travel coordinator</strong> — that's all you need to do.
   </div>
+  <div id="copy-chat-section" style="display:none; background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
+    <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#0071e3; margin-bottom:6px;">Prefer to skip the file? Paste directly into chat.</p>
+    <p style="font-size:0.84rem; color:#3d3d3f; line-height:1.6; margin-bottom:10px;">Copy your profile as text, open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">Claude.ai</a> or Grok, start a new chat, and paste. No uploading needed.</p>
+    <p style="font-size:0.8rem; color:#6e6e73; margin-bottom:12px;">Then say: <em>"This is my travel profile. Please remember everything in it."</em></p>
+    <button onclick="copyToChat()" id="copyBtn" style="background:#0071e3; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
+  </div>
 </div>
 
 <script>
@@ -276,6 +282,17 @@
     });
   }
 })();
+
+  function copyToChat() {
+    if (!window._lastProfile) return;
+    const text = JSON.stringify(window._lastProfile, null, 2);
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied! Now paste into your AI chat.';
+      setTimeout(() => btn.textContent = orig, 3000);
+    });
+  }
 </script>
 
 <form id="travel-form">
@@ -707,7 +724,8 @@
     data.updated_at = new Date().toISOString();
 
     const _download = () => {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      window._lastProfile = data;
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       const displayName = data.preferred_name || (data.name || 'traveler').split(' ')[0];
