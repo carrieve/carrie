@@ -337,10 +337,69 @@
       </div>
     </div>
 
-    <!-- Working Style -->
+    <!-- Meeting Priorities -->
     <div class="section">
       <div class="section-header">
         <p class="section-label">Section 4</p>
+        <p class="section-title">Meeting Priorities & Conflict Rules</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Tier 1 — always gets on the calendar <span class="hint">(no questions asked)</span></label>
+          <textarea name="tier1_contacts" placeholder="e.g. Board members, co-founders, lead investor, their spouse/partner, specific key customers by name"></textarea>
+        </div>
+        <div>
+          <label>Tier 2 — important, but can wait <span class="hint">(get on if there's room, respond within 24 hrs)</span></label>
+          <textarea name="tier2_contacts" placeholder="e.g. Investors not on the board, senior leadership team, strategic partners, press/media with a real story"></textarea>
+        </div>
+        <div>
+          <label>Tier 3 — route or decline without asking</label>
+          <textarea name="tier3_contacts" placeholder="e.g. Cold outreach, vendor pitches, intro calls with no clear agenda, anyone who won't say what the meeting is about"></textarea>
+        </div>
+        <div>
+          <label>When two important meetings collide, what wins?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'conflict_rule')">Earlier request wins</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'conflict_rule')">More senior person wins</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'conflict_rule')">External over internal</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'conflict_rule')">Always ask me</button>
+          </div>
+        </div>
+        <div>
+          <label>What are focus blocks actually for? <span class="hint">(so you can explain it, not just say "unavailable")</span></label>
+          <textarea name="focus_block_purpose" placeholder="e.g. Morning block is for writing and strategic thinking — this is non-negotiable. Afternoon block is for heads-down product work. Lunch is the only break in the day."></textarea>
+        </div>
+        <div>
+          <label>Meeting types they want to avoid <span class="hint">(decline or shorten without asking)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Status updates that could be an email</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Intro calls with no clear purpose</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Vendor / sales pitches</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Recurring meetings with no agenda</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Anything over 60 min unless approved</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this)">Back-to-back without a break</button>
+          </div>
+        </div>
+        <div>
+          <label>How should you decline or reschedule on their behalf?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'decline_style')">Warm — offer an alternative time</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'decline_style')">Brief — no explanation needed</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'decline_style')">Always offer a 15-min call instead</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'decline_style')">Ask me before declining anything</button>
+          </div>
+        </div>
+        <div>
+          <label>Sample decline or reschedule language <span class="hint">(optional — paste what sounds like them)</span></label>
+          <textarea name="decline_script" placeholder='e.g. "Josh is slammed this week — could you do next Tuesday after 2pm? Happy to find a time that works." or "He appreciates the interest but is keeping his calendar tight right now."'></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Working Style -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
         <p class="section-title">Working Style & Preferences</p>
       </div>
       <div class="section-body">
@@ -421,6 +480,7 @@
     ['exec_name','exec_preferred_name','exec_title','exec_company','exec_email',
      'exec_timezone','ea_name','email_signoff','priority_contacts','flag_immediately',
      'never_bother','max_meetings','protected_blocks','other_timezones',
+     'tier1_contacts','tier2_contacts','tier3_contacts','focus_block_purpose','decline_script',
      'urgent_contact','handles_themselves','pet_peeves','other_notes'
     ].forEach(name => {
       const val = form.elements[name]?.value.trim();
@@ -434,16 +494,24 @@
     });
 
     // Single-select chips
-    ['tone','length','info','meettime','video','updates'].forEach(group => {
+    ['tone','length','info','meettime','video','updates','conflict_rule','decline_style'].forEach(group => {
       if (selections[group]) data[`pref_${group}`] = selections[group];
     });
 
-    // Multi-select chips (no-meeting days)
+    // Multi-select chips
     const noMeetingDays = [];
+    const avoidMeetingTypes = [];
     document.querySelectorAll('.chip[onclick="toggleChipMulti(this)"].selected').forEach(el => {
-      noMeetingDays.push(el.textContent.trim());
+      const text = el.textContent.trim();
+      const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','None'];
+      if (days.includes(text)) {
+        noMeetingDays.push(text);
+      } else {
+        avoidMeetingTypes.push(text);
+      }
     });
     if (noMeetingDays.length) data.no_meeting_days = noMeetingDays;
+    if (avoidMeetingTypes.length) data.avoid_meeting_types = avoidMeetingTypes;
 
     // Download
     const execName = (data.exec_name || 'executive').toLowerCase().replace(/\s+/g, '_');
