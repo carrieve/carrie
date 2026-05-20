@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiring Profile — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif; background: #f5f5f7; color: #1d1d1f; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px 80px; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 620px; width: 100%; text-align: center; }
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; }
+    .subtitle { font-size: 0.95rem; color: #6e6e73; margin-bottom: 32px; line-height: 1.6; }
+    .section { background: #fff; border-radius: 18px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); text-align: left; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; margin-bottom: 18px; }
+    .section-body { display: flex; flex-direction: column; gap: 14px; }
+    label { font-size: 0.82rem; font-weight: 600; color: #3d3d3f; display: block; margin-bottom: 5px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; }
+    input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 0.88rem; font-family: inherit; color: #1d1d1f; background: #fff; outline: none; transition: border-color 0.15s; }
+    input:focus, textarea:focus { border-color: #0071e3; }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 7px 14px; border-radius: 980px; border: 1.5px solid #d2d2d7; background: #fff; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .chip:hover { border-color: #0071e3; color: #0071e3; }
+    .chip.selected { background: #0071e3; border-color: #0071e3; color: #fff; }
+    .btn-download { width: 100%; padding: 16px; background: #0071e3; color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; margin-top: 8px; }
+    .btn-download:hover { background: #0077ed; }
+    .success-msg { display: none; text-align: center; padding: 40px 20px; }
+    .check { width: 56px; height: 56px; background: #34c759; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .check svg { width: 28px; height: 28px; stroke: #fff; }
+    .success-msg h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+    .success-msg p { color: #6e6e73; font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .steps { text-align: left; background: #f5f5f7; border-radius: 14px; padding: 18px 20px; margin: 20px 0; }
+    .step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+    .step:last-child { margin-bottom: 0; }
+    .step-num { background: #0071e3; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .step-text { font-size: 0.84rem; color: #3d3d3f; line-height: 1.5; }
+    .ai-strip { background: #f5f5f7; border-radius: 16px; padding: 20px 22px; margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .ai-strip-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #aeaeb2; margin-bottom: 4px; }
+    .ai-strip-title { font-size: 0.88rem; font-weight: 600; color: #1d1d1f; margin-bottom: 4px; }
+    .ai-strip-desc { font-size: 0.8rem; color: #6e6e73; line-height: 1.5; }
+    .pill-dark { flex-shrink: 0; display: inline-block; background: #1d1d1f; color: #fff; border-radius: 980px; padding: 10px 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .back-link { text-align: center; margin-top: 24px; }
+    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Hiring Profile</h1>
+  <p class="subtitle">Document the role once — your AI screens resumes, drafts job postings, and suggests interview questions without you re-explaining everything.</p>
+
+  <form id="hiring-form">
+
+    <div class="section">
+      <p class="section-label">Section 1</p>
+      <p class="section-title">The Role</p>
+      <div class="section-body">
+        <div class="row-2">
+          <div><label>Job title</label><input type="text" name="job_title" placeholder="e.g. Head of Operations" /></div>
+          <div><label>Department / team</label><input type="text" name="department" placeholder="e.g. Operations, Engineering" /></div>
+        </div>
+        <div class="row-2">
+          <div><label>Reports to</label><input type="text" name="reports_to" placeholder="e.g. CEO, COO" /></div>
+          <div><label>Target start date</label><input type="text" name="start_date" placeholder="e.g. ASAP, Q3 2026" /></div>
+        </div>
+        <div>
+          <label>Employment type</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Full-time</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Part-time</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract-to-hire</button>
+          </div>
+        </div>
+        <div>
+          <label>Location</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'location_type')">Remote</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'location_type')">Hybrid</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'location_type')">On-site</button>
+          </div>
+        </div>
+        <div><label>Office location <span class="hint">(if hybrid or on-site)</span></label><input type="text" name="office_location" placeholder="e.g. Charlotte, NC — 3 days/week in office" /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 2</p>
+      <p class="section-title">What This Person Does</p>
+      <div class="section-body">
+        <div><label>Key responsibilities <span class="hint">(what they'll own day-to-day)</span></label><textarea name="responsibilities" placeholder="e.g. Own vendor relationships and contracts. Build and manage ops playbooks. Be the connective tissue between finance, HR, and product. First ops hire — will define the function."></textarea></div>
+        <div><label>What success looks like in 90 days</label><textarea name="success_90" placeholder="e.g. Has audited all vendor contracts and flagged renewals. Has documented 3 core processes. Has built a relationship with every department lead."></textarea></div>
+        <div><label>What this role is NOT <span class="hint">(helps avoid bad-fit candidates)</span></label><input type="text" name="not_the_role" placeholder="e.g. Not an EA role — no calendar management. Not an analyst role — this person builds, not reports." /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 3</p>
+      <p class="section-title">Requirements</p>
+      <div class="section-body">
+        <div><label>Must-haves <span class="hint">(non-negotiable)</span></label><textarea name="must_haves" placeholder="e.g. 5+ years in ops or chief of staff role. Has built processes at a company under 50 people. Strong written communication — we're async-first."></textarea></div>
+        <div><label>Nice-to-haves <span class="hint">(preferred but not required)</span></label><textarea name="nice_to_haves" placeholder="e.g. Experience with Notion and Linear. Has worked in a startup that scaled past Series B. MBA or equivalent."></textarea></div>
+        <div><label>Deal-breakers <span class="hint">(auto-disqualifiers)</span></label><input type="text" name="deal_breakers" placeholder="e.g. No ops experience. Only enterprise background. Needs heavy structure to thrive." /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 4</p>
+      <p class="section-title">Compensation</p>
+      <div class="section-body">
+        <div class="row-2">
+          <div><label>Salary range</label><input type="text" name="salary_range" placeholder="e.g. $120K–$150K base" /></div>
+          <div><label>Bonus / commission</label><input type="text" name="bonus" placeholder="e.g. 10% performance bonus, no commission" /></div>
+        </div>
+        <div>
+          <label>Equity</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'equity')">Yes — options</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'equity')">Yes — RSUs</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'equity')">TBD / negotiable</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'equity')">No equity</button>
+          </div>
+        </div>
+        <div><label>Benefits highlights</label><input type="text" name="benefits" placeholder="e.g. Full medical/dental/vision, 401k with 4% match, unlimited PTO, $1K learning budget" /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 5</p>
+      <p class="section-title">Interview Process</p>
+      <div class="section-body">
+        <div>
+          <label>Number of rounds</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'rounds')">2 rounds</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'rounds')">3 rounds</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'rounds')">4 rounds</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'rounds')">Still deciding</button>
+          </div>
+        </div>
+        <div><label>Interview stages</label><textarea name="interview_stages" placeholder="e.g. 1. 30-min phone screen with EA (fit + basics). 2. 60-min with CEO (strategic thinking). 3. Take-home exercise (ops case study, 2 hrs). 4. Final panel with dept leads."></textarea></div>
+        <div><label>Who makes the final call</label><input type="text" name="decision_maker" placeholder="e.g. CEO with input from COO and team lead" /></div>
+        <div><label>Typical timeline from first interview to offer</label><input type="text" name="timeline" placeholder="e.g. 2–3 weeks" /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 6</p>
+      <p class="section-title">Culture & Team</p>
+      <div class="section-body">
+        <div class="row-2">
+          <div><label>Company / team size</label><input type="text" name="team_size" placeholder="e.g. 28 people total, ops team of 1 (this hire)" /></div>
+          <div><label>Stage / funding</label><input type="text" name="stage" placeholder="e.g. Series A, $12M raised" /></div>
+        </div>
+        <div>
+          <label>Work style</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'work_style')">Async-first</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'work_style')">Highly collaborative</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'work_style')">Fast-paced / scrappy</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'work_style')">Process-driven</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'work_style')">Mix of both</button>
+          </div>
+        </div>
+        <div><label>What the team values most</label><textarea name="culture_values" placeholder="e.g. Low ego, high ownership. We'd rather someone say 'I don't know but I'll find out' than pretend. Disagree and commit. Speed over perfection."></textarea></div>
+        <div><label>Red flags in interviews <span class="hint">(signals that someone won't fit)</span></label><input type="text" name="culture_red_flags" placeholder="e.g. Blames past employers. Needs a lot of hand-holding. Talks about what they managed, not what they built." /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 7</p>
+      <p class="section-title">Sourcing</p>
+      <div class="section-body">
+        <div>
+          <label>Where to post</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">LinkedIn</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">Indeed</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">Wellfound (AngelList)</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">Lever / Greenhouse</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">Company website</button>
+            <button type="button" class="chip" onclick="toggleChipMulti(this,'post_where')">Referrals only</button>
+          </div>
+        </div>
+        <div><label>Recruiter / sourcing notes</label><input type="text" name="sourcing_notes" placeholder="e.g. No agencies please. Internal referrals get priority review. Post Monday morning for best visibility." /></div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-download">Download Hiring Profile →</button>
+  </form>
+
+  <div class="success-msg" id="successMsg">
+    <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2>Profile downloaded!</h2>
+    <p>Upload it to your AI and start asking hiring questions immediately.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text">Go to <strong>claude.ai</strong> — free to start</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Open a <strong>Project</strong> (or start a new chat) and attach the file</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Ask: <em>"Paste this resume and tell me if it's a match for the role"</em> or <em>"Draft a job posting based on this profile"</em></div></div>
+    </div>
+    <div class="ai-strip">
+      <div>
+        <p class="ai-strip-label">Also download</p>
+        <p class="ai-strip-title">AI Instructions file</p>
+        <p class="ai-strip-desc">Tells your AI how to use your profiles — upload alongside this file.</p>
+      </div>
+      <a href="ai_instructions.txt" download class="pill-dark">⬇ Download free</a>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
+</div>
+
+<script>
+  const selections = {};
+  const multiSelections = {};
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  function toggleChipMulti(el, group) {
+    el.classList.toggle('selected');
+    if (!multiSelections[group]) multiSelections[group] = [];
+    const val = el.textContent.trim();
+    if (el.classList.contains('selected')) { if (!multiSelections[group].includes(val)) multiSelections[group].push(val); }
+    else { multiSelections[group] = multiSelections[group].filter(v => v !== val); }
+  }
+
+  document.getElementById('hiring-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const f = e.target;
+    const data = { profile_type: 'hiring_profile', updated_at: new Date().toISOString() };
+
+    ['job_title','department','reports_to','start_date','office_location',
+     'responsibilities','success_90','not_the_role',
+     'must_haves','nice_to_haves','deal_breakers',
+     'salary_range','bonus','benefits',
+     'interview_stages','decision_maker','timeline',
+     'team_size','stage','culture_values','culture_red_flags',
+     'sourcing_notes'
+    ].forEach(name => { const v = f.elements[name]?.value.trim(); if (v) data[name] = v; });
+
+    ['emp_type','location_type','equity','rounds','work_style'].forEach(g => { if (selections[g]) data[g] = selections[g]; });
+    if (multiSelections['post_where']?.length) data.post_where = multiSelections['post_where'];
+
+    const slug = (data.job_title || 'role').toLowerCase().replace(/\s+/g, '_');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${slug}_hiring_profile.json`; a.click();
+    URL.revokeObjectURL(url);
+    document.getElementById('hiring-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

@@ -29,6 +29,8 @@ When a question comes in, check the relevant profile first before answering.
 
 - Offsite Planner (*_offsite_plan.json) — team offsite details, destination preferences, lodging, meals, attendee info.
 
+- Hiring Profile (*_hiring_profile.json) — role requirements, must-haves, deal-breakers, comp range, interview process, culture fit signals. Use for resume screening, drafting job postings, generating interview questions, and evaluating candidates. When screening a resume: assess must-haves first, flag any deal-breakers immediately, then score nice-to-haves. Give a clear hire/no-hire recommendation with reasoning.
+
 - Team Profile (*_team_profile.json) — org chart, direct reports, 1:1 schedules, meeting cadences, review cycle, and individual status. Use for any question about who reports to the exec, when 1:1s are, what review timelines look like, or what a specific team member owns.
 
 If the answer is in a profile, use it. Don't guess and don't ask if it's already there.

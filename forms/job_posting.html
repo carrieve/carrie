@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Posting Generator — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif; background: #f5f5f7; color: #1d1d1f; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px 80px; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 620px; width: 100%; }
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 0.95rem; color: #6e6e73; text-align: center; margin-bottom: 32px; line-height: 1.6; }
+    .section { background: #fff; border-radius: 18px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; margin-bottom: 18px; }
+    .section-body { display: flex; flex-direction: column; gap: 14px; }
+    label { font-size: 0.82rem; font-weight: 600; color: #3d3d3f; display: block; margin-bottom: 5px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; }
+    input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 0.88rem; font-family: inherit; color: #1d1d1f; background: #fff; outline: none; transition: border-color 0.15s; }
+    input:focus, textarea:focus { border-color: #0071e3; }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 7px 14px; border-radius: 980px; border: 1.5px solid #d2d2d7; background: #fff; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .chip:hover { border-color: #0071e3; color: #0071e3; }
+    .chip.selected { background: #0071e3; border-color: #0071e3; color: #fff; }
+    .btn-generate { width: 100%; padding: 16px; background: #0071e3; color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; margin-top: 8px; }
+    .btn-generate:hover { background: #0077ed; }
+    .output-section { display: none; }
+    .output-section.visible { display: block; }
+    .output-box { background: #fff; border-radius: 18px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 16px; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; font-size: 0.88rem; line-height: 1.8; color: #1d1d1f; border: 1px solid #e5e5ea; }
+    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-copy, .btn-pdf, .btn-reset { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; font-family: inherit; border: none; transition: all 0.15s; }
+    .btn-copy { background: #1d1d1f; color: #fff; }
+    .btn-copy:hover { background: #333; }
+    .btn-copy.copied { background: #34c759; }
+    .btn-pdf { background: #f0f7ff; color: #0071e3; border: 1px solid #d0e8ff; }
+    .btn-pdf:hover { background: #dceeff; }
+    .btn-reset { background: #f5f5f7; color: #1d1d1f; border: 1px solid #d2d2d7; }
+    .btn-reset:hover { background: #e5e5ea; }
+    .back-link { text-align: center; margin-top: 24px; }
+    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+    @media print {
+      body { background: #fff; padding: 20px; }
+      .output-section.visible { display: block !important; }
+      #posting-form, .back-link, .output-actions, h1, .subtitle { display: none !important; }
+      .output-box { box-shadow: none; border: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Job Posting Generator</h1>
+  <p class="subtitle">Fill in the details — get a formatted job posting ready to paste into LinkedIn, Indeed, or your careers page.</p>
+
+  <form id="posting-form">
+
+    <div class="section">
+      <p class="section-label">Section 1</p>
+      <p class="section-title">Company & Role</p>
+      <div class="section-body">
+        <div class="row-2">
+          <div><label>Company name</label><input type="text" name="company_name" placeholder="e.g. Acme Inc." /></div>
+          <div><label>Job title</label><input type="text" name="job_title" placeholder="e.g. Head of Operations" /></div>
+        </div>
+        <div class="row-2">
+          <div><label>Reports to</label><input type="text" name="reports_to" placeholder="e.g. CEO" /></div>
+          <div><label>Location</label><input type="text" name="location" placeholder="e.g. Remote, NYC (Hybrid 3x/wk)" /></div>
+        </div>
+        <div>
+          <label>Employment type</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Full-time</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Part-time</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract-to-hire</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 2</p>
+      <p class="section-title">About the Company</p>
+      <div class="section-body">
+        <div><label>What your company does <span class="hint">(2–3 sentences, plain English)</span></label><textarea name="company_desc" placeholder="e.g. Acme builds AI tools for small business owners. We're a team of 28, Series A, and growing fast. We care about moving quickly, staying lean, and building things people actually use."></textarea></div>
+        <div><label>Why this role exists now</label><input type="text" name="why_now" placeholder="e.g. We've grown from 10 to 28 people in 18 months and need someone to build the ops infrastructure to scale to 100." /></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 3</p>
+      <p class="section-title">The Role</p>
+      <div class="section-body">
+        <div><label>Role summary <span class="hint">(2–3 sentences)</span></label><textarea name="role_summary" placeholder="e.g. As our first Head of Ops, you'll build the systems and processes that let us scale without chaos. You'll work directly with the CEO and own everything from vendor relationships to team rituals."></textarea></div>
+        <div><label>Key responsibilities <span class="hint">(one per line)</span></label><textarea name="responsibilities" placeholder="e.g.&#10;Own all vendor relationships and contract renewals&#10;Build and document core operational processes&#10;Partner with finance on budgeting and forecasting&#10;Run weekly all-hands and team rituals"></textarea></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 4</p>
+      <p class="section-title">What We're Looking For</p>
+      <div class="section-body">
+        <div><label>Requirements <span class="hint">(one per line)</span></label><textarea name="requirements" placeholder="e.g.&#10;5+ years in operations, chief of staff, or similar&#10;Experience at a startup under 50 people&#10;Strong written communication — we're async-first&#10;Comfortable with ambiguity and building from scratch"></textarea></div>
+        <div><label>Nice-to-haves <span class="hint">(one per line)</span></label><textarea name="nice_to_haves" placeholder="e.g.&#10;Experience with Notion and Linear&#10;Has scaled a team through a funding round&#10;MBA or equivalent"></textarea></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 5</p>
+      <p class="section-title">Compensation & Benefits</p>
+      <div class="section-body">
+        <div class="row-2">
+          <div><label>Salary range <span class="hint">(optional)</span></label><input type="text" name="salary_range" placeholder="e.g. $120K–$150K" /></div>
+          <div><label>Equity <span class="hint">(optional)</span></label><input type="text" name="equity" placeholder="e.g. 0.1–0.3% options" /></div>
+        </div>
+        <div><label>Benefits <span class="hint">(one per line or comma-separated)</span></label><textarea name="benefits" style="min-height:60px;" placeholder="e.g. Full medical/dental/vision, 401k with 4% match, unlimited PTO, $1K annual learning budget, home office stipend"></textarea></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-label">Section 6</p>
+      <p class="section-title">How to Apply</p>
+      <div class="section-body">
+        <div><label>Application instructions</label><textarea name="how_to_apply" style="min-height:60px;" placeholder="e.g. Apply via LinkedIn or email your resume + a note on why this role at hello@acme.com. No cover letter required — just tell us why this, why now."></textarea></div>
+        <div><label>Interview process overview <span class="hint">(optional — builds trust with candidates)</span></label><input type="text" name="interview_overview" placeholder="e.g. Phone screen → interview with CEO → take-home exercise → final panel. Usually 2–3 weeks start to finish." /></div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-generate">Generate Job Posting →</button>
+  </form>
+
+  <div class="output-section" id="outputSection">
+    <div class="output-box" id="outputBox"></div>
+    <div class="output-actions">
+      <button class="btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn-pdf" onclick="window.print()">⬇ Save / Print PDF</button>
+      <button class="btn-reset" onclick="resetForm()">Start over</button>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
+</div>
+
+<script>
+  const selections = {};
+
+  function toggleChip(el, group) {
+    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[group] = el.textContent.trim();
+  }
+
+  document.getElementById('posting-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const f = e.target;
+    const get = n => f.elements[n]?.value.trim() || '';
+
+    const company = get('company_name');
+    const title = get('job_title');
+    const reportsTo = get('reports_to');
+    const location = get('location');
+    const empType = selections['emp_type'] || '';
+    const companyDesc = get('company_desc');
+    const whyNow = get('why_now');
+    const roleSummary = get('role_summary');
+    const responsibilities = get('responsibilities');
+    const requirements = get('requirements');
+    const niceToHaves = get('nice_to_haves');
+    const salary = get('salary_range');
+    const equity = get('equity');
+    const benefits = get('benefits');
+    const howToApply = get('how_to_apply');
+    const interviewOverview = get('interview_overview');
+
+    const fmt = (text) => text.split('\n').filter(Boolean).map(l => `• ${l.trim()}`).join('\n');
+
+    let lines = [];
+
+    if (title) { lines.push(title.toUpperCase()); lines.push(''); }
+
+    const meta = [company, empType, location].filter(Boolean).join(' · ');
+    if (meta) { lines.push(meta); lines.push(''); }
+
+    if (companyDesc || whyNow) {
+      lines.push('ABOUT US');
+      lines.push('─────────────────────────────────');
+      if (companyDesc) { lines.push(companyDesc); lines.push(''); }
+      if (whyNow) { lines.push(whyNow); lines.push(''); }
+    }
+
+    if (roleSummary || reportsTo) {
+      lines.push('THE ROLE');
+      lines.push('─────────────────────────────────');
+      if (roleSummary) { lines.push(roleSummary); lines.push(''); }
+      if (reportsTo) { lines.push(`Reports to: ${reportsTo}`); lines.push(''); }
+    }
+
+    if (responsibilities) {
+      lines.push('WHAT YOU\'LL DO');
+      lines.push('─────────────────────────────────');
+      lines.push(fmt(responsibilities));
+      lines.push('');
+    }
+
+    if (requirements) {
+      lines.push('WHAT WE\'RE LOOKING FOR');
+      lines.push('─────────────────────────────────');
+      lines.push(fmt(requirements));
+      lines.push('');
+    }
+
+    if (niceToHaves) {
+      lines.push('NICE TO HAVE');
+      lines.push('─────────────────────────────────');
+      lines.push(fmt(niceToHaves));
+      lines.push('');
+    }
+
+    const hasComp = salary || equity || benefits;
+    if (hasComp) {
+      lines.push('COMPENSATION & BENEFITS');
+      lines.push('─────────────────────────────────');
+      if (salary) lines.push(`💰 ${salary}${equity ? ' + ' + equity : ''}`);
+      if (benefits) { lines.push(''); lines.push(fmt(benefits)); }
+      lines.push('');
+    }
+
+    if (howToApply || interviewOverview) {
+      lines.push('HOW TO APPLY');
+      lines.push('─────────────────────────────────');
+      if (howToApply) { lines.push(howToApply); lines.push(''); }
+      if (interviewOverview) { lines.push(`Interview process: ${interviewOverview}`); lines.push(''); }
+    }
+
+    lines.push('─────────────────────────────────');
+    lines.push('Generated by GetCarrieAI.com');
+
+    document.getElementById('outputBox').textContent = lines.join('\n');
+    document.getElementById('posting-form').style.display = 'none';
+    document.getElementById('outputSection').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function copyOutput() {
+    navigator.clipboard.writeText(document.getElementById('outputBox').textContent).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('posting-form').reset();
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    document.getElementById('outputSection').classList.remove('visible');
+    document.getElementById('posting-form').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
