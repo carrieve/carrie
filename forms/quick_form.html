@@ -180,7 +180,7 @@
 
   <div class="header">
     <h1>Quick Profile ⚡</h1>
-    <p id="header-sub">5 questions. 2 minutes. Claude will handle the rest.</p>
+    <p id="header-sub">5 questions. 2 minutes. Claude will always know your preferences.</p>
   </div>
 
   <div class="progress">
@@ -267,10 +267,10 @@
   <div class="done-screen" id="done">
     <div class="done-emoji">🎉</div>
     <h2 id="done-title">You're all set!</h2>
-    <p id="done-body">Your quick profile is ready. Download it and upload to your Claude Project — Claude will handle the rest.</p>
+    <p id="done-body">Your quick profile is ready. Download it and upload to your Claude Project — Claude will know your preferences in every conversation.</p>
     <button class="download-btn" onclick="downloadProfile()">⬇️ Download My Profile</button>
     <div class="notice">
-      💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> on your phone → tap <strong>Projects</strong> → create a new project → upload this file. Then just ask Claude anything — "book me a flight," "what's my coffee order," "find a hotel in Chicago."
+      💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> on your phone → tap <strong>Projects</strong> → create a new project → upload this file. Then ask Claude anything — "what's my coffee order?" "which hotel chain do I use?" "what airline do I prefer?" Claude tells you — you take it from there.
     </div>
     <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
   </div>
@@ -290,7 +290,7 @@
     document.getElementById('q5-title').textContent = "What's their usual food order?";
     document.getElementById('q5-hint').textContent = "Favorite restaurant and usual order — or any dietary restrictions to know about.";
     document.getElementById('done-title').textContent = "Profile saved!";
-    document.getElementById('done-body').textContent = "Download this profile and upload it to your Claude Project. Claude will know exactly what to order and how to book.";
+    document.getElementById('done-body').textContent = "Download this profile and upload it to your Claude Project. Claude will always have their preferences ready — no more asking.";
   }
 
   let currentStep = 0;

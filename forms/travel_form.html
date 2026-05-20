@@ -266,8 +266,8 @@
 (function() {
   const mode = new URLSearchParams(window.location.search).get('mode');
   if (mode === 'self') {
-    document.getElementById('form-subtitle').textContent = 'Fill this out once and Claude will have everything needed to book trips for you. All fields except your name are optional.';
-    document.getElementById('form-notice').innerHTML = '💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> (free account) → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong> → upload this file. Then ask Claude anything — "What are my flight preferences?" "What\'s my TSA PreCheck number?" "Find me a hotel in Chicago that matches my loyalty program."';
+    document.getElementById('form-subtitle').textContent = 'Fill this out once and Claude will always know your travel preferences — so you can look things up instantly and get guided through bookings step by step. All fields except your name are optional.';
+    document.getElementById('form-notice').innerHTML = '💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> (free account) → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong> → upload this file. Then ask Claude anything — "What are my flight preferences?" "What\'s my TSA PreCheck number?" "Which hotel chain do I use and what\'s my loyalty number?" Claude looks it up instantly — you take it from there.';
     document.addEventListener('DOMContentLoaded', function() {
       const preferredHint = document.querySelector('label .hint');
       if (preferredHint && preferredHint.closest('label').textContent.includes('Preferred')) {
