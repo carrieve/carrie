@@ -245,7 +245,7 @@
   const mode = new URLSearchParams(window.location.search).get('mode');
   if (mode === 'self') {
     document.getElementById('form-subtitle').textContent = 'Fill this out once so Claude always knows your preferences — what to order, where to order from, and any restrictions. You place the order; Claude remembers the details.';
-    document.getElementById('form-notice').innerHTML = '💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> (free account) → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong> → upload this file. Then ask Claude anything — "What\'s my usual coffee order?" "What are my dietary restrictions?" "What should I order from this menu?" Claude tells you exactly what to get — you place the order.';
+    document.getElementById('form-notice').innerHTML = '💡 <strong>What to do next:</strong><br><br>1. Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> — it\'s free to sign up.<br>2. Look for <strong>Projects</strong> in the menu. Create a new one — think of it like a folder that remembers things.<br>3. Add the file you just downloaded to that Project.<br>4. Now ask Claude anything — "what\'s my usual coffee order?" "do I have any food allergies?" "what should I order from this menu?" It already knows — you place the order.';
   }
 })();
 </script>

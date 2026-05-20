@@ -267,7 +267,7 @@
   const mode = new URLSearchParams(window.location.search).get('mode');
   if (mode === 'self') {
     document.getElementById('form-subtitle').textContent = 'Fill this out once and Claude will always know your travel preferences — so you can look things up instantly and get guided through bookings step by step. All fields except your name are optional.';
-    document.getElementById('form-notice').innerHTML = '💡 <strong>Next step:</strong> Open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> (free account) → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong> → upload this file. Then ask Claude anything — "What are my flight preferences?" "What\'s my TSA PreCheck number?" "Which hotel chain do I use and what\'s my loyalty number?" Claude looks it up instantly — you take it from there.';
+    document.getElementById('form-notice').innerHTML = '💡 <strong>What to do next:</strong><br><br>1. Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> — it\'s free to sign up.<br>2. Look for <strong>Projects</strong> in the menu. Create a new one — think of it like a folder that remembers things.<br>3. Add the file you just downloaded to that Project.<br>4. Now just ask Claude anything — "what airline do I prefer?" "what\'s my loyalty number?" "what seat do I usually book?" It already knows.';
     document.addEventListener('DOMContentLoaded', function() {
       const preferredHint = document.querySelector('label .hint');
       if (preferredHint && preferredHint.closest('label').textContent.includes('Preferred')) {
