@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meeting Agenda — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 620px; width: 100%; }
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 0.95rem; color: #6e6e73; text-align: center; margin-bottom: 32px; line-height: 1.6; }
+
+    .section { background: #fff; border-radius: 18px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .section-header { margin-bottom: 18px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { display: flex; flex-direction: column; gap: 14px; }
+
+    label { font-size: 0.82rem; font-weight: 600; color: #3d3d3f; display: block; margin-bottom: 5px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; }
+    input[type="text"], input[type="date"], input[type="time"], textarea, select {
+      width: 100%; padding: 10px 12px; border: 1px solid #d2d2d7; border-radius: 10px;
+      font-size: 0.88rem; font-family: inherit; color: #1d1d1f; background: #fff;
+      outline: none; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #0071e3; }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+
+    /* Topic blocks */
+    .topic-block {
+      background: #f5f5f7; border-radius: 12px; padding: 16px;
+      position: relative; display: flex; flex-direction: column; gap: 10px;
+    }
+    .topic-num { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #aeaeb2; margin-bottom: 2px; }
+    .remove-btn {
+      position: absolute; top: 12px; right: 12px;
+      background: none; border: none; color: #aeaeb2; cursor: pointer;
+      font-size: 1.1rem; line-height: 1; padding: 2px 6px; border-radius: 6px;
+    }
+    .remove-btn:hover { background: #e5e5ea; color: #1d1d1f; }
+    .add-btn {
+      background: none; border: 1.5px dashed #c7c7cc; border-radius: 10px;
+      color: #6e6e73; font-size: 0.85rem; font-weight: 600; padding: 10px;
+      cursor: pointer; width: 100%; transition: all 0.15s; font-family: inherit;
+    }
+    .add-btn:hover { border-color: #0071e3; color: #0071e3; background: #f0f7ff; }
+
+    .btn-generate {
+      width: 100%; padding: 16px; background: #0071e3; color: #fff;
+      border: none; border-radius: 14px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background 0.15s; margin-top: 8px;
+    }
+    .btn-generate:hover { background: #0077ed; }
+
+    /* Output */
+    .output-section { display: none; }
+    .output-section.visible { display: block; }
+    .output-box {
+      background: #fff; border-radius: 18px; padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 16px;
+      white-space: pre-wrap; font-family: "SF Mono", "Monaco", "Menlo", monospace;
+      font-size: 0.82rem; line-height: 1.75; color: #1d1d1f;
+      border: 1px solid #e5e5ea;
+    }
+    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-copy, .btn-reset {
+      flex: 1; padding: 13px; border-radius: 12px; font-size: 0.88rem;
+      font-weight: 700; cursor: pointer; font-family: inherit; border: none; transition: all 0.15s;
+    }
+    .btn-copy { background: #1d1d1f; color: #fff; }
+    .btn-copy:hover { background: #333; }
+    .btn-copy.copied { background: #34c759; }
+    .btn-reset { background: #f5f5f7; color: #1d1d1f; border: 1px solid #d2d2d7; }
+    .btn-reset:hover { background: #e5e5ea; }
+
+    .back-link { text-align: center; margin-top: 24px; }
+    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Meeting Agenda</h1>
+  <p class="subtitle">Fill in the details → copy the formatted agenda → paste into any doc.</p>
+
+  <form id="agenda-form">
+
+    <!-- Meeting Basics -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">Meeting Basics</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Meeting name / title</label>
+          <input type="text" name="meeting_name" placeholder="e.g. Q3 Strategy Review" />
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Date</label>
+            <input type="date" name="meeting_date" />
+          </div>
+          <div>
+            <label>Time <span class="hint">(include timezone)</span></label>
+            <input type="text" name="meeting_time" placeholder="e.g. 10:00 AM ET" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Duration</label>
+            <input type="text" name="duration" placeholder="e.g. 60 minutes" />
+          </div>
+          <div>
+            <label>Location / video link</label>
+            <input type="text" name="location" placeholder="e.g. Zoom — link in invite, or Conference Room B" />
+          </div>
+        </div>
+        <div>
+          <label>Organizer / facilitator</label>
+          <input type="text" name="organizer" placeholder="e.g. Sarah Kim" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendees -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Attendees</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Attendees <span class="hint">(name and role, one per line)</span></label>
+          <textarea name="attendees" placeholder="e.g.&#10;Josh Allen — CEO&#10;Sarah Kim — CFO&#10;Marcus Webb — Head of Product&#10;Lauren Torres — EA (note-taker)"></textarea>
+        </div>
+        <div>
+          <label>Optional attendees / dial-in only</label>
+          <input type="text" name="optional_attendees" placeholder="e.g. Tom Hughes (joining for item 3 only)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Agenda Items -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">Agenda Items</p>
+      </div>
+      <div class="section-body">
+        <div id="topics-container"></div>
+        <button type="button" class="add-btn" onclick="addTopic()">+ Add agenda item</button>
+      </div>
+    </div>
+
+    <!-- Pre-Read & Context -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 4</p>
+        <p class="section-title">Pre-Read & Context</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Pre-read materials <span class="hint">(optional)</span></label>
+          <textarea name="prereads" placeholder="e.g. Q3 deck (attached), last quarter's action items (see notes doc), updated P&L in shared drive"></textarea>
+        </div>
+        <div>
+          <label>Background / context for attendees <span class="hint">(optional)</span></label>
+          <textarea name="context" placeholder="e.g. This is our first strategy review since the reorg. Please come prepared with your team's top 3 priorities for Q4."></textarea>
+        </div>
+        <div>
+          <label>Decision or outcome needed from this meeting</label>
+          <input type="text" name="desired_outcome" placeholder="e.g. Align on Q4 priorities and assign owners. No decisions deferred." />
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes & Actions -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 5</p>
+        <p class="section-title">Notes & Action Items <span class="hint" style="font-size:0.8rem; font-weight:400;">(fill in during or after the meeting)</span></p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Meeting notes</label>
+          <textarea name="notes" style="min-height:100px;" placeholder="Key discussion points, decisions made, any context worth capturing..."></textarea>
+        </div>
+        <div>
+          <label>Action items <span class="hint">(who, what, by when — one per line)</span></label>
+          <textarea name="action_items" placeholder="e.g.&#10;Josh — finalize Q4 budget — by June 1&#10;Sarah — share updated P&L with team — EOD Friday&#10;Marcus — schedule product roadmap review — next week"></textarea>
+        </div>
+        <div>
+          <label>Next meeting / follow-up</label>
+          <input type="text" name="next_meeting" placeholder="e.g. Follow-up in 2 weeks — Sarah to send invite. Or: no follow-up needed." />
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-generate">Generate Agenda →</button>
+  </form>
+
+  <!-- Output -->
+  <div class="output-section" id="outputSection">
+    <div class="output-box" id="outputBox"></div>
+    <div class="output-actions">
+      <button class="btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn-reset" onclick="resetForm()">Start over</button>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
+</div>
+
+<script>
+  let topicCount = 0;
+
+  function addTopic() {
+    topicCount++;
+    const id = topicCount;
+    const container = document.getElementById('topics-container');
+    const block = document.createElement('div');
+    block.className = 'topic-block';
+    block.id = `topic-${id}`;
+    block.innerHTML = `
+      <div class="topic-num">Item ${id}</div>
+      ${id > 1 ? `<button type="button" class="remove-btn" onclick="removeTopic(${id})">✕</button>` : ''}
+      <div class="row-2">
+        <div>
+          <label style="margin-bottom:5px;">Topic</label>
+          <input type="text" name="topic_${id}_title" placeholder="e.g. Q4 budget review" />
+        </div>
+        <div>
+          <label style="margin-bottom:5px;">Time allotted</label>
+          <input type="text" name="topic_${id}_time" placeholder="e.g. 15 min" />
+        </div>
+      </div>
+      <div>
+        <label style="margin-bottom:5px;">Owner / presenter</label>
+        <input type="text" name="topic_${id}_owner" placeholder="e.g. Sarah Kim" />
+      </div>
+      <div>
+        <label style="margin-bottom:5px;">Notes / talking points <span class="hint">(optional)</span></label>
+        <input type="text" name="topic_${id}_notes" placeholder="e.g. Focus on headcount decisions — no P&L deep dive" />
+      </div>
+    `;
+    container.appendChild(block);
+    renumberTopics();
+  }
+
+  function removeTopic(id) {
+    document.getElementById(`topic-${id}`)?.remove();
+    renumberTopics();
+  }
+
+  function renumberTopics() {
+    document.querySelectorAll('.topic-block').forEach((block, i) => {
+      const num = block.querySelector('.topic-num');
+      if (num) num.textContent = `Item ${i + 1}`;
+    });
+  }
+
+  // Start with 3 topics
+  addTopic(); addTopic(); addTopic();
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
+  }
+
+  document.getElementById('agenda-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const f = e.target;
+    const get = name => f.elements[name]?.value.trim() || '';
+
+    const name = get('meeting_name') || 'Meeting';
+    const date = formatDate(get('meeting_date'));
+    const time = get('meeting_time');
+    const duration = get('duration');
+    const location = get('location');
+    const organizer = get('organizer');
+    const attendees = get('attendees');
+    const optional = get('optional_attendees');
+    const prereads = get('prereads');
+    const context = get('context');
+    const outcome = get('desired_outcome');
+    const notes = get('notes');
+    const actions = get('action_items');
+    const next = get('next_meeting');
+
+    let lines = [];
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`${name.toUpperCase()}`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push('');
+
+    const meta = [];
+    if (date) meta.push(`📅  ${date}`);
+    if (time) meta.push(`🕐  ${time}`);
+    if (duration) meta.push(`⏱  ${duration}`);
+    if (location) meta.push(`📍  ${location}`);
+    if (organizer) meta.push(`👤  Facilitator: ${organizer}`);
+    if (meta.length) { lines.push(...meta); lines.push(''); }
+
+    if (attendees || optional) {
+      lines.push('ATTENDEES');
+      lines.push('─────────');
+      if (attendees) attendees.split('\n').filter(Boolean).forEach(a => lines.push(`  • ${a.trim()}`));
+      if (optional) lines.push(`  (Optional) ${optional}`);
+      lines.push('');
+    }
+
+    if (prereads || context) {
+      lines.push('BEFORE THE MEETING');
+      lines.push('──────────────────');
+      if (prereads) { lines.push('Pre-read:'); prereads.split('\n').filter(Boolean).forEach(p => lines.push(`  • ${p.trim()}`)); }
+      if (context) { lines.push(''); lines.push(context); }
+      lines.push('');
+    }
+
+    if (outcome) {
+      lines.push('OBJECTIVE');
+      lines.push('─────────');
+      lines.push(`  ${outcome}`);
+      lines.push('');
+    }
+
+    // Topics
+    const topics = document.querySelectorAll('.topic-block');
+    if (topics.length) {
+      lines.push('AGENDA');
+      lines.push('──────');
+      topics.forEach((block, i) => {
+        const blockId = block.id.replace('topic-', '');
+        const title = f.elements[`topic_${blockId}_title`]?.value.trim();
+        const time_allot = f.elements[`topic_${blockId}_time`]?.value.trim();
+        const owner = f.elements[`topic_${blockId}_owner`]?.value.trim();
+        const tnotes = f.elements[`topic_${blockId}_notes`]?.value.trim();
+        if (title) {
+          const timeStr = time_allot ? ` (${time_allot})` : '';
+          const ownerStr = owner ? ` — ${owner}` : '';
+          lines.push(`  ${i+1}. ${title}${timeStr}${ownerStr}`);
+          if (tnotes) lines.push(`     ${tnotes}`);
+        }
+      });
+      lines.push('');
+    }
+
+    if (notes) {
+      lines.push('NOTES');
+      lines.push('─────');
+      lines.push(notes);
+      lines.push('');
+    }
+
+    if (actions) {
+      lines.push('ACTION ITEMS');
+      lines.push('────────────');
+      actions.split('\n').filter(Boolean).forEach(a => lines.push(`  ☐  ${a.trim()}`));
+      lines.push('');
+    }
+
+    if (next) {
+      lines.push('NEXT STEPS');
+      lines.push('──────────');
+      lines.push(`  ${next}`);
+      lines.push('');
+    }
+
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`Generated by GetCarrieAI.com`);
+
+    document.getElementById('outputBox').textContent = lines.join('\n');
+    document.getElementById('agenda-form').style.display = 'none';
+    document.getElementById('outputSection').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function copyOutput() {
+    const text = document.getElementById('outputBox').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('agenda-form').reset();
+    document.getElementById('outputSection').classList.remove('visible');
+    document.getElementById('agenda-form').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

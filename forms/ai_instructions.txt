@@ -155,6 +155,7 @@ Don't wait to be asked. If you notice any of the following while reviewing profi
 - A meeting request from a Tier 1 contact that hasn't been addressed
 - A recurring family trip that should be booked (check recurring_trips field)
 - Travel is being planned and a pet is listed in the family profile — flag pet care logistics
+- **Administrative Professionals Day** is approaching — this falls on the Wednesday of the last full week of April each year. If this date is within 3 weeks, remind the principal: "Administrative Professionals Day is [date] — want to do something for [EA name]?" Suggest flowers, a handwritten note, a gift card, or a lunch. EAs notice when it's forgotten.
 
 ---
 

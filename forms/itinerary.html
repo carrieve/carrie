@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Itinerary — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #f5f5f7; color: #1d1d1f; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px 80px; -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 620px; width: 100%; }
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 0.95rem; color: #6e6e73; text-align: center; margin-bottom: 32px; line-height: 1.6; }
+
+    .section { background: #fff; border-radius: 18px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .section-header { margin-bottom: 18px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; }
+    .section-body { display: flex; flex-direction: column; gap: 14px; }
+
+    label { font-size: 0.82rem; font-weight: 600; color: #3d3d3f; display: block; margin-bottom: 5px; }
+    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; }
+    input[type="text"], input[type="date"], textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid #d2d2d7; border-radius: 10px;
+      font-size: 0.88rem; font-family: inherit; color: #1d1d1f; background: #fff;
+      outline: none; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus { border-color: #0071e3; }
+    textarea { resize: vertical; min-height: 72px; line-height: 1.6; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    @media (max-width: 500px) { .row-2, .row-3 { grid-template-columns: 1fr; } }
+
+    /* Day blocks */
+    .day-block { background: #f5f5f7; border-radius: 14px; padding: 18px; position: relative; display: flex; flex-direction: column; gap: 14px; }
+    .day-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0071e3; margin-bottom: 2px; }
+    .day-sub { font-size: 0.78rem; color: #aeaeb2; margin-top: -2px; }
+    .remove-btn { position: absolute; top: 14px; right: 14px; background: none; border: none; color: #aeaeb2; cursor: pointer; font-size: 1.1rem; padding: 2px 6px; border-radius: 6px; }
+    .remove-btn:hover { background: #e5e5ea; color: #1d1d1f; }
+    .day-section-title { font-size: 0.78rem; font-weight: 700; color: #6e6e73; text-transform: uppercase; letter-spacing: 0.07em; border-top: 1px solid #e5e5ea; padding-top: 10px; margin-top: 2px; }
+
+    .add-btn { background: none; border: 1.5px dashed #c7c7cc; border-radius: 10px; color: #6e6e73; font-size: 0.85rem; font-weight: 600; padding: 10px; cursor: pointer; width: 100%; transition: all 0.15s; font-family: inherit; }
+    .add-btn:hover { border-color: #0071e3; color: #0071e3; background: #f0f7ff; }
+
+    .btn-generate { width: 100%; padding: 16px; background: #0071e3; color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; margin-top: 8px; }
+    .btn-generate:hover { background: #0077ed; }
+
+    .output-section { display: none; }
+    .output-section.visible { display: block; }
+    .output-box { background: #fff; border-radius: 18px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 16px; white-space: pre-wrap; font-family: "SF Mono", "Monaco", "Menlo", monospace; font-size: 0.8rem; line-height: 1.8; color: #1d1d1f; border: 1px solid #e5e5ea; }
+    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-copy, .btn-reset { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; font-family: inherit; border: none; transition: all 0.15s; }
+    .btn-copy { background: #1d1d1f; color: #fff; }
+    .btn-copy:hover { background: #333; }
+    .btn-copy.copied { background: #34c759; }
+    .btn-reset { background: #f5f5f7; color: #1d1d1f; border: 1px solid #d2d2d7; }
+    .btn-reset:hover { background: #e5e5ea; }
+    .back-link { text-align: center; margin-top: 24px; }
+    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Travel Itinerary</h1>
+  <p class="subtitle">Fill in the trip details → copy the formatted itinerary → paste into any doc or email.</p>
+
+  <form id="itin-form">
+
+    <!-- Trip Overview -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 1</p>
+        <p class="section-title">Trip Overview</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Trip name / purpose</label>
+          <input type="text" name="trip_name" placeholder="e.g. NYC Board Meeting — June 2026" />
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Traveler name</label>
+            <input type="text" name="traveler" placeholder="e.g. Josh Allen" />
+          </div>
+          <div>
+            <label>Prepared by <span class="hint">(EA name)</span></label>
+            <input type="text" name="prepared_by" placeholder="e.g. Carrie Van Epps" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label>Departure date</label>
+            <input type="date" name="depart_date" />
+          </div>
+          <div>
+            <label>Return date</label>
+            <input type="date" name="return_date" />
+          </div>
+        </div>
+        <div>
+          <label>Emergency contacts</label>
+          <textarea name="emergency_contacts" placeholder="e.g. EA: Carrie Van Epps — 704-555-0100&#10;Spouse: Lauren Allen — 704-555-0101&#10;Security: Marcus Webb — 212-555-0191"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Days -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 2</p>
+        <p class="section-title">Day by Day</p>
+      </div>
+      <div class="section-body">
+        <div id="days-container"></div>
+        <button type="button" class="add-btn" onclick="addDay()">+ Add day</button>
+      </div>
+    </div>
+
+    <!-- General Notes -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 3</p>
+        <p class="section-title">General Notes</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>Dress code / packing notes</label>
+          <input type="text" name="dress_code" placeholder="e.g. Business formal for board dinner. Business casual all other days. Gym in hotel." />
+        </div>
+        <div>
+          <label>Important reminders</label>
+          <textarea name="reminders" placeholder="e.g. Bring signed NDA for Wednesday meeting. Hotel requires credit card on arrival — use Amex Platinum. Passport in carry-on."></textarea>
+        </div>
+        <div>
+          <label>Loyalty / rewards numbers <span class="hint">(for reference at check-in)</span></label>
+          <textarea name="loyalty" placeholder="e.g. American AAdvantage: 3V8BP82&#10;Marriott Bonvoy: 579908534&#10;TSA PreCheck KTN: TT111QFG1"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-generate">Generate Itinerary →</button>
+  </form>
+
+  <!-- Output -->
+  <div class="output-section" id="outputSection">
+    <div class="output-box" id="outputBox"></div>
+    <div class="output-actions">
+      <button class="btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn-reset" onclick="resetForm()">Start over</button>
+    </div>
+  </div>
+
+  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
+</div>
+
+<script>
+  let dayCount = 0;
+
+  function addDay() {
+    dayCount++;
+    const id = dayCount;
+    const container = document.getElementById('days-container');
+    const block = document.createElement('div');
+    block.className = 'day-block';
+    block.id = `day-${id}`;
+    block.innerHTML = `
+      <div>
+        <div class="day-label">Day ${id}</div>
+        <input type="date" name="day_${id}_date" style="margin-top:6px;" />
+      </div>
+      ${id > 1 ? `<button type="button" class="remove-btn" onclick="removeDay(${id})">✕</button>` : ''}
+
+      <div class="day-section-title">✈️ Flights</div>
+      <div class="row-2">
+        <div><label style="margin-bottom:5px;">Departure flight</label><input type="text" name="day_${id}_flight_dep" placeholder="e.g. AA 1234 — CLT 7:00am → JFK 9:15am" /></div>
+        <div><label style="margin-bottom:5px;">Confirmation #</label><input type="text" name="day_${id}_flight_conf" placeholder="e.g. XJKP9R" /></div>
+      </div>
+      <div class="row-2">
+        <div><label style="margin-bottom:5px;">Return flight</label><input type="text" name="day_${id}_flight_ret" placeholder="e.g. AA 456 — JFK 6:00pm → CLT 8:20pm" /></div>
+        <div><label style="margin-bottom:5px;">Confirmation #</label><input type="text" name="day_${id}_flight_ret_conf" placeholder="e.g. HMTK22" /></div>
+      </div>
+
+      <div class="day-section-title">🏨 Hotel</div>
+      <div class="row-3">
+        <div><label style="margin-bottom:5px;">Hotel name</label><input type="text" name="day_${id}_hotel" placeholder="e.g. Marriott Midtown" /></div>
+        <div><label style="margin-bottom:5px;">Confirmation #</label><input type="text" name="day_${id}_hotel_conf" placeholder="e.g. 73829HK" /></div>
+        <div><label style="margin-bottom:5px;">Check-in / out</label><input type="text" name="day_${id}_hotel_times" placeholder="e.g. In June 10, Out June 12" /></div>
+      </div>
+      <div><label style="margin-bottom:5px;">Hotel address & phone</label><input type="text" name="day_${id}_hotel_addr" placeholder="e.g. 525 Lexington Ave, NY — 212-555-0100" /></div>
+
+      <div class="day-section-title">🚗 Ground Transport</div>
+      <div class="row-2">
+        <div><label style="margin-bottom:5px;">Pickup / car service</label><input type="text" name="day_${id}_car" placeholder="e.g. Blacklane — pickup 5:45am at home, 4-door sedan" /></div>
+        <div><label style="margin-bottom:5px;">Confirmation / driver</label><input type="text" name="day_${id}_car_conf" placeholder="e.g. Booking #BL8823, driver Marcus" /></div>
+      </div>
+
+      <div class="day-section-title">📅 Meetings & Events</div>
+      <div><textarea name="day_${id}_meetings" placeholder="e.g.&#10;10:00am — Board Meeting @ 30 Hudson Yards, Floor 42 (Contact: Rachel, 212-555-0120)&#10;1:00pm — Lunch w/ Tom Hughes @ The Pool Restaurant&#10;6:30pm — Dinner — client TBD"></textarea></div>
+
+      <div class="day-section-title">📝 Day Notes</div>
+      <div><input type="text" name="day_${id}_notes" placeholder="e.g. Bring signed term sheet. Dress code: business formal for dinner." /></div>
+    `;
+    container.appendChild(block);
+    renumberDays();
+  }
+
+  function removeDay(id) {
+    document.getElementById(`day-${id}`)?.remove();
+    renumberDays();
+  }
+
+  function renumberDays() {
+    document.querySelectorAll('.day-block').forEach((block, i) => {
+      const lbl = block.querySelector('.day-label');
+      if (lbl) lbl.textContent = `Day ${i + 1}`;
+    });
+  }
+
+  // Start with 2 days
+  addDay(); addDay();
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dt = new Date(parseInt(y), parseInt(m)-1, parseInt(d));
+    return `${days[dt.getDay()]}, ${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
+  }
+
+  document.getElementById('itin-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const f = e.target;
+    const get = name => f.elements[name]?.value.trim() || '';
+
+    const tripName = get('trip_name') || 'Travel Itinerary';
+    const traveler = get('traveler');
+    const prepBy = get('prepared_by');
+    const departDate = formatDate(get('depart_date'));
+    const returnDate = formatDate(get('return_date'));
+    const emergency = get('emergency_contacts');
+    const dresscode = get('dress_code');
+    const reminders = get('reminders');
+    const loyalty = get('loyalty');
+
+    let lines = [];
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`${tripName.toUpperCase()}`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push('');
+    if (traveler) lines.push(`Traveler:    ${traveler}`);
+    if (departDate && returnDate) lines.push(`Dates:       ${departDate} → ${returnDate}`);
+    else if (departDate) lines.push(`Departure:   ${departDate}`);
+    if (prepBy) lines.push(`Prepared by: ${prepBy}`);
+    lines.push('');
+
+    if (emergency) {
+      lines.push('EMERGENCY CONTACTS');
+      lines.push('──────────────────');
+      emergency.split('\n').filter(Boolean).forEach(c => lines.push(`  ${c.trim()}`));
+      lines.push('');
+    }
+
+    // Days
+    document.querySelectorAll('.day-block').forEach((block, i) => {
+      const bid = block.id.replace('day-', '');
+      const dayDate = formatDate(f.elements[`day_${bid}_date`]?.value.trim());
+      const flightDep = get(`day_${bid}_flight_dep`);
+      const flightConf = get(`day_${bid}_flight_conf`);
+      const flightRet = get(`day_${bid}_flight_ret`);
+      const flightRetConf = get(`day_${bid}_flight_ret_conf`);
+      const hotel = get(`day_${bid}_hotel`);
+      const hotelConf = get(`day_${bid}_hotel_conf`);
+      const hotelTimes = get(`day_${bid}_hotel_times`);
+      const hotelAddr = get(`day_${bid}_hotel_addr`);
+      const car = get(`day_${bid}_car`);
+      const carConf = get(`day_${bid}_car_conf`);
+      const meetings = get(`day_${bid}_meetings`);
+      const dayNotes = get(`day_${bid}_notes`);
+
+      lines.push(`━━━ DAY ${i+1}${dayDate ? ' — ' + dayDate : ''} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+      lines.push('');
+
+      if (flightDep || flightRet) {
+        lines.push('✈️  FLIGHTS');
+        if (flightDep) { lines.push(`  Outbound:  ${flightDep}`); if (flightConf) lines.push(`  Conf #:    ${flightConf}`); }
+        if (flightRet) { lines.push(`  Return:    ${flightRet}`); if (flightRetConf) lines.push(`  Conf #:    ${flightRetConf}`); }
+        lines.push('');
+      }
+
+      if (hotel) {
+        lines.push('🏨  HOTEL');
+        lines.push(`  ${hotel}`);
+        if (hotelConf) lines.push(`  Conf #: ${hotelConf}`);
+        if (hotelTimes) lines.push(`  ${hotelTimes}`);
+        if (hotelAddr) lines.push(`  ${hotelAddr}`);
+        lines.push('');
+      }
+
+      if (car) {
+        lines.push('🚗  GROUND TRANSPORT');
+        lines.push(`  ${car}`);
+        if (carConf) lines.push(`  ${carConf}`);
+        lines.push('');
+      }
+
+      if (meetings) {
+        lines.push('📅  SCHEDULE');
+        meetings.split('\n').filter(Boolean).forEach(m => lines.push(`  ${m.trim()}`));
+        lines.push('');
+      }
+
+      if (dayNotes) {
+        lines.push(`📝  ${dayNotes}`);
+        lines.push('');
+      }
+    });
+
+    if (dresscode || reminders || loyalty) {
+      lines.push('━━━ GENERAL NOTES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      lines.push('');
+      if (dresscode) { lines.push('DRESS CODE / PACKING'); lines.push(`  ${dresscode}`); lines.push(''); }
+      if (reminders) { lines.push('REMINDERS'); reminders.split('\n').filter(Boolean).forEach(r => lines.push(`  • ${r.trim()}`)); lines.push(''); }
+      if (loyalty) { lines.push('LOYALTY NUMBERS'); loyalty.split('\n').filter(Boolean).forEach(l => lines.push(`  ${l.trim()}`)); lines.push(''); }
+    }
+
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`Generated by GetCarrieAI.com`);
+
+    document.getElementById('outputBox').textContent = lines.join('\n');
+    document.getElementById('itin-form').style.display = 'none';
+    document.getElementById('outputSection').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function copyOutput() {
+    navigator.clipboard.writeText(document.getElementById('outputBox').textContent).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('itin-form').reset();
+    document.getElementById('outputSection').classList.remove('visible');
+    document.getElementById('itin-form').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
