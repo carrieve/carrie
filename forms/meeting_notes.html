@@ -3,626 +3,501 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meeting Notes — Carrie AI</title>
+  <title>Meeting Notes — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-      background: #f5f5f7;
-      color: #1d1d1f;
+      background: #fff;
+      color: var(--black);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 60px 20px;
+      padding: 40px 24px 80px;
       -webkit-font-smoothing: antialiased;
     }
-
-    .container { max-width: 720px; width: 100%; }
-
-    .back {
-      display: inline-flex;
+    .container { max-width: 640px; width: 100%; }
+    .top-bar {
+      display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.88rem;
-      color: #0071e3;
-      text-decoration: none;
-      margin-bottom: 32px;
-    }
-
-    .back:hover { text-decoration: underline; }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      color: #6e6e73;
-      line-height: 1.6;
-      margin-bottom: 40px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 36px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
-    }
-
-    .card h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #6e6e73;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    input, textarea, select {
-      font-family: inherit;
-      font-size: 0.95rem;
-      border: 1.5px solid #d2d2d7;
-      border-radius: 10px;
-      padding: 10px 14px;
-      color: #1d1d1f;
-      outline: none;
-      transition: border-color 0.15s;
-      background: #fff;
-      width: 100%;
-    }
-
-    input:focus, textarea:focus { border-color: #0071e3; }
-
-    textarea {
-      resize: vertical;
-      line-height: 1.6;
-    }
-
-    .btn-primary {
-      background: #0071e3;
-      color: #fff;
-      border: none;
-      border-radius: 980px;
-      padding: 14px 32px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      width: 100%;
-      margin-top: 8px;
-      transition: background 0.15s;
-    }
-
-    .btn-primary:hover { background: #0077ed; }
-
-    .btn-secondary {
-      background: #f5f5f7;
-      color: #1d1d1f;
-      border: none;
-      border-radius: 980px;
-      padding: 10px 24px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.15s;
-    }
-
-    .btn-secondary:hover { background: #e8e8ed; }
-
-    /* Output section */
-    .output-section { display: none; }
-    .output-section.visible { display: block; }
-
-    .output-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 36px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
-    }
-
-    .output-header {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
-
-    .output-header h2 { font-size: 1.1rem; font-weight: 600; }
-
-    .action-items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-    .action-item {
-      background: #f5f5f7;
-      border-radius: 12px;
-      padding: 14px 18px;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .action-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin-top: 2px;
-      flex-shrink: 0;
-      cursor: pointer;
-      accent-color: #0071e3;
-      border: none;
-    }
-
-    .action-item-text { flex: 1; }
-    .action-item-owner {
-      font-size: 0.78rem;
-      color: #6e6e73;
-      margin-top: 3px;
-    }
-
-    .email-output {
-      background: #f5f5f7;
-      border-radius: 12px;
-      padding: 20px;
-      font-size: 0.9rem;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      color: #1d1d1f;
-    }
-
-    .copy-btn {
-      background: none;
-      border: 1.5px solid #d2d2d7;
-      border-radius: 980px;
-      padding: 7px 18px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      color: #1d1d1f;
-      transition: all 0.15s;
-    }
-
-    .copy-btn:hover { border-color: #0071e3; color: #0071e3; }
-    .copy-btn.copied { border-color: #1a7f4b; color: #1a7f4b; }
-
-    .claude-tip {
-      background: #e8f4fd;
-      border-radius: 14px;
-      padding: 16px 20px;
-      font-size: 0.88rem;
-      color: #1d1d1f;
-      line-height: 1.6;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .tip-icon { font-size: 1.2rem; flex-shrink: 0; }
-
-    .divider {
-      height: 1px;
-      background: #f0f0f5;
-      margin: 24px 0;
-    }
-
-    .footer {
-      font-size: 0.82rem;
-      color: #aeaeb2;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    .footer a { color: #0071e3; text-decoration: none; }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--purple); text-decoration: none; }
+    h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .subtitle { font-size: 0.95rem; color: var(--gray); line-height: 1.6; margin-bottom: 28px; }
 
     /* Source toggle */
     .source-toggle {
       display: flex;
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
-
     .toggle-btn {
       flex: 1;
-      padding: 12px 20px;
-      border-radius: 14px;
-      border: 2px solid #d2d2d7;
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
       background: #fff;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      color: #6e6e73;
+      color: var(--gray);
       transition: all 0.15s;
     }
-
     .toggle-btn.active {
-      border-color: #0071e3;
-      color: #0071e3;
-      background: #e8f4fd;
+      border-color: var(--purple);
+      color: var(--purple);
+      background: var(--purple-light);
     }
 
-    @media (max-width: 580px) {
-      .field-row { grid-template-columns: 1fr; }
-      h1 { font-size: 1.7rem; }
-      .card, .output-card { padding: 24px; }
-      .source-toggle { flex-direction: column; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 16px;
     }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 14px;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.15s;
+      background: #fff;
+      line-height: 1.6;
+    }
+    input:focus, textarea:focus { border-color: var(--purple); }
+    textarea { resize: vertical; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+      margin-top: 8px;
+    }
+    .btn-primary:hover { background: var(--purple-dark); }
+    .btn-primary:disabled { background: #d1d5db; cursor: not-allowed; }
+
+    /* Loading */
+    .loading { display: none; text-align: center; padding: 48px 20px; }
+    .loading.visible { display: block; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--purple-light);
+      border-top-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: var(--gray); font-size: 0.92rem; }
+
+    /* Output */
+    .output-section { display: none; }
+    .output-section.visible { display: block; }
+
+    .output-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .output-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .output-card-header h2 { font-size: 1rem; font-weight: 700; }
+
+    .btn-copy-small {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--black);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-copy-small:hover { border-color: var(--purple); color: var(--purple); }
+    .btn-copy-small.copied { border-color: #16a34a; color: #16a34a; }
+
+    .action-items-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .action-item {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 13px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .action-item input[type="checkbox"] {
+      width: 17px; height: 17px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: var(--purple);
+    }
+
+    .email-output {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 0.9rem;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      color: var(--black);
+    }
+
+    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn-copy, .btn-reset {
+      flex: 1;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-copy { background: var(--purple); color: #fff; }
+    .btn-copy:hover { background: var(--purple-dark); }
+    .btn-copy.copied { background: #16a34a; }
+    .btn-reset { background: #f3f4f6; color: var(--black); border: 1px solid var(--border); }
+    .btn-reset:hover { background: #e5e7eb; }
+
+    .tip-box {
+      background: var(--purple-light);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      color: var(--black);
+      line-height: 1.6;
+    }
+    .tip-box a { color: var(--purple); font-weight: 600; text-decoration: none; }
+
+    .back-link { text-align: center; margin-top: 28px; font-size: 0.85rem; }
+    .back-link a { color: var(--purple); text-decoration: none; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a class="back" href="/">← Back to Carrie</a>
+<div class="container">
 
-    <h1 id="page-title">📝 Meeting Notes</h1>
-    <p class="subtitle" id="page-subtitle">Paste your notes or transcript. Carrie extracts every action item and drafts your follow-up email — ready to send.</p>
+  <div class="top-bar">
+    <a href="index.html" class="logo">GetCarrieAI</a>
+  </div>
 
-    <!-- Source toggle -->
-    <div class="source-toggle">
-      <button class="toggle-btn active" id="toggle-meeting" onclick="setSource('meeting')">📝 Meeting Notes</button>
-      <button class="toggle-btn" id="toggle-slack" onclick="setSource('slack')">💬 Slack Thread</button>
-    </div>
+  <h1 id="page-title">📝 Meeting Notes</h1>
+  <p class="subtitle" id="page-subtitle">Paste your notes or transcript. AI pulls out every action item and drafts your follow-up email — ready to send.</p>
 
-    <!-- Input card -->
-    <div class="card">
-      <h2 id="card-title">Meeting details</h2>
+  <!-- Source toggle -->
+  <div class="source-toggle">
+    <button class="toggle-btn active" id="toggle-meeting" onclick="setSource('meeting')">📝 Meeting Notes</button>
+    <button class="toggle-btn" id="toggle-slack" onclick="setSource('slack')">💬 Slack Thread</button>
+  </div>
 
-      <div class="field-row">
-        <div class="field">
-          <label id="label-name">Meeting name</label>
-          <input type="text" id="meeting-name" placeholder="Q2 Planning, 1:1 with CEO…" />
-        </div>
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="meeting-date" />
-        </div>
+  <!-- Input card -->
+  <div class="card" id="input-card">
+    <div class="row-2" style="margin-bottom:16px;">
+      <div class="field" style="margin-bottom:0;">
+        <label id="label-name">Meeting name</label>
+        <input type="text" id="meeting-name" placeholder="Q2 Planning, 1:1 with CEO…" />
       </div>
-
-      <div class="field">
+      <div class="field" style="margin-bottom:0;">
         <label id="label-attendees">Attendees</label>
-        <input type="text" id="attendees" placeholder="Sarah, Jamie, Alex, Carrie…" />
+        <input type="text" id="attendees" placeholder="Sarah, Jamie, Alex…" />
       </div>
-
-      <div class="field">
-        <label id="label-notes">Notes or transcript</label>
-        <textarea id="notes" rows="12" id="notes-textarea" placeholder="Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
+    </div>
+    <div class="field">
+      <label id="label-notes">Notes or transcript</label>
+      <textarea id="notes" rows="12" placeholder="Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
 
 Example:
 Sarah will send the revised budget to the team by Friday.
 Jamie is going to follow up with the vendor about the contract.
 We decided to push the launch to Q3. Alex owns the updated timeline.
 Next meeting: June 3rd at 2pm."></textarea>
-      </div>
-
-      <button class="btn-primary" id="process-btn" onclick="processNotes()">Extract action items & draft follow-up →</button>
     </div>
-
-    <!-- Output section -->
-    <div class="output-section" id="output-section">
-
-      <div class="output-card">
-        <div class="output-header">
-          <h2>✅ Action items</h2>
-          <button class="copy-btn" id="copy-actions-btn" onclick="copyActions()">Copy all</button>
-        </div>
-        <ul class="action-items" id="action-items-list"></ul>
-      </div>
-
-      <div class="output-card">
-        <div class="output-header">
-          <h2 id="output-email-title">📧 Follow-up email</h2>
-          <button class="copy-btn" id="copy-email-btn" onclick="copyEmail()">Copy</button>
-        </div>
-        <div class="email-output" id="email-output"></div>
-      </div>
-
-      <div class="claude-tip">
-        <span class="tip-icon">💡</span>
-        <div>
-          <strong>Want a deeper analysis?</strong> Copy your notes and paste them into <a href="https://claude.ai" target="_blank">Claude.ai</a> with the prompt: <em>"You are an EA. Extract all action items, owners, and deadlines from these meeting notes. Then draft a professional follow-up email."</em>
-          <br><br>
-          <button class="btn-secondary" onclick="copyClaudePrompt()">Copy prompt for Claude</button>
-        </div>
-      </div>
-
-    </div>
-
-    <p class="footer"><a href="/">← Back to Carrie</a> &nbsp;·&nbsp; <a href="https://getcarrieai.com" target="_blank">getcarrieai.com</a></p>
+    <button class="btn-primary" id="process-btn" onclick="processNotes()">Extract action items & draft follow-up →</button>
   </div>
 
-  <script>
-    // Set today's date as default
-    document.getElementById('meeting-date').valueAsDate = new Date();
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p id="loading-text">Reading your notes…</p>
+  </div>
 
-    let currentSource = 'meeting';
+  <!-- Output -->
+  <div class="output-section" id="output-section">
 
-    function setSource(source) {
-      currentSource = source;
+    <div class="output-card">
+      <div class="output-card-header">
+        <h2 id="actions-title">✅ Action items</h2>
+        <button class="btn-copy-small" id="copy-actions-btn" onclick="copyActions()">Copy all</button>
+      </div>
+      <ul class="action-items-list" id="action-items-list"></ul>
+    </div>
 
-      // Toggle buttons
-      document.getElementById('toggle-meeting').classList.toggle('active', source === 'meeting');
-      document.getElementById('toggle-slack').classList.toggle('active', source === 'slack');
+    <div class="output-card">
+      <div class="output-card-header">
+        <h2 id="email-title">📧 Follow-up email</h2>
+        <button class="btn-copy-small" id="copy-email-btn" onclick="copyEmail()">Copy</button>
+      </div>
+      <div class="email-output" id="email-output"></div>
+    </div>
 
-      if (source === 'slack') {
-        document.getElementById('page-title').textContent = '💬 Slack Thread';
-        document.getElementById('page-subtitle').textContent = 'Paste a Slack thread or conversation. Carrie pulls out every to-do and who owns it — so nothing gets lost.';
-        document.getElementById('card-title').textContent = 'Slack thread details';
-        document.getElementById('label-name').textContent = 'Thread topic';
-        document.getElementById('label-attendees').textContent = 'Channel or DM';
-        document.getElementById('label-notes').textContent = 'Paste Slack thread';
-        document.getElementById('meeting-name').placeholder = 'Project launch, Q2 budget discussion…';
-        document.getElementById('attendees').placeholder = '#general, #exec-team, DM with Sarah…';
-        document.getElementById('notes').placeholder = `Paste your Slack thread here…
+    <div class="output-actions">
+      <button class="btn-reset" onclick="resetForm()">Start over</button>
+    </div>
+
+    <div class="tip-box">
+      📋 <strong>Build the agenda first next time</strong> — use the <a href="agenda.html">Agenda tool →</a> Describe the meeting and AI builds a structured agenda with time blocks before you walk in.
+    </div>
+
+  </div>
+
+  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
+</div>
+
+<script>
+  let currentSource = 'meeting';
+
+  function setSource(source) {
+    currentSource = source;
+    document.getElementById('toggle-meeting').classList.toggle('active', source === 'meeting');
+    document.getElementById('toggle-slack').classList.toggle('active', source === 'slack');
+    document.getElementById('output-section').classList.remove('visible');
+
+    if (source === 'slack') {
+      document.getElementById('page-title').textContent = '💬 Slack Thread';
+      document.getElementById('page-subtitle').textContent = 'Paste a Slack thread. AI pulls every to-do and who owns it — so nothing gets lost.';
+      document.getElementById('label-name').textContent = 'Thread topic';
+      document.getElementById('label-attendees').textContent = 'Channel or DM';
+      document.getElementById('label-notes').textContent = 'Paste Slack thread';
+      document.getElementById('meeting-name').placeholder = 'Project launch, Q2 budget discussion…';
+      document.getElementById('attendees').placeholder = '#general, #exec-team, DM with Sarah…';
+      document.getElementById('notes').placeholder = `Paste your Slack thread here…
 
 Example:
 [Sarah] Can you book flights to Austin for the team offsite? June 10-12.
 [Jamie] Also need to arrange the hotel — something downtown
 [CEO] Carrie can you send over the agenda template before Monday?
-[Sarah] And follow up with the vendor on the contract, they haven't responded
-[Jamie] +1 we need that by end of week`;
-        document.getElementById('process-btn').textContent = 'Extract Slack to-dos →';
-      } else {
-        document.getElementById('page-title').textContent = '📝 Meeting Notes';
-        document.getElementById('page-subtitle').textContent = 'Paste your notes or transcript. Carrie extracts every action item and drafts your follow-up email — ready to send.';
-        document.getElementById('card-title').textContent = 'Meeting details';
-        document.getElementById('label-name').textContent = 'Meeting name';
-        document.getElementById('label-attendees').textContent = 'Attendees';
-        document.getElementById('label-notes').textContent = 'Notes or transcript';
-        document.getElementById('meeting-name').placeholder = 'Q2 Planning, 1:1 with CEO…';
-        document.getElementById('attendees').placeholder = 'Sarah, Jamie, Alex, Carrie…';
-        document.getElementById('notes').placeholder = `Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
+[Sarah] And follow up with the vendor on the contract, they haven't responded`;
+      document.getElementById('process-btn').textContent = 'Extract Slack to-dos →';
+    } else {
+      document.getElementById('page-title').textContent = '📝 Meeting Notes';
+      document.getElementById('page-subtitle').textContent = 'Paste your notes or transcript. AI pulls out every action item and drafts your follow-up email — ready to send.';
+      document.getElementById('label-name').textContent = 'Meeting name';
+      document.getElementById('label-attendees').textContent = 'Attendees';
+      document.getElementById('label-notes').textContent = 'Notes or transcript';
+      document.getElementById('meeting-name').placeholder = 'Q2 Planning, 1:1 with CEO…';
+      document.getElementById('attendees').placeholder = 'Sarah, Jamie, Alex…';
+      document.getElementById('notes').placeholder = `Paste your Zoom transcript, Otter.ai export, or your own rough notes here…
 
 Example:
 Sarah will send the revised budget to the team by Friday.
 Jamie is going to follow up with the vendor about the contract.
 We decided to push the launch to Q3. Alex owns the updated timeline.
 Next meeting: June 3rd at 2pm.`;
-        document.getElementById('process-btn').textContent = 'Extract action items & draft follow-up →';
-      }
+      document.getElementById('process-btn').textContent = 'Extract action items & draft follow-up →';
+    }
+  }
 
-      // Hide output when switching
-      document.getElementById('output-section').classList.remove('visible');
+  async function processNotes() {
+    const notes = document.getElementById('notes').value.trim();
+    if (!notes) {
+      alert('Paste your notes first.');
+      return;
     }
 
-    // Action item patterns
-    const ACTION_PATTERNS = [
-      /\b(\w[\w\s]+?)\s+will\s+(.+?)(?:[.!]|$)/gi,
-      /\b(\w[\w\s]+?)\s+(?:is going to|needs to|has to|should)\s+(.+?)(?:[.!]|$)/gi,
-      /\b(\w[\w\s]+?)\s+(?:to|will)\s+(?:send|follow up|schedule|book|draft|review|prepare|share|update|confirm|reach out|connect|set up|create|complete|finish|submit)\s+(.+?)(?:[.!]|$)/gi,
-      /action\s*(?:item)?[:–-]\s*(.+?)(?:[.!]|$)/gi,
-      /todo[:–-]\s*(.+?)(?:[.!]|$)/gi,
-      /follow[\s-]?up[:–-]\s*(.+?)(?:[.!]|$)/gi,
-    ];
+    const meetingName = document.getElementById('meeting-name').value.trim();
+    const attendees = document.getElementById('attendees').value.trim();
+    const isSlack = currentSource === 'slack';
 
-    const DEADLINE_PATTERNS = [
-      /by\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/gi,
-      /by\s+(end of (?:day|week|month))/gi,
-      /by\s+(\w+ \d{1,2}(?:st|nd|rd|th)?)/gi,
-      /(?:due|deadline)[:\s]+(.+?)(?:[.,!]|$)/gi,
-      /(?:next week|this week|tomorrow|today|friday|monday|eod|eow)/gi,
-    ];
+    document.getElementById('input-card').style.display = 'none';
+    document.getElementById('loading').classList.add('visible');
+    document.getElementById('loading-text').textContent = isSlack ? 'Reading the thread…' : 'Reading your notes…';
 
-    function extractDeadline(text) {
-      for (const pattern of DEADLINE_PATTERNS) {
-        const match = text.match(pattern);
-        if (match) return match[0];
-      }
-      return null;
+    const systemPrompt = isSlack
+      ? `You are an expert Executive Assistant processing a Slack thread.
+
+Extract every to-do, action item, and follow-up from the thread. Then draft a short Slack summary message.
+
+Return your response in exactly this format — no markdown, no asterisks:
+
+TO-DOS
+──────
+[list each item as: • [Person if known]: [task]]
+
+SLACK SUMMARY
+─────────────
+[A short message (3-5 lines) to post in the channel confirming the to-dos. Casual, professional tone.]`
+      : `You are an expert Executive Assistant processing meeting notes.
+
+Extract every action item with owner and deadline. Then draft a professional follow-up email.
+
+Return your response in exactly this format — no markdown, no asterisks:
+
+ACTION ITEMS
+────────────
+[list each item as: • [Person if known]: [task] — [deadline if mentioned, otherwise omit]]
+
+FOLLOW-UP EMAIL
+───────────────
+[A professional follow-up email. Start with a greeting, recap action items, warm close. Ready to send as-is.]`;
+
+    const userContent = [
+      meetingName ? `${isSlack ? 'Thread' : 'Meeting'}: ${meetingName}` : '',
+      attendees ? `${isSlack ? 'Channel/participants' : 'Attendees'}: ${attendees}` : '',
+      `\n${isSlack ? 'Thread' : 'Notes'}:\n${notes}`
+    ].filter(Boolean).join('\n');
+
+    try {
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_tokens: 1024,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userContent }]
+        })
+      });
+
+      const data = await response.json();
+      if (!data.content) throw new Error(data.error || 'No response');
+
+      renderOutput(data.content, isSlack, meetingName, attendees);
+
+    } catch (err) {
+      document.getElementById('loading').classList.remove('visible');
+      document.getElementById('input-card').style.display = 'block';
+      alert('Something went wrong. Please try again.');
+      console.error(err);
     }
+  }
 
-    function extractActionItems(notes) {
-      const items = [];
-      const seen = new Set();
-      const lines = notes.split('\n');
+  function renderOutput(text, isSlack, meetingName, attendees) {
+    // Parse sections
+    const sections = isSlack
+      ? { items: extractSection(text, 'TO-DOS'), email: extractSection(text, 'SLACK SUMMARY') }
+      : { items: extractSection(text, 'ACTION ITEMS'), email: extractSection(text, 'FOLLOW-UP EMAIL') };
 
-      // Line-by-line scan for common action signals
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.length < 10) continue;
+    // Render action items / to-dos
+    const list = document.getElementById('action-items-list');
+    list.innerHTML = '';
+    const itemLines = sections.items.split('\n').filter(l => l.trim().startsWith('•'));
 
-        const lower = trimmed.toLowerCase();
-        const hasSignal = ['will ', 'needs to', 'has to', 'should ', 'going to',
-          'action:', 'todo:', 'follow up', 'follow-up', 'to send', 'to book',
-          'to draft', 'to review', 'to schedule', 'to share', 'to confirm',
-          'to prepare', 'to update', 'to create', 'to submit', 'to reach out',
-          'to connect', 'owns ', 'responsible for', 'assigned to'
-        ].some(s => lower.includes(s));
-
-        if (!hasSignal) continue;
-
-        // Try to extract owner
-        let owner = 'TBD';
-        let task = trimmed;
-
-        const ownerMatch = trimmed.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)\s+(?:will|needs|has|is going|to|should|owns)/);
-        if (ownerMatch) {
-          owner = ownerMatch[1];
-        }
-
-        const deadline = extractDeadline(trimmed);
-        const key = trimmed.toLowerCase().replace(/\s+/g, ' ').substring(0, 60);
-
-        if (!seen.has(key)) {
-          seen.add(key);
-          items.push({ task, owner, deadline });
-        }
-      }
-
-      // If nothing found with signals, grab any line that looks like a task
-      if (items.length === 0) {
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (trimmed.length > 15 && trimmed.length < 200) {
-            items.push({ task: trimmed, owner: 'TBD', deadline: null });
-          }
-        }
-      }
-
-      return items.slice(0, 15);
-    }
-
-    function processNotes() {
-      const notes     = document.getElementById('notes').value.trim();
-      const meeting   = document.getElementById('meeting-name').value.trim() || 'Meeting';
-      const dateVal   = document.getElementById('meeting-date').value;
-      const attendees = document.getElementById('attendees').value.trim();
-
-      if (!notes) {
-        alert('Please paste your meeting notes first.');
-        return;
-      }
-
-      const date = dateVal
-        ? new Date(dateVal + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-        : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-      const items = extractActionItems(notes);
-      const isSlack = currentSource === 'slack';
-
-      // Render action items
-      const list = document.getElementById('action-items-list');
-      list.innerHTML = '';
-
-      if (items.length === 0) {
-        list.innerHTML = '<li style="color:#6e6e73;font-size:0.9rem;">No clear action items detected. Try the Claude prompt below for a deeper analysis.</li>';
-      } else {
-        items.forEach((item, i) => {
-          const li = document.createElement('li');
-          li.className = 'action-item';
-          li.innerHTML = `
-            <input type="checkbox" id="chk-${i}" />
-            <div class="action-item-text">
-              <div>${item.task}</div>
-              <div class="action-item-owner">
-                ${item.owner !== 'TBD' ? `Owner: <strong>${item.owner}</strong>` : ''}
-                ${item.deadline ? ` &nbsp;·&nbsp; Due: <strong>${item.deadline}</strong>` : ''}
-              </div>
-            </div>`;
-          list.appendChild(li);
-        });
-      }
-
-      // Draft output — email for meetings, Slack summary for threads
-      const actionLines = items.map((item, i) =>
-        `  ${i + 1}. ${item.task}${item.deadline ? ' (' + item.deadline + ')' : ''}`
-      ).join('\n');
-
-      let email;
-      if (isSlack) {
-        const channel = attendees || 'the thread';
-        email = `Here's a summary of to-dos from ${channel}${meeting ? ' — ' + meeting : ''}:
-
-${actionLines || '  (No to-dos detected — review the thread and add manually)'}
-
-Let me know if I missed anything or if priorities have changed.
-
-— Carrie`;
-      } else {
-        const attendeeGreeting = attendees
-          ? `Hi ${attendees.split(',').map(a => a.trim().split(' ')[0]).join(', ')},`
-          : 'Hi team,';
-        email = `${attendeeGreeting}
-
-Thank you for a productive ${meeting} on ${date}. Here's a summary of our action items:
-
-${actionLines || '  (No action items detected — please review notes and add manually)'}
-
-Please let me know if I've missed anything or if you need any of these adjusted.
-
-Best,
-[Your name]`;
-      }
-
-      document.getElementById('email-output').textContent = email;
-      document.getElementById('output-email-title').textContent = isSlack ? '💬 Slack summary' : '📧 Follow-up email';
-
-      // Show output
-      document.getElementById('output-section').classList.add('visible');
-      document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function copyActions() {
-      const items = document.querySelectorAll('.action-item-text div:first-child');
-      const text = Array.from(items).map((el, i) => `${i + 1}. ${el.textContent.trim()}`).join('\n');
-      copyToClipboard(text, 'copy-actions-btn', 'Copied!');
-    }
-
-    function copyEmail() {
-      const text = document.getElementById('email-output').textContent;
-      copyToClipboard(text, 'copy-email-btn', 'Copied!');
-    }
-
-    function copyClaudePrompt() {
-      const notes    = document.getElementById('notes').value.trim();
-      const meeting  = document.getElementById('meeting-name').value.trim() || 'this meeting';
-      const attendees = document.getElementById('attendees').value.trim();
-      const isSlack  = currentSource === 'slack';
-
-      const prompt = isSlack
-        ? `You are an experienced Executive Assistant. I need you to process the following Slack thread from ${attendees || 'a channel'}${meeting ? ' about ' + meeting : ''}.
-
-Please:
-1. Extract ALL to-dos and action items, noting who is responsible for each
-2. Flag anything that needs a response or follow-up from the EA
-3. Draft a short Slack summary message I can post to confirm the to-dos with the team
-
-Slack thread:
----
-${notes}
----`
-        : `You are an experienced Executive Assistant. I need you to process the following meeting notes from ${meeting}${attendees ? ' with ' + attendees : ''}.
-
-Please:
-1. Extract ALL action items with the person responsible and any deadlines mentioned
-2. Note any key decisions that were made
-3. Draft a concise, professional follow-up email I can send to attendees
-
-Meeting notes:
----
-${notes}
----`;
-
-      copyToClipboard(prompt, null, null);
-      alert('Prompt copied! Paste it into Claude.ai for a deeper analysis.');
-    }
-
-    function copyToClipboard(text, btnId, label) {
-      navigator.clipboard.writeText(text).then(() => {
-        if (!btnId) return;
-        const btn = document.getElementById(btnId);
-        const orig = btn.textContent;
-        btn.textContent = label;
-        btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = orig;
-          btn.classList.remove('copied');
-        }, 2000);
+    if (itemLines.length === 0) {
+      list.innerHTML = '<li style="color:var(--gray);font-size:0.9rem;padding:8px 0;">No clear action items detected — review notes and add manually.</li>';
+    } else {
+      itemLines.forEach((line, i) => {
+        const li = document.createElement('li');
+        li.className = 'action-item';
+        li.innerHTML = `<input type="checkbox" id="chk-${i}" /><div>${line.replace(/^•\s*/, '')}</div>`;
+        list.appendChild(li);
       });
     }
-  </script>
+
+    // Render email / summary
+    document.getElementById('email-output').textContent = sections.email || '(No email generated — try again with more detail in your notes.)';
+
+    // Update labels
+    document.getElementById('actions-title').textContent = isSlack ? '✅ To-dos from this thread' : '✅ Action items';
+    document.getElementById('email-title').textContent = isSlack ? '💬 Slack summary' : '📧 Follow-up email';
+
+    document.getElementById('loading').classList.remove('visible');
+    document.getElementById('output-section').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function extractSection(text, heading) {
+    const lines = text.split('\n');
+    let inSection = false;
+    let result = [];
+    for (const line of lines) {
+      if (line.trim().toUpperCase().startsWith(heading.toUpperCase())) {
+        inSection = true;
+        continue;
+      }
+      if (inSection) {
+        // Stop at the next all-caps heading
+        if (/^[A-Z\s─\-]{4,}$/.test(line.trim()) && line.trim().length > 3) break;
+        result.push(line);
+      }
+    }
+    return result.join('\n').trim();
+  }
+
+  function copyActions() {
+    const items = document.querySelectorAll('.action-items-list .action-item div');
+    const text = Array.from(items).map((el, i) => `${i + 1}. ${el.textContent.trim()}`).join('\n');
+    copyToClipboard(text, 'copy-actions-btn');
+  }
+
+  function copyEmail() {
+    const text = document.getElementById('email-output').textContent;
+    copyToClipboard(text, 'copy-email-btn');
+  }
+
+  function copyToClipboard(text, btnId) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById(btnId);
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('output-section').classList.remove('visible');
+    document.getElementById('input-card').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
 </body>
 </html>

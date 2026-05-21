@@ -3,139 +3,196 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Job Posting Generator — GetCarrieAI</title>
+  <title>Write a Job Posting — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif; background: #f5f5f7; color: #1d1d1f; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px 80px; -webkit-font-smoothing: antialiased; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 24px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
     .container { max-width: 620px; width: 100%; }
-    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; text-align: center; }
-    .subtitle { font-size: 0.95rem; color: #6e6e73; text-align: center; margin-bottom: 32px; line-height: 1.6; }
-    .section { background: #fff; border-radius: 18px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: #aeaeb2; margin-bottom: 4px; }
-    .section-title { font-size: 1.05rem; font-weight: 700; color: #1d1d1f; margin-bottom: 18px; }
-    .section-body { display: flex; flex-direction: column; gap: 14px; }
-    label { font-size: 0.82rem; font-weight: 600; color: #3d3d3f; display: block; margin-bottom: 5px; }
-    .hint { font-size: 0.75rem; font-weight: 400; color: #aeaeb2; }
-    input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #d2d2d7; border-radius: 10px; font-size: 0.88rem; font-family: inherit; color: #1d1d1f; background: #fff; outline: none; transition: border-color 0.15s; }
-    input:focus, textarea:focus { border-color: #0071e3; }
-    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--purple); text-decoration: none; }
+    h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .subtitle { font-size: 0.95rem; color: var(--gray); line-height: 1.6; margin-bottom: 32px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.15s;
+      background: #fff;
+      line-height: 1.6;
+    }
+    textarea:focus, input:focus { border-color: var(--purple); }
+    textarea { resize: vertical; }
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
-    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip { padding: 7px 14px; border-radius: 980px; border: 1.5px solid #d2d2d7; background: #fff; font-size: 0.82rem; font-weight: 600; color: #3d3d3f; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-    .chip:hover { border-color: #0071e3; color: #0071e3; }
-    .chip.selected { background: #0071e3; border-color: #0071e3; color: #fff; }
-    .btn-generate { width: 100%; padding: 16px; background: #0071e3; color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; margin-top: 8px; }
-    .btn-generate:hover { background: #0077ed; }
+
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+      margin-top: 20px;
+    }
+    .btn-generate:hover { background: var(--purple-dark); }
+    .btn-generate:disabled { background: #d1d5db; cursor: not-allowed; }
+
+    /* Loading */
+    .loading { display: none; text-align: center; padding: 48px 20px; }
+    .loading.visible { display: block; }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--purple-light);
+      border-top-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: var(--gray); font-size: 0.92rem; }
+
+    /* Output */
     .output-section { display: none; }
     .output-section.visible { display: block; }
-    .output-box { background: #fff; border-radius: 18px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 16px; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; font-size: 0.88rem; line-height: 1.8; color: #1d1d1f; border: 1px solid #e5e5ea; }
-    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-copy, .btn-pdf, .btn-reset { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; font-family: inherit; border: none; transition: all 0.15s; }
-    .btn-copy { background: #1d1d1f; color: #fff; }
-    .btn-copy:hover { background: #333; }
-    .btn-copy.copied { background: #34c759; }
-    .btn-pdf { background: #f0f7ff; color: #0071e3; border: 1px solid #d0e8ff; }
-    .btn-pdf:hover { background: #dceeff; }
-    .btn-reset { background: #f5f5f7; color: #1d1d1f; border: 1px solid #d2d2d7; }
-    .btn-reset:hover { background: #e5e5ea; }
-    .back-link { text-align: center; margin-top: 24px; }
-    .back-link a { color: #0071e3; text-decoration: none; font-size: 0.85rem; }
+
+    .output-box {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .output-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn-copy, .btn-reset, .btn-print {
+      flex: 1;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.15s;
+      min-width: 100px;
+    }
+    .btn-copy { background: var(--purple); color: #fff; }
+    .btn-copy:hover { background: var(--purple-dark); }
+    .btn-copy.copied { background: #16a34a; }
+    .btn-print { background: var(--purple-light); color: var(--purple); border: 1px solid #ddd6fe; }
+    .btn-print:hover { background: #ede9fe; }
+    .btn-reset { background: #f3f4f6; color: var(--black); border: 1px solid var(--border); }
+    .btn-reset:hover { background: #e5e7eb; }
+
+    .back-link { text-align: center; margin-top: 28px; font-size: 0.85rem; }
+    .back-link a { color: var(--purple); text-decoration: none; }
+
     @media print {
       body { background: #fff; padding: 20px; }
       .output-section.visible { display: block !important; }
-      #posting-form, .back-link, .output-actions, h1, .subtitle { display: none !important; }
-      .output-box { box-shadow: none; border: none; padding: 0; }
+      .card, .back-link, .output-actions, .top-bar { display: none !important; }
+      .output-box { border: none; padding: 0; background: #fff; }
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>Job Posting Generator</h1>
-  <p class="subtitle">Fill in the details — get a formatted job posting ready to paste into LinkedIn, Indeed, or your careers page.</p>
 
-  <form id="posting-form">
+  <div class="top-bar">
+    <a href="index.html" class="logo">GetCarrieAI</a>
+  </div>
 
-    <div class="section">
-      <p class="section-label">Section 1</p>
-      <p class="section-title">Company & Role</p>
-      <div class="section-body">
-        <div class="row-2">
-          <div><label>Company name</label><input type="text" name="company_name" placeholder="e.g. Acme Inc." /></div>
-          <div><label>Job title</label><input type="text" name="job_title" placeholder="e.g. Head of Operations" /></div>
-        </div>
-        <div class="row-2">
-          <div><label>Reports to</label><input type="text" name="reports_to" placeholder="e.g. CEO" /></div>
-          <div><label>Location</label><input type="text" name="location" placeholder="e.g. Remote, NYC (Hybrid 3x/wk)" /></div>
-        </div>
-        <div>
-          <label>Employment type</label>
-          <div class="chip-group">
-            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Full-time</button>
-            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Part-time</button>
-            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract</button>
-            <button type="button" class="chip" onclick="toggleChip(this,'emp_type')">Contract-to-hire</button>
-          </div>
-        </div>
+  <h1>💼 Write a Job Posting</h1>
+  <p class="subtitle">Tell me about the role — AI writes a polished posting ready for LinkedIn, Indeed, or your careers page.</p>
+
+  <div class="card" id="input-card">
+    <div class="field">
+      <label>Describe the role</label>
+      <textarea id="brain-dump" rows="7" placeholder="e.g. We're hiring an Executive Assistant for our Series B startup in NYC. The CEO is a fast-moving founder who travels frequently. We need someone with 5+ years EA experience, ideally from a startup or VC background. Full-time, hybrid 3 days a week, $90-110k. Reports directly to the CEO. Key responsibilities: managing a complex calendar, booking travel, managing inbox, supporting board prep, running point on special projects."></textarea>
+    </div>
+
+    <div class="row-2" style="margin-top:4px;">
+      <div class="field" style="margin-bottom:0;">
+        <label>Company name <span style="font-weight:400;text-transform:none;font-size:0.78rem;">(optional)</span></label>
+        <input type="text" id="company-name" placeholder="e.g. Acme Inc." />
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>Job title <span style="font-weight:400;text-transform:none;font-size:0.78rem;">(optional)</span></label>
+        <input type="text" id="job-title" placeholder="e.g. Executive Assistant" />
       </div>
     </div>
 
-    <div class="section">
-      <p class="section-label">Section 2</p>
-      <p class="section-title">About the Company</p>
-      <div class="section-body">
-        <div><label>What your company does <span class="hint">(2–3 sentences, plain English)</span></label><textarea name="company_desc" placeholder="e.g. Acme builds AI tools for small business owners. We're a team of 28, Series A, and growing fast. We care about moving quickly, staying lean, and building things people actually use."></textarea></div>
-        <div><label>Why this role exists now</label><input type="text" name="why_now" placeholder="e.g. We've grown from 10 to 28 people in 18 months and need someone to build the ops infrastructure to scale to 100." /></div>
-      </div>
-    </div>
+    <button class="btn-generate" id="generate-btn" onclick="generatePosting()">Write my job posting →</button>
+  </div>
 
-    <div class="section">
-      <p class="section-label">Section 3</p>
-      <p class="section-title">The Role</p>
-      <div class="section-body">
-        <div><label>Role summary <span class="hint">(2–3 sentences)</span></label><textarea name="role_summary" placeholder="e.g. As our first Head of Ops, you'll build the systems and processes that let us scale without chaos. You'll work directly with the CEO and own everything from vendor relationships to team rituals."></textarea></div>
-        <div><label>Key responsibilities <span class="hint">(one per line)</span></label><textarea name="responsibilities" placeholder="e.g.&#10;Own all vendor relationships and contract renewals&#10;Build and document core operational processes&#10;Partner with finance on budgeting and forecasting&#10;Run weekly all-hands and team rituals"></textarea></div>
-      </div>
-    </div>
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Writing your job posting…</p>
+  </div>
 
-    <div class="section">
-      <p class="section-label">Section 4</p>
-      <p class="section-title">What We're Looking For</p>
-      <div class="section-body">
-        <div><label>Requirements <span class="hint">(one per line)</span></label><textarea name="requirements" placeholder="e.g.&#10;5+ years in operations, chief of staff, or similar&#10;Experience at a startup under 50 people&#10;Strong written communication — we're async-first&#10;Comfortable with ambiguity and building from scratch"></textarea></div>
-        <div><label>Nice-to-haves <span class="hint">(one per line)</span></label><textarea name="nice_to_haves" placeholder="e.g.&#10;Experience with Notion and Linear&#10;Has scaled a team through a funding round&#10;MBA or equivalent"></textarea></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <p class="section-label">Section 5</p>
-      <p class="section-title">Compensation & Benefits</p>
-      <div class="section-body">
-        <div class="row-2">
-          <div><label>Salary range <span class="hint">(optional)</span></label><input type="text" name="salary_range" placeholder="e.g. $120K–$150K" /></div>
-          <div><label>Equity <span class="hint">(optional)</span></label><input type="text" name="equity" placeholder="e.g. 0.1–0.3% options" /></div>
-        </div>
-        <div><label>Benefits <span class="hint">(one per line or comma-separated)</span></label><textarea name="benefits" style="min-height:60px;" placeholder="e.g. Full medical/dental/vision, 401k with 4% match, unlimited PTO, $1K annual learning budget, home office stipend"></textarea></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <p class="section-label">Section 6</p>
-      <p class="section-title">How to Apply</p>
-      <div class="section-body">
-        <div><label>Application instructions</label><textarea name="how_to_apply" style="min-height:60px;" placeholder="e.g. Apply via LinkedIn or email your resume + a note on why this role at hello@acme.com. No cover letter required — just tell us why this, why now."></textarea></div>
-        <div><label>Interview process overview <span class="hint">(optional — builds trust with candidates)</span></label><input type="text" name="interview_overview" placeholder="e.g. Phone screen → interview with CEO → take-home exercise → final panel. Usually 2–3 weeks start to finish." /></div>
-      </div>
-    </div>
-
-    <button type="submit" class="btn-generate">Generate Job Posting →</button>
-  </form>
-
-  <div class="output-section" id="outputSection">
-    <div class="output-box" id="outputBox"></div>
+  <!-- Output -->
+  <div class="output-section" id="output-section">
+    <div class="output-box" id="output-box"></div>
     <div class="output-actions">
-      <button class="btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
-      <button class="btn-pdf" onclick="window.print()">⬇ Save / Print PDF</button>
+      <button class="btn-copy" id="copy-btn" onclick="copyOutput()">Copy to clipboard</button>
+      <button class="btn-print" onclick="window.print()">⬇ Save / Print PDF</button>
       <button class="btn-reset" onclick="resetForm()">Start over</button>
     </div>
   </div>
@@ -144,108 +201,117 @@
 </div>
 
 <script>
-  const selections = {};
+  async function generatePosting() {
+    const brainDump = document.getElementById('brain-dump').value.trim();
+    if (!brainDump) {
+      alert('Tell me about the role first.');
+      return;
+    }
 
-  function toggleChip(el, group) {
-    document.querySelectorAll(`.chip[onclick*="'${group}'"]`).forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selections[group] = el.textContent.trim();
+    const company = document.getElementById('company-name').value.trim();
+    const title = document.getElementById('job-title').value.trim();
+
+    const extras = [
+      company ? `Company: ${company}` : '',
+      title ? `Job title: ${title}` : ''
+    ].filter(Boolean).join('\n');
+
+    const userMessage = extras ? `${brainDump}\n\n${extras}` : brainDump;
+
+    document.getElementById('input-card').style.display = 'none';
+    document.getElementById('loading').classList.add('visible');
+    document.getElementById('generate-btn').disabled = true;
+
+    try {
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_tokens: 1200,
+          system: `You are an expert EA and recruiting professional who writes compelling, honest job postings.
+
+Given a description of a role, write a complete, polished job posting formatted with plain text (no markdown, no asterisks, no pound signs). Use the following format:
+
+[JOB TITLE IN ALL CAPS]
+[Company] · [Employment type] · [Location]
+
+─────────────────────────────────────────────
+ABOUT US
+─────────────────────────────────────────────
+[2-3 sentences about the company — warm, real, not corporate jargon]
+
+─────────────────────────────────────────────
+THE ROLE
+─────────────────────────────────────────────
+[2-3 sentences about the role — what they'll own, who they'll work with, why it matters]
+
+─────────────────────────────────────────────
+WHAT YOU'LL DO
+─────────────────────────────────────────────
+• [responsibility]
+• [responsibility]
+• [responsibility]
+(4-6 bullet points)
+
+─────────────────────────────────────────────
+WHAT WE'RE LOOKING FOR
+─────────────────────────────────────────────
+• [requirement]
+• [requirement]
+(4-6 must-haves, honest and specific)
+
+─────────────────────────────────────────────
+NICE TO HAVE
+─────────────────────────────────────────────
+• [nice to have]
+(2-3 genuinely optional items)
+
+─────────────────────────────────────────────
+COMPENSATION & BENEFITS
+─────────────────────────────────────────────
+[Salary range if mentioned, plus any benefits]
+
+─────────────────────────────────────────────
+HOW TO APPLY
+─────────────────────────────────────────────
+[Application instructions if mentioned, otherwise write: Apply via LinkedIn or send your resume to [email] — no cover letter required. Tell us why this role, why now.]
+
+─────────────────────────────────────────────
+Generated by GetCarrieAI.com
+
+Rules:
+- Write like a human, not a corporate HR template
+- Be specific and honest — no filler phrases like "fast-paced environment" or "rockstar"
+- If salary wasn't mentioned, omit the compensation section
+- Keep it to what was described — don't invent details that weren't given
+- Use plain text only, no markdown formatting`,
+          messages: [{ role: 'user', content: userMessage }]
+        })
+      });
+
+      const data = await response.json();
+      if (data.content) {
+        document.getElementById('output-box').textContent = data.content;
+        document.getElementById('loading').classList.remove('visible');
+        document.getElementById('output-section').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+    } catch (err) {
+      document.getElementById('loading').classList.remove('visible');
+      document.getElementById('input-card').style.display = 'block';
+      document.getElementById('generate-btn').disabled = false;
+      alert('Something went wrong. Please try again.');
+      console.error(err);
+    }
   }
 
-  document.getElementById('posting-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const f = e.target;
-    const get = n => f.elements[n]?.value.trim() || '';
-
-    const company = get('company_name');
-    const title = get('job_title');
-    const reportsTo = get('reports_to');
-    const location = get('location');
-    const empType = selections['emp_type'] || '';
-    const companyDesc = get('company_desc');
-    const whyNow = get('why_now');
-    const roleSummary = get('role_summary');
-    const responsibilities = get('responsibilities');
-    const requirements = get('requirements');
-    const niceToHaves = get('nice_to_haves');
-    const salary = get('salary_range');
-    const equity = get('equity');
-    const benefits = get('benefits');
-    const howToApply = get('how_to_apply');
-    const interviewOverview = get('interview_overview');
-
-    const fmt = (text) => text.split('\n').filter(Boolean).map(l => `• ${l.trim()}`).join('\n');
-
-    let lines = [];
-
-    if (title) { lines.push(title.toUpperCase()); lines.push(''); }
-
-    const meta = [company, empType, location].filter(Boolean).join(' · ');
-    if (meta) { lines.push(meta); lines.push(''); }
-
-    if (companyDesc || whyNow) {
-      lines.push('ABOUT US');
-      lines.push('─────────────────────────────────');
-      if (companyDesc) { lines.push(companyDesc); lines.push(''); }
-      if (whyNow) { lines.push(whyNow); lines.push(''); }
-    }
-
-    if (roleSummary || reportsTo) {
-      lines.push('THE ROLE');
-      lines.push('─────────────────────────────────');
-      if (roleSummary) { lines.push(roleSummary); lines.push(''); }
-      if (reportsTo) { lines.push(`Reports to: ${reportsTo}`); lines.push(''); }
-    }
-
-    if (responsibilities) {
-      lines.push('WHAT YOU\'LL DO');
-      lines.push('─────────────────────────────────');
-      lines.push(fmt(responsibilities));
-      lines.push('');
-    }
-
-    if (requirements) {
-      lines.push('WHAT WE\'RE LOOKING FOR');
-      lines.push('─────────────────────────────────');
-      lines.push(fmt(requirements));
-      lines.push('');
-    }
-
-    if (niceToHaves) {
-      lines.push('NICE TO HAVE');
-      lines.push('─────────────────────────────────');
-      lines.push(fmt(niceToHaves));
-      lines.push('');
-    }
-
-    const hasComp = salary || equity || benefits;
-    if (hasComp) {
-      lines.push('COMPENSATION & BENEFITS');
-      lines.push('─────────────────────────────────');
-      if (salary) lines.push(`💰 ${salary}${equity ? ' + ' + equity : ''}`);
-      if (benefits) { lines.push(''); lines.push(fmt(benefits)); }
-      lines.push('');
-    }
-
-    if (howToApply || interviewOverview) {
-      lines.push('HOW TO APPLY');
-      lines.push('─────────────────────────────────');
-      if (howToApply) { lines.push(howToApply); lines.push(''); }
-      if (interviewOverview) { lines.push(`Interview process: ${interviewOverview}`); lines.push(''); }
-    }
-
-    lines.push('─────────────────────────────────');
-    lines.push('Generated by GetCarrieAI.com');
-
-    document.getElementById('outputBox').textContent = lines.join('\n');
-    document.getElementById('posting-form').style.display = 'none';
-    document.getElementById('outputSection').classList.add('visible');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
   function copyOutput() {
-    navigator.clipboard.writeText(document.getElementById('outputBox').textContent).then(() => {
-      const btn = document.getElementById('copyBtn');
+    const text = document.getElementById('output-box').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
@@ -253,10 +319,10 @@
   }
 
   function resetForm() {
-    document.getElementById('posting-form').reset();
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-    document.getElementById('outputSection').classList.remove('visible');
-    document.getElementById('posting-form').style.display = 'block';
+    document.getElementById('output-section').classList.remove('visible');
+    document.getElementById('output-box').textContent = '';
+    document.getElementById('input-card').style.display = 'block';
+    document.getElementById('generate-btn').disabled = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
