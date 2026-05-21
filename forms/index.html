@@ -639,7 +639,7 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
     if (!text) return;
 
     const userMessages = messages.filter(m => m.role === 'user').length;
-    if (!hasProfile && userMessages >= MESSAGE_LIMIT) {
+    if (userMessages >= MESSAGE_LIMIT) {
       showLimitPrompt();
       return;
     }
