@@ -348,7 +348,9 @@ function showBrainDump() {
   wrap.className = 'text-input-wrap';
 
   const ta = document.createElement('textarea');
-  ta.placeholder = "e.g. I'm Carrie AI — EA at a tech startup, mom of two kids (8 and 11), two dogs, and I'm also managing eldercare for my mother-in-law who lives nearby. Work side: I support a founder, lots of travel, I need to book a trip to Santa Monica next week. Home side: school pickups, vet appointments, grocery orders, and making sure my mother-in-law gets to her doctor. I'm the person everyone calls when something needs to get done — and I never have enough hours.";
+  ta.placeholder = isWorkMode
+    ? "e.g. I'm an EA supporting a Series B founder in NYC. She travels every other week, flies Delta, always needs an aisle seat. I manage her calendar, inbox, expenses, and board prep. She hates back-to-back meetings and never wants to be the one to send the follow-up. I draft most of her emails and I need them to sound exactly like her. We use Google Workspace, Slack, and Notion. My biggest pain is scheduling across time zones and getting her to respond to things before the deadline..."
+    : "e.g. I'm Carrie AI — EA at a tech startup, mom of two kids (8 and 11), two dogs, and I'm also managing eldercare for my mother-in-law who lives nearby. Work side: I support a founder, lots of travel, I need to book a trip to Santa Monica next week. Home side: school pickups, vet appointments, grocery orders, and making sure my mother-in-law gets to her doctor. I'm the person everyone calls when something needs to get done — and I never have enough hours.";
   ta.rows = 6;
   ta.style.minHeight = '160px';
   ta.addEventListener('input', () => autoGrow(ta));
@@ -646,6 +648,8 @@ function copyPrompt() {
 }
 
 // ── Start ──
+const urlParams = new URLSearchParams(window.location.search);
+const isWorkMode = urlParams.get('mode') === 'work';
 showBrainDump();
 </script>
 
