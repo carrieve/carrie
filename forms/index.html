@@ -494,6 +494,30 @@
     }
 
     .conversation:empty { display: none; }
+
+    /* ── TOOLS GRID ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      text-align: left;
+    }
+    .tool-card {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--black);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tool-card:hover { border-color: var(--purple); box-shadow: 0 2px 12px rgba(139,47,201,0.08); }
+    .tool-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .tool-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .tool-body p { font-size: 0.85rem; color: var(--gray); line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -564,6 +588,50 @@
     <h2>Ready? It's free.</h2>
     <p style="color:var(--gray);margin-bottom:28px;font-size:0.97rem;line-height:1.6;">No account. No credit card. Just a better AI experience in 5 minutes.</p>
     <a href="onboarding.html" class="btn-primary">Get my free prompt →</a>
+  </div>
+
+
+  <!-- ── Tools ── -->
+  <div class="section">
+    <h2>EA Tools</h2>
+    <p style="color:var(--gray);margin-bottom:28px;font-size:0.97rem;">Standalone tools built for assistants and busy people. No AI required.</p>
+    <div class="tools-grid">
+      <a href="forms/meeting_notes.html" class="tool-card">
+        <div class="tool-icon">📝</div>
+        <div class="tool-body">
+          <h3>Meeting Notes</h3>
+          <p>Paste your notes — get action items, decisions, and a follow-up email draft.</p>
+        </div>
+      </a>
+      <a href="forms/agenda.html" class="tool-card">
+        <div class="tool-icon">📋</div>
+        <div class="tool-body">
+          <h3>Agenda Builder</h3>
+          <p>Build a clean meeting agenda in seconds.</p>
+        </div>
+      </a>
+      <a href="forms/itinerary.html" class="tool-card">
+        <div class="tool-icon">✈️</div>
+        <div class="tool-body">
+          <h3>Travel Itinerary</h3>
+          <p>Turn trip details into a formatted, shareable itinerary.</p>
+        </div>
+      </a>
+      <a href="forms/offsite_planner.html" class="tool-card">
+        <div class="tool-icon">🏨</div>
+        <div class="tool-body">
+          <h3>Offsite Planner</h3>
+          <p>Organize team offsites — logistics, agenda, attendee info.</p>
+        </div>
+      </a>
+      <a href="forms/job_posting.html" class="tool-card">
+        <div class="tool-icon">💼</div>
+        <div class="tool-body">
+          <h3>Job Posting</h3>
+          <p>Generate a clean job description from a quick brief.</p>
+        </div>
+      </a>
+    </div>
   </div>
 
   <!-- ── Social proof ── -->
