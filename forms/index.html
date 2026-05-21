@@ -461,11 +461,6 @@
 
   <p style="margin-top:20px;font-size:0.82rem;color:#9ca3af;">Already have a profile? <a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update it here →</a></p>
 
-  <label class="voice-toggle" title="Carrie speaks her responses out loud">
-    <input type="checkbox" id="voice-toggle" checked />
-    <span class="toggle-track"></span>
-    Carrie speaks out loud
-  </label>
 </section>
 
 <!-- ══════════ BELOW FOLD ══════════ -->
@@ -526,12 +521,8 @@
 <script>
   // ── State ──
   const messages = [];
-  let voiceOn = true;
   let recognition = null;
-  let synth = window.speechSynthesis;
-  let preferredVoice = null;
   let isListening = false;
-  let isSpeaking = false;
 
   const SYSTEM_PROMPT = `You are Carrie, a warm, efficient AI executive assistant built for busy people.
 You speak in short, conversational sentences — never long paragraphs.
@@ -539,46 +530,6 @@ You're smart, capable, and feel like a trusted colleague, not a chatbot.
 Your first response should be brief, warm, and immediately helpful.
 After you help with something, you can gently ask if they'd like to set up a full profile so you always know this much about them.
 Never be salesy. Never use bullet points in your first response. Just talk naturally.`;
-
-  // ── Voice setup ──
-  function loadVoices() {
-    const voices = synth.getVoices();
-    const preferred = ['Samantha', 'Karen', 'Moira', 'Fiona', 'Victoria',
-                       'Microsoft Aria', 'Google US English', 'en-US'];
-    for (const name of preferred) {
-      const match = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
-      if (match) { preferredVoice = match; break; }
-    }
-    if (!preferredVoice) {
-      preferredVoice = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('female'))
-                    || voices.find(v => v.lang.startsWith('en'))
-                    || voices[0];
-    }
-  }
-
-  synth.onvoiceschanged = loadVoices;
-  loadVoices();
-
-  function speak(text) {
-    if (!voiceOn || !text) return;
-    synth.cancel();
-    const clean = text.replace(/[*_`#]/g, '');
-    const utt = new SpeechSynthesisUtterance(clean);
-    if (preferredVoice) utt.voice = preferredVoice;
-    utt.rate = 0.95;
-    utt.pitch = 1.05;
-    utt.volume = 1;
-
-    utt.onstart = () => {
-      isSpeaking = true;
-      
-    };
-    utt.onend = utt.onerror = () => {
-      isSpeaking = false;
-      
-    };
-    synth.speak(utt);
-  }
 
   // ── Speech recognition ──
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -608,7 +559,6 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
 
   function startListening() {
     if (!recognition || isListening) return;
-    if (isSpeaking) synth.cancel();
     isListening = true;
     document.getElementById('btn-mic').classList.add('active');
     document.getElementById('input-row').classList.add('listening');
@@ -627,18 +577,6 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
   document.getElementById('btn-mic').addEventListener('click', () => {
     isListening ? stopListening() : startListening();
   });
-
-  // ── Voice toggle ──
-  document.getElementById('voice-toggle').addEventListener('change', (e) => {
-    voiceOn = e.target.checked;
-    if (!voiceOn) synth.cancel();
-    localStorage.setItem('carrieVoice', voiceOn ? '1' : '0');
-  });
-
-  if (localStorage.getItem('carrieVoice') === '0') {
-    voiceOn = false;
-    document.getElementById('voice-toggle').checked = false;
-  }
 
   // ── Textarea auto-grow ──
   function autoGrow(el) {
@@ -712,7 +650,6 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
       if (data.content) {
         messages.push({ role: 'assistant', content: data.content });
         addBubble('carrie', data.content);
-        speak(data.content);
         if (messages.filter(m => m.role === 'assistant').length === 1) {
           setTimeout(showConversionPrompt, 1200);
         }
@@ -741,7 +678,6 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
       </div>`;
     conv.appendChild(el);
     conv.scrollTop = conv.scrollHeight;
-    speak("Want me to always know this much about you — without you having to explain every time?");
   }
 
   // ── Email form ──
