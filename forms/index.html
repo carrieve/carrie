@@ -523,6 +523,7 @@
   const messages = [];
   let recognition = null;
   let isListening = false;
+  const MESSAGE_LIMIT = 10;
 
   const SYSTEM_PROMPT = `You are Carrie, a warm, efficient AI executive assistant built for busy people.
 You speak in short, conversational sentences — never long paragraphs.
@@ -628,6 +629,12 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
     const text = input.value.trim();
     if (!text) return;
 
+    const userMessages = messages.filter(m => m.role === 'user').length;
+    if (userMessages >= MESSAGE_LIMIT) {
+      showLimitPrompt();
+      return;
+    }
+
     input.value = '';
     input.style.height = 'auto';
     document.getElementById('btn-send').disabled = true;
@@ -678,6 +685,25 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
       </div>`;
     conv.appendChild(el);
     conv.scrollTop = conv.scrollHeight;
+  }
+
+
+  function showLimitPrompt() {
+    if (document.getElementById('limit-prompt')) return;
+    const conv = document.getElementById('conversation');
+    const el = document.createElement('div');
+    el.className = 'bubble carrie conversion';
+    el.id = 'limit-prompt';
+    el.innerHTML = `
+      <span>You've hit the limit for free chats! Set up your free profile and keep going — Carrie will always know who you are.</span>
+      <div class="conversion-btns">
+        <a href="onboarding.html" class="btn-conversion primary">Set up my profile</a>
+      </div>`;
+    conv.appendChild(el);
+    conv.scrollTop = conv.scrollHeight;
+    document.getElementById('user-input').disabled = true;
+    document.getElementById('btn-send').disabled = true;
+    document.getElementById('btn-mic').disabled = true;
   }
 
   // ── Email form ──
