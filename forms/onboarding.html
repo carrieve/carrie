@@ -348,7 +348,7 @@ function showBrainDump() {
   wrap.className = 'text-input-wrap';
 
   const ta = document.createElement('textarea');
-  ta.placeholder = 'e.g. I'm an EA supporting a CEO in NYC. We travel constantly, mostly American Airlines. I manage his calendar, inbox, and family stuff too. He hates back-to-back meetings and never wants a middle seat...';
+  ta.placeholder = "e.g. I'm an EA supporting a CEO in NYC. We travel constantly, mostly American Airlines. I manage his calendar, inbox, and family stuff too. He hates back-to-back meetings and never wants a middle seat...";
   ta.rows = 6;
   ta.style.minHeight = '160px';
   ta.addEventListener('input', () => autoGrow(ta));
@@ -435,7 +435,7 @@ function showFollowUp(index) {
 
   currentQ = index;
   const total = followUpQuestions.length;
-  setProgress(40 + Math.round((index / total) * 30), `Question \${index + 1} of \${total}`);
+  setProgress(40 + Math.round((index / total) * 30), `Question ${index + 1} of ${total}`);
 
   const card = document.getElementById('card');
   card.innerHTML = '';
@@ -507,10 +507,10 @@ async function generatePrompt() {
   showTyping();
 
   const qaContext = followUpQuestions.map((q, i) =>
-    `Q: \${q}\nA: \${followUpAnswers[i] || '(skipped)'}`
+    `Q: ${q}\nA: ${followUpAnswers[i] || '(skipped)'}`
   ).join('\n\n');
 
-  const userContent = `Brain dump:\n\${brainDump}\n\nFollow-up answers:\n\${qaContext}`;
+  const userContent = `Brain dump:\n${brainDump}\n\nFollow-up answers:\n${qaContext}`;
 
   const systemPrompt = `You are generating a personal AI assistant system prompt for someone based on their brain dump and answers to follow-up questions.
 
@@ -556,7 +556,7 @@ function showResult(prompt) {
         border:2px solid var(--border);border-radius:16px;
         font-size:0.82rem;line-height:1.65;font-family:monospace;
         background:#f9fafb;color:var(--black);resize:vertical;outline:none;
-      ">\${escapeHtml(prompt)}</textarea>
+      ">${escapeHtml(prompt)}</textarea>
       <button onclick="copyPrompt()" id="copy-btn" style="
         position:absolute;top:10px;right:10px;
         padding:7px 16px;background:var(--purple);color:#fff;
