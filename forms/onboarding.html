@@ -615,29 +615,145 @@ function showCategoryComplete(cat) {
   qIndex = 0;
 }
 
-// ── Download profile ──
+// ── Generate system prompt ──
+function buildSystemPrompt(p, aud) {
+  const name = p.name || 'Me';
+  const about = p.about || '';
+  const lines = [];
+
+  const audLabels = { business: 'I run a business', employee: 'I work for a company',
+    supporter: 'I support someone', household: 'I manage a household',
+    caregiver: "I'm a caregiver", other: 'Other' };
+
+  lines.push(`You are my personal AI executive assistant. Everything below is what you need to know about me — read it before every response and never ask me for information that's already here.`);
+  lines.push('');
+  lines.push(`## About Me`);
+  lines.push(`Name: ${name}`);
+  if (audLabels[aud]) lines.push(`Role/situation: ${audLabels[aud]}`);
+  if (about) lines.push(`In my own words: ${about}`);
+
+  const travel = p.travel;
+  if (travel && Object.keys(travel).length) {
+    lines.push('');
+    lines.push('## Travel Preferences');
+    if (travel.home_airport) lines.push(`Home airport: ${travel.home_airport}`);
+    if (travel.airline) lines.push(`Preferred airline: ${travel.airline}`);
+    if (travel.seat) lines.push(`Seat preference: ${travel.seat}`);
+    if (travel.cabin) lines.push(`Cabin class: ${travel.cabin}`);
+    if (travel.ff_number && travel.ff_number !== 'No') lines.push(`Frequent flyer: ${travel.ff_number}`);
+    if (travel.tsa && travel.tsa !== 'No') lines.push(`TSA PreCheck/Global Entry: ${travel.tsa}`);
+    if (travel.international) lines.push(`International travel: ${travel.international}`);
+    if (travel.hotel_brand) lines.push(`Preferred hotel: ${travel.hotel_brand}`);
+    if (travel.hotel_loyalty && travel.hotel_loyalty !== 'No') lines.push(`Hotel loyalty: ${travel.hotel_loyalty}`);
+    if (travel.room_pref) lines.push(`Room preferences: ${Array.isArray(travel.room_pref) ? travel.room_pref.join(', ') : travel.room_pref}`);
+  }
+
+  const comm = p.communication;
+  if (comm && Object.keys(comm).length) {
+    lines.push('');
+    lines.push('## Communication Style');
+    if (comm.writes_to) lines.push(`I write to: ${Array.isArray(comm.writes_to) ? comm.writes_to.join(', ') : comm.writes_to}`);
+    if (comm.email_pain) lines.push(`Biggest email challenge: ${comm.email_pain}`);
+    if (comm.voice_intro) lines.push(`About my work: ${comm.voice_intro}`);
+  }
+
+  const sched = p.scheduling;
+  if (sched && Object.keys(sched).length) {
+    lines.push('');
+    lines.push('## Scheduling');
+    if (sched.calendar) lines.push(`Calendar: ${sched.calendar}`);
+    if (sched.booking) lines.push(`How people book me: ${sched.booking}`);
+    if (sched.sched_pain) lines.push(`Biggest scheduling challenge: ${sched.sched_pain}`);
+    if (sched.protected_times) lines.push(`Protected times: ${Array.isArray(sched.protected_times) ? sched.protected_times.join(', ') : sched.protected_times}`);
+  }
+
+  const hh = p.household;
+  if (hh && Object.keys(hh).length) {
+    lines.push('');
+    lines.push('## Household & Family');
+    if (hh.managing) lines.push(`Managing: ${Array.isArray(hh.managing) ? hh.managing.join(', ') : hh.managing}`);
+    if (hh.kids_details) lines.push(`Kids: ${hh.kids_details}`);
+    if (hh.family_calendar) lines.push(`Family calendar: ${hh.family_calendar}`);
+    if (hh.biggest_chaos) lines.push(`Biggest household challenge: ${hh.biggest_chaos}`);
+  }
+
+  const care = p.caregiving;
+  if (care && Object.keys(care).length) {
+    lines.push('');
+    lines.push('## Caregiving');
+    if (care.care_recipient_name) lines.push(`Person I care for: ${care.care_recipient_name}`);
+    if (care.living_situation) lines.push(`Living situation: ${care.living_situation}`);
+    if (care.care_needs) lines.push(`Care needs: ${Array.isArray(care.care_needs) ? care.care_needs.join(', ') : care.care_needs}`);
+    if (care.care_team_details) lines.push(`Care team: ${care.care_team_details}`);
+    if (care.doctors) lines.push(`Doctors: ${care.doctors}`);
+    if (care.medications && care.medications !== 'No') lines.push(`Medications: ${care.medications}`);
+    if (care.family_team_details) lines.push(`Family team: ${care.family_team_details}`);
+  }
+
+  lines.push('');
+  lines.push('## How to Help Me');
+  lines.push('- Always read my profile before responding');
+  lines.push('- Never ask for information already listed above');
+  lines.push('- Be warm, direct, and efficient — like a trusted colleague');
+  lines.push('- When drafting anything, match my voice and style');
+  lines.push('- Keep responses concise unless I ask for detail');
+  lines.push('- If I ask you to remember something new, remind me to update my prompt');
+
+  return lines.join('\n');
+}
+
 function showDownload() {
   profile.meta.audience = audience;
   profile.meta.completed = new Date().toISOString();
-
-  // Save profile to localStorage so the chat can use it
   localStorage.setItem('carrieProfile', JSON.stringify(profile));
+
+  const prompt = buildSystemPrompt(profile, audience);
 
   const card = document.getElementById('card');
   card.innerHTML = '';
   setProgress(100, 'Done!');
 
-  const msg = document.createElement('div');
-  msg.className = 'carrie-msg';
-  msg.textContent = "You're all set! Carrie knows who you are now. Head back to chat and pick up where you left off.";
-  card.appendChild(msg);
+  card.innerHTML = `
+    <div class="carrie-msg">Your personal AI prompt is ready. Copy it and paste it into Claude, ChatGPT, Gemini — any AI you use.</div>
 
-  const next = document.createElement('a');
-  next.href = 'index.html';
-  next.className = 'btn-next';
-  next.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:16px;padding:14px;border-radius:14px;';
-  next.textContent = 'Back to Carrie →';
-  card.appendChild(next);
+    <div style="position:relative;margin-top:20px;">
+      <textarea id="prompt-output" readonly style="
+        width:100%;min-height:280px;padding:16px;padding-top:44px;
+        border:2px solid #e5e7eb;border-radius:16px;
+        font-size:0.82rem;line-height:1.6;font-family:monospace;
+        background:#f9fafb;color:#111;resize:vertical;outline:none;
+      ">${prompt.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>
+      <button onclick="copyPrompt()" id="copy-btn" style="
+        position:absolute;top:10px;right:10px;
+        padding:6px 14px;background:#8B2FC9;color:#fff;
+        border:none;border-radius:8px;font-size:0.82rem;
+        font-weight:600;cursor:pointer;font-family:inherit;
+      ">Copy</button>
+    </div>
+
+    <div style="margin-top:24px;background:#f3e8ff;border-radius:16px;padding:20px;font-size:0.88rem;line-height:1.7;color:#111;">
+      <strong>How to use this:</strong><br>
+      <strong>Claude:</strong> Go to claude.ai → New Project → Project instructions → paste<br>
+      <strong>ChatGPT:</strong> Settings → Personalization → Custom instructions → paste<br>
+      <strong>Gemini:</strong> Open a chat → type "From now on, use these instructions:" → paste
+    </div>
+
+    <a href="index.html" style="display:block;text-align:center;margin-top:20px;color:#8B2FC9;font-size:0.88rem;text-decoration:none;">← Back to GetCarrieAI</a>
+  `;
+}
+
+function copyPrompt() {
+  const ta = document.getElementById('prompt-output');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.style.background = '#16a34a';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = '#8B2FC9'; }, 2000);
+  }).catch(() => {
+    document.execCommand('copy');
+    document.getElementById('copy-btn').textContent = 'Copied!';
+  });
 }
 
 // ── Step 1: audience ──

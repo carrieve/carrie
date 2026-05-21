@@ -498,38 +498,30 @@
 </head>
 <body>
 
-
 <!-- ══════════ HERO ══════════ -->
-<section class="hero" id="hero-default">
-  <h1>Meet <span>Carrie</span></h1>
-  <p class="tagline">Your personal AI executive assistant — trained on you, built for your life.</p>
-  <a href="onboarding.html" class="btn-primary">Set up Carrie — it's free</a>
-  <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;">Already have a profile? <a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update it here →</a></p>
-</section>
-
-<!-- ══════════ RETURNING USER HERO ══════════ -->
-<section class="hero" id="hero-returning" style="display:none;">
-  <h1>Welcome back<span id="returning-name"></span>!</h1>
-  <p class="tagline">Carrie knows who you are. What do you need help with today?</p>
-  <button class="btn-primary" onclick="document.getElementById('chat-section').scrollIntoView({behavior:'smooth'})">Chat with Carrie ↓</button>
+<section class="hero">
+  <h1>Train your AI to work<br><span>exactly like your assistant</span></h1>
+  <p class="tagline">Answer a few questions. Get a prompt you can paste into Claude, ChatGPT, or any AI — and it'll know everything about you.</p>
+  <a href="onboarding.html" class="btn-primary">Get my free prompt →</a>
+  <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;">Takes about 5 minutes &nbsp;·&nbsp; No account required &nbsp;·&nbsp; Works with any AI</p>
 </section>
 
 <!-- ══════════ BELOW FOLD ══════════ -->
 <div class="below-fold">
 
-  <!-- ── What Carrie can do ── -->
+  <!-- ── What it does ── -->
   <div class="section">
-    <h2>What Carrie can do</h2>
+    <h2>What your AI can do once it knows you</h2>
     <div class="demo-grid">
       <div class="demo-card">
         <div class="demo-label">✈️ Travel</div>
         <div class="bubble user demo-bubble">I need to fly to NYC next Thursday, back Friday night.</div>
-        <div class="bubble carrie demo-bubble">Got it. Searching CLT→JFK and CLT→LGA for Thursday morning departures. Do you want to keep it under 5 hours total travel time?</div>
+        <div class="bubble carrie demo-bubble">Got it. Searching CLT→JFK for Thursday morning — aisle seat, American, PreCheck. Do you want to keep it under 5 hours total travel time?</div>
       </div>
       <div class="demo-card">
         <div class="demo-label">✉️ Email</div>
         <div class="bubble user demo-bubble">Draft an apology to my client — I missed our call this morning.</div>
-        <div class="bubble carrie demo-bubble">Done. Short, warm, no over-explaining. Want me to offer a reschedule time in the email or keep it open-ended?</div>
+        <div class="bubble carrie demo-bubble">Done. Short, warm, sounds like you — no over-explaining. Want me to offer a reschedule time or keep it open-ended?</div>
       </div>
       <div class="demo-card">
         <div class="demo-label">🍽️ Reservations</div>
@@ -539,42 +531,6 @@
     </div>
   </div>
 
-  <!-- ── Chat section (returning users only) ── -->
-  <div class="section" id="chat-section" style="display:none;">
-    <h2>Chat with Carrie</h2>
-    <div class="chat-wrap">
-      <div class="conversation" id="conversation"></div>
-      <div class="input-area">
-        <div class="input-row" id="input-row">
-          <textarea id="user-input" placeholder="Type or tap the mic to talk..." rows="1" autocomplete="off"></textarea>
-          <button class="btn-mic" id="btn-mic" title="Tap to talk" aria-label="Voice input">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="23"/>
-              <line x1="8" y1="23" x2="16" y2="23"/>
-            </svg>
-          </button>
-          <button class="btn-send" id="btn-send" title="Send" aria-label="Send message">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
-        </div>
-        <p class="hint" id="hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</p>
-      </div>
-    </div>
-    <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;text-align:center;"><a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update my profile →</a></p>
-  </div>
-
-  <!-- ── No profile: CTA ── -->
-  <div class="section" id="cta-section">
-    <h2>Ready to get started?</h2>
-    <p style="color:var(--gray);margin-bottom:28px;font-size:0.97rem;line-height:1.6;">Tell Carrie about you — your work, your style, the people you support. It takes about 5 minutes and it's completely free.</p>
-    <a href="onboarding.html" class="btn-primary">Set up Carrie for free</a>
-  </div>
-
   <!-- ── How it works ── -->
   <div class="section">
     <h2>How it works</h2>
@@ -582,25 +538,32 @@
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <h3>Tell Carrie about you</h3>
-          <p>Answer a few questions about your work, your style, and what you need help with most. No account required.</p>
+          <h3>Tell us about you</h3>
+          <p>Answer a few questions about your work, your style, and what you need help with most. No fluff, just the stuff that matters.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <h3>Carrie learns your world</h3>
-          <p>Your preferences, your people, your communication style — saved to your device, used every time you chat.</p>
+          <h3>Get your personal prompt</h3>
+          <p>We generate a custom system prompt — a set of instructions that tells any AI exactly who you are and how to help you.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <h3>Use Carrie for anything</h3>
-          <p>Travel, emails, scheduling, reservations, meeting notes — Carrie already knows what you need before you finish asking.</p>
+          <h3>Paste it into any AI</h3>
+          <p>Drop it into Claude, ChatGPT, Gemini — whatever you use. That AI now knows your preferences, your people, and your style. No more repeating yourself.</p>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="section" style="text-align:center;">
+    <h2>Ready? It's free.</h2>
+    <p style="color:var(--gray);margin-bottom:28px;font-size:0.97rem;line-height:1.6;">No account. No credit card. Just a better AI experience in 5 minutes.</p>
+    <a href="onboarding.html" class="btn-primary">Get my free prompt →</a>
   </div>
 
   <!-- ── Social proof ── -->
@@ -631,221 +594,12 @@
 </footer>
 
 <script>
-  // ── State ──
-  const messages = [];
-  let recognition = null;
-  let isListening = false;
-  const MESSAGE_LIMIT = 10;
-  const savedProfile = localStorage.getItem('carrieProfile');
-  const hasProfile = !!savedProfile;
-
-  const SYSTEM_PROMPT = `You are Carrie, a warm, efficient AI executive assistant built for busy people.
-You speak in short, conversational sentences — never long paragraphs.
-You're smart, capable, and feel like a trusted colleague, not a chatbot.
-Your first response should be brief, warm, and immediately helpful.
-After you help with something, you can gently ask if they'd like to set up a full profile so you always know this much about them.
-Never be salesy. Never use bullet points in your first response. Just talk naturally.`;
-
-  // ── Speech recognition ──
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (SpeechRecognition) {
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    recognition.onresult = (e) => {
-      const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
-      document.getElementById('user-input').value = transcript;
-      autoGrow(document.getElementById('user-input'));
-      if (e.results[e.results.length - 1].isFinal) {
-        stopListening();
-        if (transcript.trim()) sendMessage();
-      }
-    };
-
-    recognition.onend = () => stopListening();
-    recognition.onerror = () => stopListening();
-  } else {
-    document.getElementById('btn-mic').style.display = 'none';
-    document.getElementById('hint').textContent = 'Press Enter to send · Shift+Enter for new line';
-  }
-
-  function startListening() {
-    if (!recognition || isListening) return;
-    isListening = true;
-    document.getElementById('btn-mic').classList.add('active');
-    document.getElementById('input-row').classList.add('listening');
-    document.getElementById('user-input').placeholder = 'Listening...';
-    recognition.start();
-  }
-
-  function stopListening() {
-    isListening = false;
-    document.getElementById('btn-mic').classList.remove('active');
-    document.getElementById('input-row').classList.remove('listening');
-    document.getElementById('user-input').placeholder = 'Type or tap the mic to talk...';
-    try { recognition && recognition.stop(); } catch {}
-  }
-
-  document.getElementById('btn-mic').addEventListener('click', () => {
-    isListening ? stopListening() : startListening();
-  });
-
-  // ── Textarea auto-grow ──
-  function autoGrow(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  }
-
-  document.getElementById('user-input').addEventListener('input', function() {
-    autoGrow(this);
-  });
-
-  document.getElementById('user-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
-  document.getElementById('btn-send').addEventListener('click', sendMessage);
-
-  // Show correct hero and sections based on profile
-  if (hasProfile) {
-    const p = JSON.parse(savedProfile);
-    const firstName = p.name ? p.name.split(' ')[0] : '';
-    document.getElementById('hero-default').style.display = 'none';
-    document.getElementById('hero-returning').style.display = 'flex';
-    document.getElementById('returning-name').textContent = firstName ? `, ${firstName}` : '';
-    document.getElementById('chat-section').style.display = 'block';
-    document.getElementById('cta-section').style.display = 'none';
-    addBubble('carrie', `Hey${firstName ? ' ' + firstName : ''}! What do you need help with today?`);
-  } else {
-    document.getElementById('chat-section').style.display = 'none';
-  }
-
-  // ── Chat ──
-  function addBubble(role, text) {
-    const conv = document.getElementById('conversation');
-    const div = document.createElement('div');
-    div.className = `bubble ${role}`;
-    div.textContent = text;
-    conv.appendChild(div);
-    conv.scrollTop = conv.scrollHeight;
-    return div;
-  }
-
-  function showTyping() {
-    const conv = document.getElementById('conversation');
-    const el = document.createElement('div');
-    el.className = 'typing-indicator';
-    el.id = 'typing';
-    el.innerHTML = '<span></span><span></span><span></span>';
-    conv.appendChild(el);
-    conv.scrollTop = conv.scrollHeight;
-  }
-
-  function hideTyping() {
-    const el = document.getElementById('typing');
-    if (el) el.remove();
-  }
-
-  async function sendMessage() {
-    const input = document.getElementById('user-input');
-    const text = input.value.trim();
-    if (!text) return;
-
-    const userMessages = messages.filter(m => m.role === 'user').length;
-    if (userMessages >= MESSAGE_LIMIT) {
-      showLimitPrompt();
-      return;
-    }
-
-    input.value = '';
-    input.style.height = 'auto';
-    document.getElementById('btn-send').disabled = true;
-
-    addBubble('user', text);
-    messages.push({ role: 'user', content: text });
-
-    showTyping();
-
-    try {
-      const res = await fetch('/.netlify/functions/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system: SYSTEM_PROMPT, messages }),
-      });
-
-      const data = await res.json();
-      hideTyping();
-
-      if (data.content) {
-        messages.push({ role: 'assistant', content: data.content });
-        addBubble('carrie', data.content);
-        if (messages.filter(m => m.role === 'assistant').length === 1) {
-          setTimeout(showConversionPrompt, 1200);
-        }
-      } else {
-        addBubble('carrie', "Sorry, something went wrong. Try again in a moment.");
-      }
-    } catch {
-      hideTyping();
-      addBubble('carrie', "I'm having trouble connecting right now. Check back in a moment.");
-    }
-
-    document.getElementById('btn-send').disabled = false;
-    input.focus();
-  }
-
-  function showConversionPrompt() {
-    const conv = document.getElementById('conversation');
-    const el = document.createElement('div');
-    el.className = 'bubble carrie conversion';
-    el.id = 'conversion-prompt';
-    el.innerHTML = `
-      <span>Want me to always know this much about you — without you having to explain every time?</span>
-      <div class="conversion-btns">
-        <a href="onboarding.html" class="btn-conversion primary">Yes — set me up</a>
-        <button class="btn-conversion secondary" onclick="document.getElementById('conversion-prompt').remove()">Maybe later</button>
-      </div>`;
-    conv.appendChild(el);
-    conv.scrollTop = conv.scrollHeight;
-  }
-
-
-  function showLimitPrompt() {
-    if (document.getElementById('limit-prompt')) return;
-    const conv = document.getElementById('conversation');
-    const el = document.createElement('div');
-    el.className = 'bubble carrie conversion';
-    el.id = 'limit-prompt';
-    el.innerHTML = `
-      <span>You've hit the limit for free chats! Set up your free profile and keep going — Carrie will always know who you are.</span>
-      <div class="conversion-btns">
-        <a href="onboarding.html" class="btn-conversion primary">Set up my profile</a>
-      </div>`;
-    conv.appendChild(el);
-    conv.scrollTop = conv.scrollHeight;
-    document.getElementById('user-input').disabled = true;
-    document.getElementById('btn-send').disabled = true;
-    document.getElementById('btn-mic').disabled = true;
-  }
-
-  // ── Email form ──
   function handleEmail(e) {
     e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
     fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data).toString() })
-      .then(() => {
-        form.style.display = 'none';
-        document.getElementById('email-success').style.display = 'block';
-      })
-      .catch(() => form.submit());
+      body: new URLSearchParams(new FormData(e.target)).toString() })
+      .then(() => { document.getElementById('email-success').style.display = 'block'; e.target.reset(); })
+      .catch(() => { document.getElementById('email-success').style.display = 'block'; e.target.reset(); });
   }
 </script>
 
