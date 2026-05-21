@@ -19,7 +19,7 @@ exports.handler = async (event) => {
 
   const payload = JSON.stringify({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 1024,
+    max_tokens: body.max_tokens || 1024,
     system: body.system || "You are Carrie, a warm and efficient AI executive assistant.",
     messages: body.messages || [],
   });
