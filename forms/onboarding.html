@@ -252,53 +252,10 @@
 </div>
 
 <div class="main">
-  <img class="avatar-sm" id="avatar" src="" alt="Carrie" />
   <div class="card" id="card"></div>
 </div>
 
 <script>
-// ── Avatar (same base64 as homepage — loaded from sessionStorage or fetched) ──
-(async () => {
-  const img = document.getElementById('avatar');
-  // Try to get from homepage via fetch so we don't duplicate the base64 here
-  try {
-    const res = await fetch('index.html');
-    const html = await res.text();
-    const match = html.match(/src="(data:image\/png;base64,[^"]+)"/);
-    if (match) img.src = match[1];
-  } catch { img.style.display = 'none'; }
-})();
-
-// ── Voice ──
-const synth = window.speechSynthesis;
-let preferredVoice = null;
-let recognition = null;
-let voiceOn = localStorage.getItem('carrieVoice') !== '0';
-
-function loadVoices() {
-  const voices = synth.getVoices();
-  const preferred = ['Samantha','Karen','Moira','Fiona','Microsoft Aria','Google US English'];
-  for (const name of preferred) {
-    const m = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
-    if (m) { preferredVoice = m; break; }
-  }
-  if (!preferredVoice) preferredVoice = voices.find(v => v.lang.startsWith('en')) || voices[0];
-}
-synth.onvoiceschanged = loadVoices;
-loadVoices();
-
-function speak(text) {
-  if (!voiceOn || !text) return;
-  synth.cancel();
-  const utt = new SpeechSynthesisUtterance(text.replace(/[*_`#]/g,''));
-  if (preferredVoice) utt.voice = preferredVoice;
-  utt.rate = 0.95; utt.pitch = 1.05;
-  const av = document.getElementById('avatar');
-  utt.onstart = () => av.classList.add('speaking');
-  utt.onend = utt.onerror = () => av.classList.remove('speaking');
-  synth.speak(utt);
-}
-
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (SR) {
   recognition = new SR();
@@ -309,7 +266,6 @@ if (SR) {
 
 function startMic(inputEl, btn) {
   if (!recognition) return;
-  synth.cancel();
   btn.classList.add('active');
   recognition.onresult = e => {
     inputEl.value = Array.from(e.results).map(r => r[0].transcript).join('');
@@ -442,7 +398,6 @@ function renderQuestion(step) {
   msg.className = 'carrie-msg';
   msg.textContent = step.q;
   card.appendChild(msg);
-  speak(step.q);
 
   if (step.nudge_text) {
     const n = document.createElement('div');
@@ -629,7 +584,6 @@ function showCategoryComplete(cat) {
   const msg = `Your ${cat.label.toLowerCase()} preferences are all set!`;
   box.innerHTML = `<p>${msg} Want to set up anything else?</p><div class="cat-btns" id="cat-btn-wrap"></div>`;
   card.appendChild(box);
-  speak(msg + " Want to set up anything else?");
 
   const wrap = document.getElementById('cat-btn-wrap');
 
@@ -674,7 +628,6 @@ function showDownload() {
   msg.className = 'carrie-msg';
   msg.textContent = "Your profile is ready! Download it below — then we'll get your assistant set up.";
   card.appendChild(msg);
-  speak("Your profile is ready! Let's get your assistant set up.");
 
   const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
@@ -703,7 +656,6 @@ function showAudienceStep() {
   msg.className = 'carrie-msg';
   msg.textContent = "Hi! I'm Carrie. Let's set you up so I always know who you are. First — what best describes you?";
   card.appendChild(msg);
-  speak("Hi! I'm Carrie. Let's set you up. First — what best describes you?");
 
   const grid = document.createElement('div');
   grid.className = 'tap-grid';
@@ -731,7 +683,6 @@ function showNameStep() {
   msg.className = 'carrie-msg';
   msg.textContent = "What's your name?";
   card.appendChild(msg);
-  speak("What's your name?");
 
   const wrap = document.createElement('div');
   wrap.className = 'text-input-wrap';
@@ -772,7 +723,6 @@ function showOpenerStep(name) {
   msg.className = 'carrie-msg';
   msg.textContent = greeting;
   card.appendChild(msg);
-  speak(greeting);
 
   const wrap = document.createElement('div');
   wrap.className = 'text-input-wrap';
@@ -808,7 +758,6 @@ function showCategoryMenu() {
   msg.className = 'carrie-msg';
   msg.textContent = "Great! What would you like to set up first?";
   card.appendChild(msg);
-  speak("Great! What would you like to set up first?");
 
   const cats = availableCategories();
   const grid = document.createElement('div');
@@ -841,7 +790,6 @@ function showReturningFlow() {
   msg.className = 'carrie-msg';
   msg.textContent = "Welcome back! Upload your existing profile and I'll pick up right where we left off.";
   card.appendChild(msg);
-  speak("Welcome back! Upload your existing profile and I'll pick up right where we left off.");
 
   const wrap = document.createElement('div');
   wrap.style.cssText = 'margin:16px 0;';
@@ -914,7 +862,6 @@ function mergeProfile(loaded) {
   msg.className = 'carrie-msg';
   msg.textContent = `Welcome back${name}! I've got your ${capturedStr}. Want to add or update anything?`;
   card.appendChild(msg);
-  speak(`Welcome back${name}! I've got your ${capturedStr}. Want to add or update anything?`);
 
   // Show only categories not yet completed (or all if they want to update)
   const cats = availableCategories();
