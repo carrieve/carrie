@@ -397,7 +397,7 @@ async function generateFollowUps() {
   card.appendChild(msg);
   showTyping();
 
-  const systemPrompt = \`You are helping someone set up a personal AI assistant system prompt. 
+  const systemPrompt = `You are helping someone set up a personal AI assistant system prompt. 
 They have written a brain dump about themselves. 
 Your job is to read it and ask 3 to 5 smart follow-up questions that will make their AI assistant significantly more useful.
 
@@ -406,7 +406,7 @@ Rules:
 - Ask about important gaps (things that would help an AI assist them but are missing)
 - Keep questions short and conversational
 - Return ONLY a valid JSON array of question strings, nothing else
-- Example format: ["Question one?", "Question two?", "Question three?"]\`;
+- Example format: ["Question one?", "Question two?", "Question three?"]`;
 
   try {
     const raw = await callAI(systemPrompt, brainDump, 512);
@@ -435,7 +435,7 @@ function showFollowUp(index) {
 
   currentQ = index;
   const total = followUpQuestions.length;
-  setProgress(40 + Math.round((index / total) * 30), \`Question \${index + 1} of \${total}\`);
+  setProgress(40 + Math.round((index / total) * 30), `Question \${index + 1} of \${total}`);
 
   const card = document.getElementById('card');
   card.innerHTML = '';
@@ -507,12 +507,12 @@ async function generatePrompt() {
   showTyping();
 
   const qaContext = followUpQuestions.map((q, i) =>
-    \`Q: \${q}\nA: \${followUpAnswers[i] || '(skipped)'}\`
+    `Q: \${q}\nA: \${followUpAnswers[i] || '(skipped)'}`
   ).join('\n\n');
 
-  const userContent = \`Brain dump:\n\${brainDump}\n\nFollow-up answers:\n\${qaContext}\`;
+  const userContent = `Brain dump:\n\${brainDump}\n\nFollow-up answers:\n\${qaContext}`;
 
-  const systemPrompt = \`You are generating a personal AI assistant system prompt for someone based on their brain dump and answers to follow-up questions.
+  const systemPrompt = `You are generating a personal AI assistant system prompt for someone based on their brain dump and answers to follow-up questions.
 
 The system prompt you write will be pasted directly into Claude, ChatGPT, or Gemini. It should make that AI act as their personal assistant who already knows everything about them.
 
@@ -523,7 +523,7 @@ Format requirements:
 - End with a "## How to Help Me" section with 4-6 behavioral guidelines
 - Write in first person as if the user is giving instructions to their AI
 - Do not include any meta-commentary, just the prompt itself
-- Aim for thorough but scannable — around 300-500 words\`;
+- Aim for thorough but scannable — around 300-500 words`;
 
   try {
     const prompt = await callAI(systemPrompt, userContent, 2048);
@@ -547,7 +547,7 @@ function showResult(prompt) {
   localStorage.setItem('carrieProfile', JSON.stringify({ prompt, created: new Date().toISOString() }));
 
   const card = document.getElementById('card');
-  card.innerHTML = \`
+  card.innerHTML = `
     <div class="carrie-msg">Your personal AI prompt is ready. Copy it and paste it into any AI — it'll know exactly who you are.</div>
 
     <div style="position:relative;margin-top:20px;">
@@ -580,7 +580,7 @@ function showResult(prompt) {
     ">Start over</button>
 
     <a href="index.html" style="display:block;text-align:center;margin-top:14px;color:var(--purple);font-size:0.85rem;text-decoration:none;">← Back to GetCarrieAI</a>
-  \`;
+  `;
 }
 
 function escapeHtml(str) {
