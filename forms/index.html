@@ -524,6 +524,8 @@
   let recognition = null;
   let isListening = false;
   const MESSAGE_LIMIT = 10;
+  const savedProfile = localStorage.getItem('carrieProfile');
+  const hasProfile = !!savedProfile;
 
   const SYSTEM_PROMPT = `You are Carrie, a warm, efficient AI executive assistant built for busy people.
 You speak in short, conversational sentences — never long paragraphs.
@@ -598,6 +600,13 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
 
   document.getElementById('btn-send').addEventListener('click', sendMessage);
 
+  // Welcome back returning users
+  if (hasProfile) {
+    const p = JSON.parse(savedProfile);
+    const name = p.name ? `, ${p.name.split(' ')[0]}` : '';
+    addBubble('carrie', `Welcome back${name}! I remember you. What do you need help with today?`);
+  }
+
   // ── Chat ──
   function addBubble(role, text) {
     const conv = document.getElementById('conversation');
@@ -630,7 +639,7 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
     if (!text) return;
 
     const userMessages = messages.filter(m => m.role === 'user').length;
-    if (userMessages >= MESSAGE_LIMIT) {
+    if (!hasProfile && userMessages >= MESSAGE_LIMIT) {
       showLimitPrompt();
       return;
     }

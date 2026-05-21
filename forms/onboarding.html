@@ -620,29 +620,23 @@ function showDownload() {
   profile.meta.audience = audience;
   profile.meta.completed = new Date().toISOString();
 
+  // Save profile to localStorage so the chat can use it
+  localStorage.setItem('carrieProfile', JSON.stringify(profile));
+
   const card = document.getElementById('card');
   card.innerHTML = '';
   setProgress(100, 'Done!');
 
   const msg = document.createElement('div');
   msg.className = 'carrie-msg';
-  msg.textContent = "Your profile is ready! Download it below — then we'll get your assistant set up.";
+  msg.textContent = "You're all set! Carrie knows who you are now. Head back to chat and pick up where you left off.";
   card.appendChild(msg);
 
-  const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = 'carrie-profile.json';
-  a.className = 'btn-next';
-  a.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:16px;padding:14px;border-radius:14px;';
-  a.textContent = 'Download my profile';
-  card.appendChild(a);
-
   const next = document.createElement('a');
-  next.href = `setup.html?audience=${profile.meta.audience || 'other'}`;
-  next.style.cssText = 'display:block;text-align:center;margin-top:14px;color:var(--purple);font-size:0.92rem;';
-  next.textContent = "Next: set up your Claude Project →";
+  next.href = 'index.html';
+  next.className = 'btn-next';
+  next.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:16px;padding:14px;border-radius:14px;';
+  next.textContent = 'Back to Carrie →';
   card.appendChild(next);
 }
 
