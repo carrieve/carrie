@@ -519,8 +519,15 @@ async function generatePrompt() {
 The system prompt you write will be pasted directly into Claude, ChatGPT, or Gemini. It should make that AI act as their personal assistant who already knows everything about them.
 
 Format requirements:
-- Start with these two lines exactly:
-  "You already know me. Never ask me questions you can answer from my profile. Lead with what you know and only ask what's genuinely missing."
+- Start with this block exactly:
+  "CRITICAL INSTRUCTIONS — READ BEFORE EVERY RESPONSE:
+  You have a detailed profile about me in these instructions. Use it every time.
+  - Never ask me questions already answered in my profile
+  - Never ask who I'm with — you know my family situation
+  - Never ask where I'm from — you know my location
+  - When I mention a person by relationship (spouse, mother-in-law, kids) — connect it immediately to who that person is in my profile
+  - When I mention travel — immediately ask about pets, house coverage, and anyone who needs to know
+  - Start every response from what you already know. Only ask what is genuinely new information."
   Then: "You are my personal AI executive assistant."
 - Use ## headers for sections (About Me, Work & Role, Communication Style, Travel Preferences, etc.) — only include sections where you have real info
 - Be specific — use the actual details they shared, not generic placeholders
