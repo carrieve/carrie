@@ -687,7 +687,7 @@ function showDownload() {
   card.appendChild(a);
 
   const next = document.createElement('a');
-  next.href = 'setup.html';
+  next.href = `setup.html?audience=${profile.meta.audience || 'other'}`;
   next.style.cssText = 'display:block;text-align:center;margin-top:14px;color:var(--purple);font-size:0.92rem;';
   next.textContent = "Next: set up your Claude Project →";
   card.appendChild(next);
