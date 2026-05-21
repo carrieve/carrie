@@ -548,28 +548,61 @@ function showResult(prompt) {
 
   const card = document.getElementById('card');
   card.innerHTML = `
-    <div class="carrie-msg">Your personal AI prompt is ready. Copy it and paste it into any AI — it'll know exactly who you are.</div>
+    <div class="carrie-msg">Your prompt is ready! Here's exactly what to do with it.</div>
 
-    <div style="position:relative;margin-top:20px;">
-      <textarea id="prompt-output" readonly style="
-        width:100%;min-height:300px;padding:16px;padding-top:48px;
-        border:2px solid var(--border);border-radius:16px;
-        font-size:0.82rem;line-height:1.65;font-family:monospace;
-        background:#f9fafb;color:var(--black);resize:vertical;outline:none;
-      ">${escapeHtml(prompt)}</textarea>
+    <!-- Step 1: Copy -->
+    <div style="margin-top:20px;background:#f0fdf4;border:2px solid #86efac;border-radius:16px;padding:20px;">
+      <p style="font-weight:700;font-size:0.95rem;margin-bottom:12px;">✅ Step 1 — Copy your prompt</p>
+      <div style="position:relative;">
+        <textarea id="prompt-output" readonly style="
+          width:100%;min-height:200px;padding:12px;
+          border:1px solid var(--border);border-radius:12px;
+          font-size:0.78rem;line-height:1.6;font-family:monospace;
+          background:#fff;color:var(--black);resize:vertical;outline:none;
+        ">${escapeHtml(prompt)}</textarea>
+      </div>
       <button onclick="copyPrompt()" id="copy-btn" style="
-        position:absolute;top:10px;right:10px;
-        padding:7px 16px;background:var(--purple);color:#fff;
-        border:none;border-radius:8px;font-size:0.82rem;
-        font-weight:600;cursor:pointer;font-family:inherit;
-      ">Copy</button>
+        display:block;width:100%;margin-top:12px;
+        padding:14px;background:#16a34a;color:#fff;
+        border:none;border-radius:12px;font-size:1rem;
+        font-weight:700;cursor:pointer;font-family:inherit;
+      ">📋 Copy my prompt</button>
     </div>
 
-    <div style="margin-top:20px;background:var(--purple-light);border-radius:16px;padding:20px;font-size:0.88rem;line-height:1.8;color:var(--black);">
-      <strong>How to use this:</strong><br>
-      <strong>Claude:</strong> claude.ai → New Project → Project instructions → paste<br>
-      <strong>ChatGPT:</strong> Settings → Personalization → Custom instructions → paste<br>
-      <strong>Gemini:</strong> Start a chat → type "Use these instructions:" → paste
+    <!-- Step 2: Paste -->
+    <div style="margin-top:16px;border:2px solid var(--border);border-radius:16px;padding:20px;">
+      <p style="font-weight:700;font-size:0.95rem;margin-bottom:16px;">📌 Step 2 — Paste it into your AI</p>
+
+      <div style="margin-bottom:14px;padding:14px;background:#f9fafb;border-radius:12px;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:6px;">🟣 Claude (recommended — best results)</p>
+        <ol style="font-size:0.85rem;line-height:1.9;color:#374151;padding-left:18px;">
+          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> — free account works</li>
+          <li>Click <strong>Projects</strong> in the left sidebar</li>
+          <li>Click <strong>New Project</strong></li>
+          <li>Click <strong>Project instructions</strong> and paste</li>
+          <li>Start a new chat — Carrie already knows you</li>
+        </ol>
+      </div>
+
+      <div style="margin-bottom:14px;padding:14px;background:#f9fafb;border-radius:12px;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:6px;">💬 ChatGPT</p>
+        <ol style="font-size:0.85rem;line-height:1.9;color:#374151;padding-left:18px;">
+          <li>Go to <a href="https://chatgpt.com" target="_blank" style="color:var(--purple);">chatgpt.com</a></li>
+          <li>Click your profile → <strong>Settings</strong></li>
+          <li>Click <strong>Personalization → Custom instructions</strong></li>
+          <li>Paste in the bottom box and save</li>
+        </ol>
+      </div>
+
+      <div style="padding:14px;background:#f9fafb;border-radius:12px;">
+        <p style="font-weight:700;font-size:0.88rem;margin-bottom:6px;">✨ Gemini</p>
+        <ol style="font-size:0.85rem;line-height:1.9;color:#374151;padding-left:18px;">
+          <li>Go to <a href="https://gemini.google.com" target="_blank" style="color:var(--purple);">gemini.google.com</a></li>
+          <li>Open a new chat</li>
+          <li>Type: <em>"Use these instructions for all our conversations:"</em></li>
+          <li>Paste your prompt and hit send</li>
+        </ol>
+      </div>
     </div>
 
     <button onclick="showBrainDump()" style="
