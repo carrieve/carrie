@@ -421,78 +421,189 @@
       .email-form { flex-direction: column; }
       .social-proof { padding: 24px; }
     }
+
+    /* ── PRIMARY BUTTON ── */
+    .btn-primary {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    /* ── DEMO GRID ── */
+    .demo-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      text-align: left;
+    }
+
+    .demo-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .demo-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .demo-bubble {
+      max-width: 90%;
+      font-size: 0.92rem;
+      animation: none;
+    }
+
+    /* ── CHAT WRAP ── */
+    .chat-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .conversation {
+      width: 100%;
+      max-height: 320px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .conversation:empty { display: none; }
   </style>
 </head>
 <body>
 
+
 <!-- ══════════ HERO ══════════ -->
-<section class="hero">
-  
-  <h1>Meet Your New Assistant, <span>Carrie</span></h1>
-  <p class="tagline">What do you need help with right now?</p>
+<section class="hero" id="hero-default">
+  <h1>Meet <span>Carrie</span></h1>
+  <p class="tagline">Your personal AI executive assistant — trained on you, built for your life.</p>
+  <a href="onboarding.html" class="btn-primary">Set up Carrie — it's free</a>
+  <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;">Already have a profile? <a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update it here →</a></p>
+</section>
 
-  <div class="conversation" id="conversation"></div>
-
-  <div class="input-area">
-    <div class="input-row" id="input-row">
-      <textarea
-        id="user-input"
-        placeholder="Type or tap the mic to talk..."
-        rows="1"
-        autocomplete="off"
-      ></textarea>
-      <button class="btn-mic" id="btn-mic" title="Tap to talk" aria-label="Voice input">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          <line x1="12" y1="19" x2="12" y2="23"/>
-          <line x1="8" y1="23" x2="16" y2="23"/>
-        </svg>
-      </button>
-      <button class="btn-send" id="btn-send" title="Send" aria-label="Send message">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-      </button>
-    </div>
-    <p class="hint" id="hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</p>
-  </div>
-
-  <p style="margin-top:20px;font-size:0.82rem;color:#9ca3af;">Already have a profile? <a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update it here →</a></p>
-
+<!-- ══════════ RETURNING USER HERO ══════════ -->
+<section class="hero" id="hero-returning" style="display:none;">
+  <h1>Welcome back<span id="returning-name"></span>!</h1>
+  <p class="tagline">Carrie knows who you are. What do you need help with today?</p>
+  <button class="btn-primary" onclick="document.getElementById('chat-section').scrollIntoView({behavior:'smooth'})">Chat with Carrie ↓</button>
 </section>
 
 <!-- ══════════ BELOW FOLD ══════════ -->
 <div class="below-fold">
 
+  <!-- ── What Carrie can do ── -->
+  <div class="section">
+    <h2>What Carrie can do</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-label">✈️ Travel</div>
+        <div class="bubble user demo-bubble">I need to fly to NYC next Thursday, back Friday night.</div>
+        <div class="bubble carrie demo-bubble">Got it. Searching CLT→JFK and CLT→LGA for Thursday morning departures. Do you want to keep it under 5 hours total travel time?</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-label">✉️ Email</div>
+        <div class="bubble user demo-bubble">Draft an apology to my client — I missed our call this morning.</div>
+        <div class="bubble carrie demo-bubble">Done. Short, warm, no over-explaining. Want me to offer a reschedule time in the email or keep it open-ended?</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-label">🍽️ Reservations</div>
+        <div class="bubble user demo-bubble">Book dinner for 4 in Austin Saturday — somewhere nice but not stuffy.</div>
+        <div class="bubble carrie demo-bubble">Found three great spots — Uchi, Emmer &amp; Rye, and June's All Day. Which vibe are you going for?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Chat section (returning users only) ── -->
+  <div class="section" id="chat-section" style="display:none;">
+    <h2>Chat with Carrie</h2>
+    <div class="chat-wrap">
+      <div class="conversation" id="conversation"></div>
+      <div class="input-area">
+        <div class="input-row" id="input-row">
+          <textarea id="user-input" placeholder="Type or tap the mic to talk..." rows="1" autocomplete="off"></textarea>
+          <button class="btn-mic" id="btn-mic" title="Tap to talk" aria-label="Voice input">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </button>
+          <button class="btn-send" id="btn-send" title="Send" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+        <p class="hint" id="hint">Press Enter to send &nbsp;·&nbsp; Shift+Enter for new line</p>
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;text-align:center;"><a href="onboarding.html?returning=true" style="color:var(--purple);text-decoration:none;font-weight:600;">Update my profile →</a></p>
+  </div>
+
+  <!-- ── No profile: CTA ── -->
+  <div class="section" id="cta-section">
+    <h2>Ready to get started?</h2>
+    <p style="color:var(--gray);margin-bottom:28px;font-size:0.97rem;line-height:1.6;">Tell Carrie about you — your work, your style, the people you support. It takes about 5 minutes and it's completely free.</p>
+    <a href="onboarding.html" class="btn-primary">Set up Carrie for free</a>
+  </div>
+
+  <!-- ── How it works ── -->
   <div class="section">
     <h2>How it works</h2>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <h3>Just talk to Carrie</h3>
-          <p>Tell her what you need. She listens, responds, and asks the right questions — no forms, no setup required.</p>
+          <h3>Tell Carrie about you</h3>
+          <p>Answer a few questions about your work, your style, and what you need help with most. No account required.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <h3>She learns who you are</h3>
-          <p>Your travel preferences, communication style, schedule, the people you support — Carrie captures it all in a single profile file.</p>
+          <h3>Carrie learns your world</h3>
+          <p>Your preferences, your people, your communication style — saved to your device, used every time you chat.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <h3>Upload once, she remembers forever</h3>
-          <p>Drop your profile into a Claude Project. From then on, every conversation starts with Carrie already knowing you.</p>
+          <h3>Use Carrie for anything</h3>
+          <p>Travel, emails, scheduling, reservations, meeting notes — Carrie already knows what you need before you finish asking.</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ── Social proof ── -->
   <div class="section">
     <div class="social-proof">
       Built by an EA with <strong>15 years at Bank of America</strong>, C-suite support at <strong>Yuga Labs</strong>, and operations at <strong>a16z</strong>.<br><br>
@@ -500,6 +611,7 @@
     </div>
   </div>
 
+  <!-- ── Email signup ── -->
   <div class="section email-section">
     <h2>Stay in the loop</h2>
     <p class="email-sub">New features, updates, and early access — straight to your inbox.</p>
@@ -600,11 +712,18 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
 
   document.getElementById('btn-send').addEventListener('click', sendMessage);
 
-  // Welcome back returning users
+  // Show correct hero and sections based on profile
   if (hasProfile) {
     const p = JSON.parse(savedProfile);
-    const name = p.name ? `, ${p.name.split(' ')[0]}` : '';
-    addBubble('carrie', `Welcome back${name}! I remember you. What do you need help with today?`);
+    const firstName = p.name ? p.name.split(' ')[0] : '';
+    document.getElementById('hero-default').style.display = 'none';
+    document.getElementById('hero-returning').style.display = 'flex';
+    document.getElementById('returning-name').textContent = firstName ? `, ${firstName}` : '';
+    document.getElementById('chat-section').style.display = 'block';
+    document.getElementById('cta-section').style.display = 'none';
+    addBubble('carrie', `Hey${firstName ? ' ' + firstName : ''}! What do you need help with today?`);
+  } else {
+    document.getElementById('chat-section').style.display = 'none';
   }
 
   // ── Chat ──
