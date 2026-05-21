@@ -582,7 +582,7 @@ function showCategoryComplete(cat) {
   const box = document.createElement('div');
   box.className = 'cat-complete';
   const msg = `Your ${cat.label.toLowerCase()} preferences are all set!`;
-  box.innerHTML = `<p>${msg} Want to set up anything else?</p><div class="cat-btns" id="cat-btn-wrap"></div>`;
+  box.innerHTML = `<p>${msg} Want to add anything else to your AI's training?</p><div class="cat-btns" id="cat-btn-wrap"></div>`;
   card.appendChild(box);
 
   const wrap = document.getElementById('cat-btn-wrap');
@@ -866,7 +866,7 @@ function showCategoryMenu() {
 
   const msg = document.createElement('div');
   msg.className = 'carrie-msg';
-  msg.textContent = "Great! What would you like to set up first?";
+  msg.textContent = "What should your AI know about? Pick the most useful area first.";
   card.appendChild(msg);
 
   const cats = availableCategories();
@@ -984,7 +984,7 @@ function mergeProfile(loaded) {
   remaining.forEach(cat => {
     const b = document.createElement('button');
     b.className = 'tap-btn';
-    b.textContent = `Set up ${cat.label}`;
+    b.textContent = `Add ${cat.label}`;
     b.addEventListener('click', () => launchSingleCategory(cat, cats));
     grid.appendChild(b);
   });
