@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GetCarrieAI — Your Assistant is Almost Ready</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 600px; width: 100%; }
+
+    .logo { font-weight: 700; color: var(--purple); text-decoration: none; font-size: 0.95rem; display: block; margin-bottom: 48px; }
+
+    h1 { font-size: clamp(1.7rem, 5vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .intro { font-size: 1rem; color: var(--gray); line-height: 1.7; margin-bottom: 48px; }
+
+    .steps { display: flex; flex-direction: column; gap: 32px; margin-bottom: 48px; }
+    .step { display: flex; gap: 18px; }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--purple); color: #fff;
+      font-weight: 700; font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .step-body p  { font-size: 0.9rem; color: var(--gray); line-height: 1.6; }
+    .step-body a  { color: var(--purple); }
+
+    /* Copyable block */
+    .copy-block-wrap { margin-top: 32px; }
+    .copy-block-wrap h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+    .copy-block {
+      background: var(--purple-light);
+      border: 2px solid #d8b4fe;
+      border-radius: 16px;
+      padding: 20px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--black);
+      white-space: pre-wrap;
+      font-family: inherit;
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      padding: 6px 14px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .copy-btn:hover { background: var(--purple-dark); }
+
+    .gm-example {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--gray);
+    }
+    .gm-example strong { color: var(--black); }
+
+    .back-link { display: block; text-align: center; margin-top: 40px; color: var(--purple); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="logo">← GetCarrieAI</a>
+
+  <h1>Your Assistant is Almost Ready</h1>
+  <p class="intro">You're two minutes away from an assistant that remembers everything about you. Follow these steps and Carrie will know your preferences in every conversation — without you ever having to explain again.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Go to claude.ai and create a Project</h3>
+        <p>Sign up free at <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong>. Give it any name — "My Assistant" works great.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Upload your profile file</h3>
+        <p>Inside your new Project, look for <strong>Add content</strong> or the upload icon. Upload the <code>carrie-profile.json</code> file you just downloaded. Claude will read it automatically.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Copy this into your Project instructions</h3>
+        <p>In your Project, click <strong>Edit instructions</strong> (or the pencil icon). Paste the block below. This tells Claude exactly how to be your assistant.</p>
+
+        <div class="copy-block-wrap">
+          <div class="copy-block" id="instructions-block"><button class="copy-btn" onclick="copyInstructions()">Copy</button>You are my personal AI executive assistant. My profile file contains everything about me — my preferences, my work, my schedule, and my communication style.
+
+Always read my profile before answering. Never ask me for information that's already in my profile.
+
+When I say "Good morning", give me a brief, warm daily briefing based on what you know about me — what's on deck, anything flagged, anything I should know. Keep it tight.
+
+When I ask you to write something, match my voice and style exactly as described in my profile.
+
+When I ask about travel, food, scheduling, or logistics — use my preferences from my profile without me having to repeat them.
+
+Be warm, efficient, and direct. You're a trusted colleague, not a customer service bot. One or two sentences is almost always enough unless I ask for more.
+
+If I ask you to remember something new, tell me to add it to my profile so it sticks permanently.</div>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Say "Good morning"</h3>
+        <p>That's it. Type <strong>Good morning</strong> in your Project and watch Carrie go. She already knows everything.</p>
+
+        <div class="gm-example">
+          <strong>Example Good Morning response:</strong><br><br>
+          "Good morning! You've got a 2pm call with the team and Sarah needs her travel booked for Thursday. The vendor email from yesterday is still waiting on a response — want me to draft something? What do you want to tackle first?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
+</div>
+
+<script>
+function copyInstructions() {
+  const block = document.getElementById('instructions-block');
+  const text = block.innerText.replace('Copy\n', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = block.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

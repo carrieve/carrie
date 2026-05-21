@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GetCarrieAI — Set Up Your Profile</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .top-bar {
+      width: 100%;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--purple); text-decoration: none; }
+    .progress-wrap { display: flex; align-items: center; gap: 10px; }
+    .progress-bar {
+      width: 120px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--purple);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .progress-label { font-size: 0.78rem; color: var(--gray); }
+
+    /* ── Main ── */
+    .main {
+      width: 100%;
+      max-width: 560px;
+      padding: 48px 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .avatar-sm {
+      width: 72px; height: 72px;
+      object-fit: contain;
+      margin-bottom: 24px;
+    }
+    .avatar-sm.speaking { animation: pulse 0.8s ease-in-out infinite alternate; }
+    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.07); } }
+
+    /* ── Question card ── */
+    .card {
+      width: 100%;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .carrie-msg {
+      background: var(--purple-light);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 16px 20px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+
+    .ack {
+      font-size: 0.92rem;
+      color: var(--gray);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    /* ── Tap buttons ── */
+    .tap-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tap-btn {
+      padding: 10px 18px;
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      background: #fff;
+      font-size: 0.92rem;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--black);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .tap-btn:hover { border-color: var(--purple); }
+    .tap-btn.selected { border-color: var(--purple); background: var(--purple-light); color: var(--purple); font-weight: 600; }
+
+    /* ── Text input ── */
+    .text-input-wrap {
+      width: 100%;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .text-input-wrap input, .text-input-wrap textarea {
+      width: 100%;
+      padding: 13px 50px 13px 16px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      font-size: 0.97rem;
+      font-family: inherit;
+      outline: none;
+      resize: none;
+      color: var(--black);
+      transition: border-color 0.2s;
+    }
+    .text-input-wrap input:focus, .text-input-wrap textarea:focus { border-color: var(--purple); }
+    .input-mic {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+    }
+    .input-mic.active { color: var(--purple); background: var(--purple-light); }
+    .text-input-wrap textarea { padding-right: 50px; min-height: 90px; }
+    .textarea-mic { top: 14px; transform: none; }
+
+    /* ── Nav buttons ── */
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .btn-next {
+      flex: 1;
+      padding: 14px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-next:hover { background: var(--purple-dark); }
+    .btn-next:disabled { background: #d1d5db; cursor: not-allowed; }
+    .btn-skip {
+      padding: 14px 20px;
+      background: none;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      font-size: 0.9rem;
+      color: var(--gray);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-skip:hover { border-color: var(--gray); }
+
+    /* ── Category complete ── */
+    .cat-complete {
+      background: var(--purple-light);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .cat-complete p { color: var(--black); line-height: 1.6; margin-bottom: 16px; }
+    .cat-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .cat-btn {
+      padding: 10px 18px;
+      border: 2px solid var(--purple);
+      border-radius: 24px;
+      background: #fff;
+      color: var(--purple);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .cat-btn:hover { background: var(--purple-light); }
+    .cat-btn.done-btn { background: var(--purple); color: #fff; }
+
+    /* ── Nudge ── */
+    .nudge {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #92400e;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* ── Typing indicator ── */
+    .typing {
+      display: flex; gap: 5px; padding: 10px 0;
+    }
+    .typing span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--purple);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="logo">GetCarrieAI</a>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <span class="progress-label" id="progress-label">Just starting</span>
+  </div>
+</div>
+
+<div class="main">
+  <img class="avatar-sm" id="avatar" src="" alt="Carrie" />
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+// ── Avatar (same base64 as homepage — loaded from sessionStorage or fetched) ──
+(async () => {
+  const img = document.getElementById('avatar');
+  // Try to get from homepage via fetch so we don't duplicate the base64 here
+  try {
+    const res = await fetch('index.html');
+    const html = await res.text();
+    const match = html.match(/src="(data:image\/png;base64,[^"]+)"/);
+    if (match) img.src = match[1];
+  } catch { img.style.display = 'none'; }
+})();
+
+// ── Voice ──
+const synth = window.speechSynthesis;
+let preferredVoice = null;
+let recognition = null;
+let voiceOn = localStorage.getItem('carrieVoice') !== '0';
+
+function loadVoices() {
+  const voices = synth.getVoices();
+  const preferred = ['Samantha','Karen','Moira','Fiona','Microsoft Aria','Google US English'];
+  for (const name of preferred) {
+    const m = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
+    if (m) { preferredVoice = m; break; }
+  }
+  if (!preferredVoice) preferredVoice = voices.find(v => v.lang.startsWith('en')) || voices[0];
+}
+synth.onvoiceschanged = loadVoices;
+loadVoices();
+
+function speak(text) {
+  if (!voiceOn || !text) return;
+  synth.cancel();
+  const utt = new SpeechSynthesisUtterance(text.replace(/[*_`#]/g,''));
+  if (preferredVoice) utt.voice = preferredVoice;
+  utt.rate = 0.95; utt.pitch = 1.05;
+  const av = document.getElementById('avatar');
+  utt.onstart = () => av.classList.add('speaking');
+  utt.onend = utt.onerror = () => av.classList.remove('speaking');
+  synth.speak(utt);
+}
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SR) {
+  recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+}
+
+function startMic(inputEl, btn) {
+  if (!recognition) return;
+  synth.cancel();
+  btn.classList.add('active');
+  recognition.onresult = e => {
+    inputEl.value = Array.from(e.results).map(r => r[0].transcript).join('');
+  };
+  recognition.onend = () => btn.classList.remove('active');
+  recognition.onerror = () => btn.classList.remove('active');
+  recognition.start();
+}
+
+// ── Profile state ──
+const profile = { meta: { created: new Date().toISOString(), version: '1.0' } };
+let audience = null;
+let questionIndex = 0;
+let totalQuestions = 0;
+let completedCategories = [];
+
+// ── Question flows ──
+const AUDIENCES = [
+  { id: 'business',   label: 'I run a business' },
+  { id: 'employee',   label: 'I work for a company' },
+  { id: 'supporter',  label: 'I support someone' },
+  { id: 'household',  label: 'I manage a household' },
+  { id: 'caregiver',  label: 'I\'m a caregiver' },
+  { id: 'other',      label: 'Something else' },
+];
+
+const CATEGORIES = {
+  travel: {
+    label: 'Travel',
+    questions: [
+      { key: 'home_airport', q: 'What\'s your home airport?', type: 'text', placeholder: 'e.g. CLT, JFK, LAX' },
+      { key: 'airline', q: 'Preferred airline?', type: 'tap', options: ['American', 'Delta', 'United', 'Southwest', 'No preference'] },
+      { key: 'seat', q: 'Seat preference?', type: 'tap', options: ['Aisle', 'Window', 'No preference'] },
+      { key: 'cabin', q: 'Cabin class?', type: 'tap', options: ['Economy', 'Premium Economy', 'Business', 'First', 'Whatever\'s cheapest'] },
+      { key: 'ff_number', q: 'Do you have a frequent flyer number?', type: 'tap-then-text', options: ['Yes', 'No'], textPlaceholder: 'Frequent flyer number', textIf: 'Yes' },
+      { key: 'tsa', q: 'Do you have TSA PreCheck or Global Entry?', type: 'tap-then-text', options: ['Yes', 'No'], textPlaceholder: 'KTN number', textIf: 'Yes' },
+      { key: 'international', q: 'Do you travel internationally?', type: 'tap', options: ['Yes', 'Sometimes', 'No'] },
+      { key: 'hotel_brand', q: 'Preferred hotel brand?', type: 'tap', options: ['Marriott', 'Hilton', 'Hyatt', 'IHG', 'No preference'] },
+      { key: 'hotel_loyalty', q: 'Do you have a hotel loyalty number?', type: 'tap-then-text', options: ['Yes', 'No'], textPlaceholder: 'Loyalty number', textIf: 'Yes' },
+      { key: 'room_pref', q: 'Room preferences?', type: 'tap-multi', options: ['High floor', 'King bed', 'Away from elevator', 'Quiet room', 'No preference'] },
+    ]
+  },
+  email: {
+    label: 'Email & Communication',
+    questions: [
+      { key: 'voice_intro', q: 'Tell me about yourself and your work in your own words — just talk naturally.', type: 'voice-text', placeholder: 'What do you do, who do you work with...' },
+      { key: 'writes_to', q: 'Who do you write to most?', type: 'tap-multi', options: ['Customers', 'My team', 'My boss', 'Vendors', 'All of them'] },
+      { key: 'email_pain', q: 'Biggest email headache?', type: 'tap', options: ['Starting from scratch', 'Difficult conversations', 'Following up', 'Saying no', 'Sounding professional'] },
+    ]
+  },
+  scheduling: {
+    label: 'Scheduling',
+    questions: [
+      { key: 'calendar', q: 'What calendar do you use?', type: 'tap', options: ['Google', 'Outlook', 'Apple', 'Honestly it\'s a mess'] },
+      { key: 'booking', q: 'How do people book time with you?', type: 'tap', options: ['They email me', 'I send them times', 'I use a booking link', 'It\'s complicated'] },
+      { key: 'sched_pain', q: 'Biggest scheduling headache?', type: 'tap', options: ['Back and forth emails', 'Double booking', 'No focus time', 'Too many meetings'], nudge: { 'Back and forth emails': 'A free booking link fixes that completely — I can help you set one up after this.' } },
+      { key: 'protected_times', q: 'Do you protect any times?', type: 'tap-multi', options: ['Mornings', 'Afternoons', 'Fridays', 'No — it\'s chaos'] },
+    ]
+  },
+};
+
+// Audience-specific openers
+const OPENERS = {
+  business:  "Love it. Tell me about your business — what do you do and who do you serve?",
+  employee:  "Great! What's your role and what does your day-to-day look like?",
+  supporter: "An EA — my people! How many people do you support, and what do they need most?",
+  household: "Got it. Are you managing kids, an aging parent, or both?",
+  caregiver: "Caring for someone you love is one of the hardest jobs there is. I'm here to help. Tell me a little about who you're caring for.",
+  other:     "Tell me a little about yourself and what you need help with — no assumptions here.",
+};
+
+const TONES = {
+  business:  'Energetic, practical, no fluff.',
+  employee:  'Professional but warm.',
+  supporter: 'Sharp and capable — EA to EA energy.',
+  household: 'Warm and relatable.',
+  caregiver: 'Slow, soft, never rushed.',
+  other:     'Curious and open.',
+};
+
+// ── Render helpers ──
+function setProgress(pct, label) {
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = label;
+}
+
+function micBtn(inputEl) {
+  const btn = document.createElement('button');
+  btn.className = 'input-mic';
+  btn.type = 'button';
+  btn.title = 'Tap to talk';
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
+  btn.addEventListener('click', () => startMic(inputEl, btn));
+  return btn;
+}
+
+function renderQuestion(step) {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = step.q;
+  card.appendChild(msg);
+  speak(step.q);
+
+  if (step.nudge_text) {
+    const n = document.createElement('div');
+    n.className = 'nudge';
+    n.textContent = step.nudge_text;
+    card.appendChild(n);
+  }
+
+  let getValue = () => '';
+  let selectedVals = [];
+
+  if (step.type === 'tap') {
+    const grid = document.createElement('div');
+    grid.className = 'tap-grid';
+    step.options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'tap-btn'; b.textContent = opt;
+      b.addEventListener('click', () => {
+        grid.querySelectorAll('.tap-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        selectedVals = [opt];
+        checkNudge(step, opt, card);
+      });
+      grid.appendChild(b);
+    });
+    card.appendChild(grid);
+    getValue = () => selectedVals[0] || '';
+
+  } else if (step.type === 'tap-multi') {
+    const grid = document.createElement('div');
+    grid.className = 'tap-grid';
+    step.options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'tap-btn'; b.textContent = opt;
+      b.addEventListener('click', () => {
+        if (opt === 'No preference' || opt === 'No — it\'s chaos' || opt === 'All of them' || opt === 'All of it') {
+          grid.querySelectorAll('.tap-btn').forEach(x => x.classList.remove('selected'));
+          b.classList.toggle('selected');
+          selectedVals = b.classList.contains('selected') ? [opt] : [];
+        } else {
+          grid.querySelectorAll('.tap-btn').forEach(x => {
+            if (['No preference','No — it\'s chaos','All of them','All of it'].includes(x.textContent)) x.classList.remove('selected');
+          });
+          b.classList.toggle('selected');
+          selectedVals = Array.from(grid.querySelectorAll('.tap-btn.selected')).map(x => x.textContent);
+        }
+      });
+      grid.appendChild(b);
+    });
+    card.appendChild(grid);
+    getValue = () => selectedVals.join(', ');
+
+  } else if (step.type === 'text') {
+    const wrap = document.createElement('div');
+    wrap.className = 'text-input-wrap';
+    const inp = document.createElement('input');
+    inp.type = 'text'; inp.placeholder = step.placeholder || '';
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') nextStep(step, getValue()); });
+    wrap.appendChild(inp);
+    if (SR) wrap.appendChild(micBtn(inp));
+    card.appendChild(wrap);
+    getValue = () => inp.value.trim();
+
+  } else if (step.type === 'voice-text') {
+    const wrap = document.createElement('div');
+    wrap.className = 'text-input-wrap';
+    const ta = document.createElement('textarea');
+    ta.placeholder = step.placeholder || '';
+    wrap.appendChild(ta);
+    if (SR) { const mb = micBtn(ta); mb.classList.add('textarea-mic'); wrap.appendChild(mb); }
+    card.appendChild(wrap);
+    getValue = () => ta.value.trim();
+
+  } else if (step.type === 'tap-then-text') {
+    const grid = document.createElement('div');
+    grid.className = 'tap-grid';
+    let textWrap = null;
+    step.options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'tap-btn'; b.textContent = opt;
+      b.addEventListener('click', () => {
+        grid.querySelectorAll('.tap-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        selectedVals = [opt];
+        if (opt === step.textIf && !textWrap) {
+          textWrap = document.createElement('div');
+          textWrap.className = 'text-input-wrap';
+          const inp = document.createElement('input');
+          inp.type = 'text'; inp.placeholder = step.textPlaceholder || '';
+          textWrap.appendChild(inp);
+          if (SR) textWrap.appendChild(micBtn(inp));
+          card.insertBefore(textWrap, card.querySelector('.nav-row'));
+          inp.focus();
+          getValue = () => inp.value.trim() ? `${opt}: ${inp.value.trim()}` : opt;
+        } else if (opt !== step.textIf) {
+          if (textWrap) { textWrap.remove(); textWrap = null; }
+          getValue = () => opt;
+        }
+      });
+      grid.appendChild(b);
+    });
+    card.appendChild(grid);
+    getValue = () => selectedVals[0] ? selectedVals[0] : '';
+  }
+
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn-next';
+  nextBtn.textContent = 'Continue';
+  nextBtn.addEventListener('click', () => nextStep(step, getValue()));
+  const skipBtn = document.createElement('button');
+  skipBtn.className = 'btn-skip';
+  skipBtn.textContent = 'Skip';
+  skipBtn.addEventListener('click', () => nextStep(step, null));
+  nav.appendChild(nextBtn);
+  nav.appendChild(skipBtn);
+  card.appendChild(nav);
+}
+
+function checkNudge(step, val, card) {
+  if (!step.nudge || !step.nudge[val]) return;
+  const existing = card.querySelector('.nudge');
+  if (existing) existing.remove();
+  const n = document.createElement('div');
+  n.className = 'nudge';
+  n.textContent = step.nudge[val];
+  card.insertBefore(n, card.querySelector('.nav-row'));
+}
+
+// ── Flow state ──
+let currentFlow = [];   // array of {category, questions[]}
+let flowIndex = 0;      // which category
+let qIndex = 0;         // which question in category
+
+function startFlow() {
+  // Build flow based on audience
+  currentFlow = Object.entries(CATEGORIES).map(([id, cat]) => ({ id, ...cat }));
+  totalQuestions = currentFlow.reduce((s, c) => s + c.questions.length, 0);
+  showNextQuestion();
+}
+
+function showNextQuestion() {
+  if (flowIndex >= currentFlow.length) {
+    showDownload();
+    return;
+  }
+  const cat = currentFlow[flowIndex];
+  if (qIndex >= cat.questions.length) {
+    showCategoryComplete(cat);
+    return;
+  }
+
+  const q = cat.questions[qIndex];
+  const done = currentFlow.slice(0, flowIndex).reduce((s,c) => s + c.questions.length, 0) + qIndex;
+  setProgress(Math.round((done / totalQuestions) * 100), `${cat.label}`);
+  renderQuestion(q);
+}
+
+function nextStep(step, value) {
+  if (value !== null && value !== '') {
+    const cat = currentFlow[flowIndex];
+    if (!profile[cat.id]) profile[cat.id] = {};
+    profile[cat.id][step.key] = value;
+  }
+  qIndex++;
+  showNextQuestion();
+}
+
+function showCategoryComplete(cat) {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+
+  const remaining = currentFlow.slice(flowIndex + 1);
+
+  const box = document.createElement('div');
+  box.className = 'cat-complete';
+  const msg = `Your ${cat.label.toLowerCase()} preferences are all set!`;
+  box.innerHTML = `<p>${msg} Want to set up anything else?</p><div class="cat-btns" id="cat-btn-wrap"></div>`;
+  card.appendChild(box);
+  speak(msg + " Want to set up anything else?");
+
+  const wrap = document.getElementById('cat-btn-wrap');
+
+  remaining.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'cat-btn';
+    b.textContent = c.label;
+    b.addEventListener('click', () => {
+      flowIndex = currentFlow.findIndex(x => x.id === c.id);
+      qIndex = 0;
+      // Reorder so chosen is next
+      const chosen = currentFlow.splice(flowIndex, 1)[0];
+      currentFlow.splice(flowIndex, 0, chosen);
+      flowIndex++;
+      // Collapse skipped cats
+      showNextQuestion();
+    });
+    wrap.appendChild(b);
+  });
+
+  const doneBtn = document.createElement('button');
+  doneBtn.className = 'cat-btn done-btn';
+  doneBtn.textContent = "I'm good for now";
+  doneBtn.addEventListener('click', showDownload);
+  wrap.appendChild(doneBtn);
+
+  setProgress(Math.round(((flowIndex + 1) / currentFlow.length) * 100), 'Almost done');
+  flowIndex++;
+  qIndex = 0;
+}
+
+// ── Download profile ──
+function showDownload() {
+  profile.meta.audience = audience;
+  profile.meta.completed = new Date().toISOString();
+
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(100, 'Done!');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = "Your profile is ready! Download it below — then we'll get your assistant set up.";
+  card.appendChild(msg);
+  speak("Your profile is ready! Let's get your assistant set up.");
+
+  const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'carrie-profile.json';
+  a.className = 'btn-next';
+  a.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:16px;padding:14px;border-radius:14px;';
+  a.textContent = 'Download my profile';
+  card.appendChild(a);
+
+  const next = document.createElement('a');
+  next.href = 'setup.html';
+  next.style.cssText = 'display:block;text-align:center;margin-top:14px;color:var(--purple);font-size:0.92rem;';
+  next.textContent = "Next: set up your Claude Project →";
+  card.appendChild(next);
+}
+
+// ── Step 1: audience ──
+function showAudienceStep() {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(5, 'Getting started');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = "Hi! I'm Carrie. Let's set you up so I always know who you are. First — what best describes you?";
+  card.appendChild(msg);
+  speak("Hi! I'm Carrie. Let's set you up. First — what best describes you?");
+
+  const grid = document.createElement('div');
+  grid.className = 'tap-grid';
+  AUDIENCES.forEach(a => {
+    const b = document.createElement('button');
+    b.className = 'tap-btn';
+    b.textContent = a.label;
+    b.addEventListener('click', () => {
+      audience = a.id;
+      profile.meta.audience = a.id;
+      showNameStep();
+    });
+    grid.appendChild(b);
+  });
+  card.appendChild(grid);
+}
+
+// ── Step 2: name ──
+function showNameStep() {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(10, 'Your name');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = "What's your name?";
+  card.appendChild(msg);
+  speak("What's your name?");
+
+  const wrap = document.createElement('div');
+  wrap.className = 'text-input-wrap';
+  const inp = document.createElement('input');
+  inp.type = 'text'; inp.placeholder = 'First name is fine';
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && inp.value.trim()) saveName(inp.value.trim()); });
+  wrap.appendChild(inp);
+  if (SR) wrap.appendChild(micBtn(inp));
+  card.appendChild(wrap);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+  const btn = document.createElement('button');
+  btn.className = 'btn-next';
+  btn.textContent = 'Continue';
+  btn.addEventListener('click', () => { if (inp.value.trim()) saveName(inp.value.trim()); });
+  nav.appendChild(btn);
+  card.appendChild(nav);
+
+  inp.focus();
+}
+
+function saveName(name) {
+  profile.name = name;
+  showOpenerStep(name);
+}
+
+// ── Step 3: opener (audience-specific) ──
+function showOpenerStep(name) {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(15, 'About you');
+
+  const opener = OPENERS[audience] || OPENERS.other;
+  const greeting = `Nice to meet you, ${name}! ${opener}`;
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = greeting;
+  card.appendChild(msg);
+  speak(greeting);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'text-input-wrap';
+  const ta = document.createElement('textarea');
+  ta.placeholder = 'Tell me in your own words...';
+  wrap.appendChild(ta);
+  if (SR) { const mb = micBtn(ta); mb.classList.add('textarea-mic'); wrap.appendChild(mb); }
+  card.appendChild(wrap);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-row';
+  const btn = document.createElement('button');
+  btn.className = 'btn-next';
+  btn.textContent = 'Continue';
+  btn.addEventListener('click', () => {
+    if (ta.value.trim()) profile.about = ta.value.trim();
+    showCategoryMenu();
+  });
+  const skip = document.createElement('button');
+  skip.className = 'btn-skip'; skip.textContent = 'Skip';
+  skip.addEventListener('click', showCategoryMenu);
+  nav.appendChild(btn); nav.appendChild(skip);
+  card.appendChild(nav);
+}
+
+// ── Step 4: category menu ──
+function showCategoryMenu() {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(20, 'Choose a category');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = "Great! What would you like to set up first?";
+  card.appendChild(msg);
+  speak("Great! What would you like to set up first?");
+
+  const grid = document.createElement('div');
+  grid.className = 'tap-grid';
+  Object.entries(CATEGORIES).forEach(([id, cat]) => {
+    const b = document.createElement('button');
+    b.className = 'tap-btn';
+    b.textContent = cat.label;
+    b.addEventListener('click', () => {
+      flowIndex = Object.keys(CATEGORIES).indexOf(id);
+      currentFlow = Object.entries(CATEGORIES).map(([k, v]) => ({ id: k, ...v }));
+      // Reorder so chosen cat is first
+      const chosen = currentFlow.splice(flowIndex, 1)[0];
+      currentFlow.unshift(chosen);
+      flowIndex = 0; qIndex = 0;
+      totalQuestions = currentFlow.reduce((s, c) => s + c.questions.length, 0);
+      showNextQuestion();
+    });
+    grid.appendChild(b);
+  });
+  card.appendChild(grid);
+}
+
+// ── Boot ──
+showAudienceStep();
+</script>
+</body>
+</html>

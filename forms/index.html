@@ -147,6 +147,25 @@
       align-self: flex-end;
     }
 
+    .bubble.conversion { display: flex; flex-direction: column; gap: 12px; }
+
+    .conversion-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .btn-conversion {
+      padding: 9px 18px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn-conversion:hover { opacity: 0.85; }
+    .btn-conversion.primary { background: var(--purple); color: #fff; }
+    .btn-conversion.secondary { background: #fff; color: var(--gray); border: 1px solid var(--border); }
+
     .typing-indicator {
       display: flex;
       gap: 5px;
@@ -696,6 +715,9 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
         messages.push({ role: 'assistant', content: data.content });
         addBubble('carrie', data.content);
         speak(data.content);
+        if (messages.filter(m => m.role === 'assistant').length === 1) {
+          setTimeout(showConversionPrompt, 1200);
+        }
       } else {
         addBubble('carrie', "Sorry, something went wrong. Try again in a moment.");
       }
@@ -706,6 +728,22 @@ Never be salesy. Never use bullet points in your first response. Just talk natur
 
     document.getElementById('btn-send').disabled = false;
     input.focus();
+  }
+
+  function showConversionPrompt() {
+    const conv = document.getElementById('conversation');
+    const el = document.createElement('div');
+    el.className = 'bubble carrie conversion';
+    el.id = 'conversion-prompt';
+    el.innerHTML = `
+      <span>Want me to always know this much about you — without you having to explain every time?</span>
+      <div class="conversion-btns">
+        <a href="onboarding.html" class="btn-conversion primary">Yes — set me up</a>
+        <button class="btn-conversion secondary" onclick="document.getElementById('conversion-prompt').remove()">Maybe later</button>
+      </div>`;
+    conv.appendChild(el);
+    conv.scrollTop = conv.scrollHeight;
+    speak("Want me to always know this much about you — without you having to explain every time?");
   }
 
   // ── Email form ──
