@@ -519,7 +519,9 @@ async function generatePrompt() {
 The system prompt you write will be pasted directly into Claude, ChatGPT, or Gemini. It should make that AI act as their personal assistant who already knows everything about them.
 
 Format requirements:
-- Start with a clear role statement: "You are my personal AI executive assistant."
+- Start with these two lines exactly:
+  "You already know me. Never ask me questions you can answer from my profile. Lead with what you know and only ask what's genuinely missing."
+  Then: "You are my personal AI executive assistant."
 - Use ## headers for sections (About Me, Work & Role, Communication Style, Travel Preferences, etc.) — only include sections where you have real info
 - Be specific — use the actual details they shared, not generic placeholders
 - End with a "## How to Help Me" section with 4-6 behavioral guidelines
@@ -574,6 +576,10 @@ function showResult(prompt) {
 
     <!-- Step 2: Paste -->
     <div style="margin-top:16px;border:2px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+        <p style="font-size:0.85rem;font-weight:700;color:#92400e;margin-bottom:4px;">💡 If your AI still feels generic after pasting</p>
+        <p style="font-size:0.83rem;color:#78350f;line-height:1.6;">Add this line at the very top of your instructions:<br><strong>"You already know me. Never ask me questions you can answer from my profile. Lead with what you know and only ask what's genuinely missing."</strong></p>
+      </div>
       <p style="font-weight:700;font-size:0.95rem;margin-bottom:16px;">📌 Step 2 — Paste it into your AI</p>
 
       <div style="margin-bottom:14px;padding:14px;background:#f9fafb;border-radius:12px;">
