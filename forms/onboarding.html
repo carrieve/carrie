@@ -369,6 +369,34 @@ const CATEGORIES = {
       { key: 'protected_times', q: 'Do you protect any times?', type: 'tap-multi', options: ['Mornings', 'Afternoons', 'Fridays', 'No — it\'s chaos'] },
     ]
   },
+  household: {
+    label: 'Household & Family',
+    audiences: ['household'],
+    questions: [
+      { key: 'managing', q: 'What are you managing?', type: 'tap-multi', options: ['My family and kids', 'An aging parent', 'Both', 'My own household'] },
+      { key: 'kids_details', q: 'Tell me about your kids — ages, schools, activities, anything Carrie should know.', type: 'voice-text', placeholder: 'Ages, schools, activities, routines...' },
+      { key: 'family_calendar', q: 'What calendar keeps the family on track?', type: 'tap', options: ['Google', 'Apple', 'A whiteboard', 'Honestly nothing'] },
+      { key: 'biggest_chaos', q: 'What causes the most chaos?', type: 'tap', options: ['School schedules', 'Activities and pickups', 'Meals and groceries', 'Summer planning', 'All of it'] },
+    ]
+  },
+  caregiver: {
+    label: 'Caregiving',
+    audiences: ['caregiver', 'household'],
+    questions: [
+      { key: 'care_recipient_name', q: 'Tell me their name — I\'ll use it, not "your loved one."', type: 'text', placeholder: 'Their first name' },
+      { key: 'living_situation', q: 'Where do they live?', type: 'tap', options: ['With me', 'In their own home', 'Assisted living', 'Memory care', 'Other'] },
+      { key: 'care_needs', q: 'What kind of help do they need most?', type: 'tap-multi', options: ['Daily routine and personal care', 'Medical appointments', 'Medications', 'All of it'] },
+      { key: 'care_team', q: 'Who helps care for them?', type: 'tap', options: ['Just me', 'Professional caregivers', 'Family members', 'A mix'] },
+      { key: 'care_team_details', q: 'Tell me about the caregivers — names, days, what they handle.', type: 'voice-text', placeholder: 'Names, schedule, responsibilities...' },
+      { key: 'doctors', q: 'Tell me about their doctors — names, specialties, contact info.', type: 'voice-text', placeholder: 'Dr. Smith, cardiologist, 704-555-0100...' },
+      { key: 'medications', q: 'Are they on medications?', type: 'tap-then-text', options: ['Yes', 'No'], textPlaceholder: 'Name, dosage, timing — as much as you know', textIf: 'Yes' },
+      { key: 'poa', q: 'Do you have power of attorney?', type: 'tap', options: ['Yes', 'No', 'In progress'], nudge: { 'No': 'I can help you understand what\'s needed and draft the conversation with your family.', 'In progress': 'I can help you understand what\'s needed and draft the conversation with your family.' } },
+      { key: 'directive', q: 'Do they have a healthcare directive or living will?', type: 'tap', options: ['Yes', 'No', 'We need to do this'], nudge: { 'No': 'I can walk you through what this covers and help you get it sorted.', 'We need to do this': 'I can walk you through what this covers and help you get it sorted.' } },
+      { key: 'family_team', q: 'Who else is involved in their care?', type: 'tap', options: ['Just me', 'Siblings', 'Spouse or partner', 'A whole family team'] },
+      { key: 'family_team_details', q: 'Tell me who\'s involved and what they handle.', type: 'voice-text', placeholder: 'Sister handles weekends, husband does appointments...' },
+      { key: 'emergency_plan', q: 'Do you have an emergency plan?', type: 'tap', options: ['Yes', 'No', 'Partially'], nudge: { 'No': 'Let\'s build one together — I\'ll create a simple emergency sheet your whole family can access.', 'Partially': 'Let\'s build one together — I\'ll create a simple emergency sheet your whole family can access.' } },
+    ]
+  },
 };
 
 // Audience-specific openers
@@ -551,9 +579,14 @@ let currentFlow = [];   // array of {category, questions[]}
 let flowIndex = 0;      // which category
 let qIndex = 0;         // which question in category
 
+function availableCategories() {
+  return Object.entries(CATEGORIES)
+    .filter(([, cat]) => !cat.audiences || cat.audiences.includes(audience))
+    .map(([id, cat]) => ({ id, ...cat }));
+}
+
 function startFlow() {
-  // Build flow based on audience
-  currentFlow = Object.entries(CATEGORIES).map(([id, cat]) => ({ id, ...cat }));
+  currentFlow = availableCategories();
   totalQuestions = currentFlow.reduce((s, c) => s + c.questions.length, 0);
   showNextQuestion();
 }
@@ -777,17 +810,17 @@ function showCategoryMenu() {
   card.appendChild(msg);
   speak("Great! What would you like to set up first?");
 
+  const cats = availableCategories();
   const grid = document.createElement('div');
   grid.className = 'tap-grid';
-  Object.entries(CATEGORIES).forEach(([id, cat]) => {
+  cats.forEach(cat => {
     const b = document.createElement('button');
     b.className = 'tap-btn';
     b.textContent = cat.label;
     b.addEventListener('click', () => {
-      flowIndex = Object.keys(CATEGORIES).indexOf(id);
-      currentFlow = Object.entries(CATEGORIES).map(([k, v]) => ({ id: k, ...v }));
-      // Reorder so chosen cat is first
-      const chosen = currentFlow.splice(flowIndex, 1)[0];
+      currentFlow = cats.slice();
+      const idx = currentFlow.findIndex(c => c.id === cat.id);
+      const chosen = currentFlow.splice(idx, 1)[0];
       currentFlow.unshift(chosen);
       flowIndex = 0; qIndex = 0;
       totalQuestions = currentFlow.reduce((s, c) => s + c.questions.length, 0);
@@ -798,8 +831,142 @@ function showCategoryMenu() {
   card.appendChild(grid);
 }
 
+// ── Returning user flow ──
+function showReturningFlow() {
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(5, 'Welcome back');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = "Welcome back! Upload your existing profile and I'll pick up right where we left off.";
+  card.appendChild(msg);
+  speak("Welcome back! Upload your existing profile and I'll pick up right where we left off.");
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'margin:16px 0;';
+
+  const label = document.createElement('label');
+  label.style.cssText = 'display:flex;align-items:center;gap:12px;padding:16px;border:2px dashed var(--border);border-radius:14px;cursor:pointer;font-size:0.95rem;color:var(--gray);transition:border-color 0.2s;';
+  label.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload carrie-profile.json`;
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.json,application/json';
+  fileInput.style.display = 'none';
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const loaded = JSON.parse(ev.target.result);
+        mergeProfile(loaded);
+      } catch {
+        label.textContent = 'Could not read that file — try again.';
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  label.addEventListener('dragover', e => { e.preventDefault(); label.style.borderColor = 'var(--purple)'; });
+  label.addEventListener('dragleave', () => { label.style.borderColor = 'var(--border)'; });
+  label.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try { mergeProfile(JSON.parse(ev.target.result)); }
+      catch { label.textContent = 'Could not read that file — try again.'; }
+    };
+    reader.readAsText(file);
+  });
+
+  label.appendChild(fileInput);
+  wrap.appendChild(label);
+  card.appendChild(wrap);
+
+  label.addEventListener('click', () => fileInput.click());
+}
+
+function mergeProfile(loaded) {
+  // Merge loaded data into profile
+  Object.assign(profile, loaded);
+  audience = loaded.meta?.audience || null;
+
+  // Figure out what's already captured
+  const captured = [];
+  if (loaded.travel) captured.push('travel');
+  if (loaded.email) captured.push('email & communication');
+  if (loaded.scheduling) captured.push('scheduling');
+  if (loaded.household) captured.push('household');
+  if (loaded.caregiver) captured.push('caregiving');
+
+  const name = loaded.name ? `, ${loaded.name}` : '';
+  const capturedStr = captured.length ? captured.join(' and ') : 'your preferences';
+
+  const card = document.getElementById('card');
+  card.innerHTML = '';
+  setProgress(15, 'Profile loaded');
+
+  const msg = document.createElement('div');
+  msg.className = 'carrie-msg';
+  msg.textContent = `Welcome back${name}! I've got your ${capturedStr}. Want to add or update anything?`;
+  card.appendChild(msg);
+  speak(`Welcome back${name}! I've got your ${capturedStr}. Want to add or update anything?`);
+
+  // Show only categories not yet completed (or all if they want to update)
+  const cats = availableCategories();
+  const remaining = cats.filter(c => !loaded[c.id]);
+  const updateable = cats.filter(c => loaded[c.id]);
+
+  const grid = document.createElement('div');
+  grid.className = 'tap-grid';
+
+  remaining.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'tap-btn';
+    b.textContent = `Set up ${cat.label}`;
+    b.addEventListener('click', () => launchSingleCategory(cat, cats));
+    grid.appendChild(b);
+  });
+
+  updateable.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'tap-btn';
+    b.textContent = `Update ${cat.label}`;
+    b.style.opacity = '0.7';
+    b.addEventListener('click', () => launchSingleCategory(cat, cats));
+    grid.appendChild(b);
+  });
+
+  const done = document.createElement('button');
+  done.className = 'tap-btn';
+  done.textContent = "Nothing — just re-download";
+  done.addEventListener('click', showDownload);
+  grid.appendChild(done);
+
+  card.appendChild(grid);
+}
+
+function launchSingleCategory(cat, allCats) {
+  currentFlow = allCats.slice();
+  const idx = currentFlow.findIndex(c => c.id === cat.id);
+  const chosen = currentFlow.splice(idx, 1)[0];
+  currentFlow.unshift(chosen);
+  flowIndex = 0; qIndex = 0;
+  totalQuestions = currentFlow.reduce((s, c) => s + c.questions.length, 0);
+  showNextQuestion();
+}
+
 // ── Boot ──
-showAudienceStep();
+// Check for returning=true URL param
+if (new URLSearchParams(location.search).get('returning') === 'true') {
+  showReturningFlow();
+} else {
+  showAudienceStep();
+}
 </script>
 </body>
 </html>
