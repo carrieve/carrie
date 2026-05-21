@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GetCarrieAI — Set Up Your Profile</title>
+  <title>GetCarrieAI — Train Your AI Assistant</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -247,7 +247,7 @@
   <a href="index.html" class="logo">GetCarrieAI</a>
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <span class="progress-label" id="progress-label">Just starting</span>
+    <span class="progress-label" id="progress-label">Let's get started</span>
   </div>
 </div>
 
@@ -606,7 +606,7 @@ function showCategoryComplete(cat) {
 
   const doneBtn = document.createElement('button');
   doneBtn.className = 'cat-btn done-btn';
-  doneBtn.textContent = "I'm good for now";
+  doneBtn.textContent = "Generate my prompt";
   doneBtn.addEventListener('click', showDownload);
   wrap.appendChild(doneBtn);
 
@@ -760,11 +760,11 @@ function copyPrompt() {
 function showAudienceStep() {
   const card = document.getElementById('card');
   card.innerHTML = '';
-  setProgress(5, 'Getting started');
+  setProgress(5, 'Step 1 of 5');
 
   const msg = document.createElement('div');
   msg.className = 'carrie-msg';
-  msg.textContent = "Hi! I'm Carrie. Let's set you up so I always know who you are. First — what best describes you?";
+  msg.textContent = "Let's train your AI assistant. First — what best describes your situation?";
   card.appendChild(msg);
 
   const grid = document.createElement('div');
