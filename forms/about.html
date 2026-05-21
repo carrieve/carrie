@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .top-bar {
+      width: 100%;
+      max-width: 640px;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 60px;
+    }
+    .logo { font-weight: 700; font-size: 1rem; color: var(--purple); text-decoration: none; }
+    .main { max-width: 580px; width: 100%; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 20px; }
+    h1 span { color: var(--purple); }
+    p { font-size: 1rem; line-height: 1.75; color: #374151; margin-bottom: 20px; }
+    .highlight { background: var(--purple-light); border-radius: 16px; padding: 24px 28px; margin: 32px 0; }
+    .highlight p { margin: 0; color: var(--black); }
+    .links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 40px; }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-secondary { background: #FFDD00; color: #000; }
+    .btn-outline { border: 2px solid var(--border); color: var(--black); }
+    footer { margin-top: 60px; font-size: 0.82rem; color: #9ca3af; text-align: center; }
+    footer a { color: var(--purple); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="logo">GetCarrieAI</a>
+</div>
+
+<div class="main">
+  <h1>Built by an EA.<br><span>For everyone.</span></h1>
+
+  <p>Every time you open Claude, ChatGPT, or Gemini — it's a blank slate. You explain who you are, what you need, how you like things done. And then you do it again tomorrow.</p>
+
+  <p>That's the problem I'm fixing.</p>
+
+  <div class="highlight">
+    <p>GetCarrieAI is a free set of tools that help you get more out of AI — without knowing how to prompt. You bring the details, Carrie handles the format. Works with any AI. Best with Claude.</p>
+  </div>
+
+  <p>I'm Carrie Van Epps — a career EA with 15 years of experience supporting C-suite executives at Bank of America, Yuga Labs, and a16z. I've spent my career figuring out how to get things done fast and make the person I support look good doing it.</p>
+
+  <p>GetCarrieAI is me building that instinct into a tool anyone can use. No EA required. No AI experience required. Just come in with a problem and leave with something ready to use.</p>
+
+  <p>Early days. Building in public. Still tinkering.</p>
+
+  <div class="links">
+    <a href="index.html" class="btn btn-primary">Try the tools →</a>
+    <a href="https://www.linkedin.com/in/carrievanepps" target="_blank" class="btn btn-outline">Connect on LinkedIn</a>
+    <a href="https://buymeacoffee.com/getcarrieai" target="_blank" class="btn btn-secondary">☕ Buy me a coffee</a>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 GetCarrieAI &nbsp;·&nbsp; <a href="index.html">Home</a>
+</footer>
+
+</body>
+</html>
