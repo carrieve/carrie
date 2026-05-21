@@ -290,6 +290,13 @@ Next meeting: June 3rd at 2pm."></textarea>
       <div class="email-output" id="email-output"></div>
     </div>
 
+    <div class="output-card" id="heads-up-card" style="display:none;">
+      <div class="output-card-header">
+        <h2>📌 EA heads up</h2>
+      </div>
+      <div class="email-output" id="heads-up-output"></div>
+    </div>
+
     <div class="output-actions">
       <button class="btn-reset" onclick="resetForm()">Start over</button>
     </div>
@@ -375,7 +382,11 @@ TO-DOS
 
 SLACK SUMMARY
 ─────────────
-[A short message (3-5 lines) to post in the channel confirming the to-dos. Casual, professional tone.]`
+[A short message (3-5 lines) to post in the channel confirming the to-dos. Casual, professional tone.]
+
+EA HEADS UP
+───────────
+[Flag anything that needs attention: to-dos without clear owners, anything that might get dropped, or follow-ups that need a deadline. If everything looks clean, say so.]`
       : `You are an expert Executive Assistant processing meeting notes.
 
 Extract every action item with owner and deadline. Then draft a professional follow-up email.
@@ -388,7 +399,11 @@ ACTION ITEMS
 
 FOLLOW-UP EMAIL
 ───────────────
-[A professional follow-up email. Start with a greeting, recap action items, warm close. Ready to send as-is.]`;
+[A professional follow-up email. Start with a greeting, recap action items, warm close. Ready to send as-is.]
+
+EA HEADS UP
+───────────
+[Flag 1-3 things that need attention: action items missing owners, decisions that seem unresolved, deadlines that are vague, or anything that might fall through the cracks. If everything looks clean, say so.]`;
 
     const userContent = [
       meetingName ? `${isSlack ? 'Thread' : 'Meeting'}: ${meetingName}` : '',
@@ -444,6 +459,13 @@ FOLLOW-UP EMAIL
 
     // Render email / summary
     document.getElementById('email-output').textContent = sections.email || '(No email generated — try again with more detail in your notes.)';
+
+    // Render EA heads up
+    const headsUp = extractSection(text, 'EA HEADS UP');
+    if (headsUp) {
+      document.getElementById('heads-up-output').textContent = headsUp;
+      document.getElementById('heads-up-card').style.display = 'block';
+    }
 
     // Update labels
     document.getElementById('actions-title').textContent = isSlack ? '✅ To-dos from this thread' : '✅ Action items';
