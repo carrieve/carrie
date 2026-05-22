@@ -324,8 +324,8 @@
 <div class="page">
   <a href="build.html" class="back">← Back</a>
 
-  <h1>🎙 Talk it out</h1>
-  <p class="intro">Just talk — no typing needed. Hit record and cover the topics below in your own words and your own order. The more you share, the better your AI will know you.</p>
+  <h1>Tell Carrie about yourself</h1>
+  <p class="intro"><strong>Talk or type — your choice.</strong> Hit the mic button to speak, or just type directly in the box below. Cover the topics that apply to you, in your own words and your own order. The more you share, the better your AI will know you.</p>
 
   <p class="guide-label">What to talk about</p>
   <div class="topics">
@@ -343,13 +343,13 @@
 
   <div class="record-area">
     <button class="btn-record" id="btn-record" title="Start recording">🎙</button>
-    <p class="record-status" id="record-status">Tap to start talking</p>
+    <p class="record-status" id="record-status">Tap to speak — or skip this and type below</p>
   </div>
 
   <div class="transcript-wrap">
     <p class="transcript-label">What you said</p>
     <textarea id="transcript" placeholder="Your words will appear here as you talk. You can also type or edit directly."></textarea>
-    <p class="transcript-hint">Not working? Type directly in the box above — it all works the same.</p>
+    <p class="transcript-hint">Prefer to type? Just write directly in the box — works exactly the same as talking.</p>
   </div>
 
   <button class="btn-generate" id="btn-generate" disabled>Build my prompt →</button>
@@ -368,25 +368,73 @@
     </div>
 
     <div class="whats-next">
-      <h3>What to do with your prompt</h3>
+      <h3>Where to save your prompt — pick your AI</h3>
 
+      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:18px;line-height:1.5;">Save it in your AI's instructions once and every conversation already knows you. Pick the one you use:</p>
+
+      <!-- CLAUDE -->
       <div class="next-option">
-        <strong>⭐ Best: paste it once, forget about it (Claude)</strong>
+        <strong>🟠 Claude (claude.ai)</strong>
         <ol>
           <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click <strong>Projects</strong> in the left sidebar</li>
-          <li>Click <strong>New Project</strong> → give it a name (e.g. "My AI assistant") → hit <strong>Create project</strong></li>
-          <li>You'll land inside the project. Look for <strong>"Add instructions"</strong> in the right-hand panel — this is NOT the chat box</li>
+          <li>Click <strong>New Project</strong> → name it (e.g. "My AI assistant") → <strong>Create project</strong></li>
+          <li>You'll land inside the project — look for <strong>"Add instructions"</strong> in the right-hand panel</li>
           <li>Paste your prompt there → save</li>
-          <li>Now use the chat box inside that project — every conversation already knows you</li>
+          <li>Use the chat box inside that project — it knows you every time</li>
         </ol>
-        <p style="margin-top:8px;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.84rem;color:#7a5800;">⚠️ <strong>Common mistake:</strong> do not paste your prompt into the chat box or the "What are you trying to achieve?" box when creating the project. Those don't persist. Only the <strong>Add instructions</strong> panel inside the project works.</p>
-        <p style="margin-top:10px;font-size:0.86rem;color:var(--gray);">Same idea in ChatGPT: <strong>Settings → Personalization → Custom Instructions</strong>. Also works in Gemini, Grok, and Copilot.</p>
+        <p style="margin-top:8px;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#7a5800;">⚠️ <strong>Common mistake:</strong> don't paste into the chat box or the "What are you trying to achieve?" box when creating the project — those don't persist. Only the <strong>Add instructions</strong> panel works.</p>
       </div>
 
+      <!-- CHATGPT -->
       <div class="next-option">
-        <strong>Also works: keep it handy</strong>
-        <p>Download the .txt file and save it in your Notes app. Paste it at the top of any new AI chat whenever you need it.</p>
+        <strong>🟢 ChatGPT (chatgpt.com)</strong>
+        <ol>
+          <li>Go to <a href="https://chatgpt.com" target="_blank" style="color:var(--purple);">chatgpt.com</a> → click your <strong>profile icon</strong> (top right)</li>
+          <li>Click <strong>Settings → Personalization → Custom Instructions</strong></li>
+          <li>Paste your prompt into the top box ("What would you like ChatGPT to know about you?")</li>
+          <li>Save — applies to every new chat automatically</li>
+        </ol>
       </div>
+
+      <!-- GEMINI -->
+      <div class="next-option">
+        <strong>🔵 Gemini (gemini.google.com)</strong>
+        <ol>
+          <li>Go to <a href="https://gemini.google.com" target="_blank" style="color:var(--purple);">gemini.google.com</a> → click <strong>Gems</strong> in the left sidebar</li>
+          <li>Click <strong>New Gem</strong> → give it a name</li>
+          <li>Paste your prompt into the instructions box</li>
+          <li>Save → open the Gem any time and it knows you</li>
+        </ol>
+      </div>
+
+      <!-- GROK -->
+      <div class="next-option">
+        <strong>⚫ Grok (x.com or grok.com)</strong>
+        <ol>
+          <li>Go to <a href="https://grok.com" target="_blank" style="color:var(--purple);">grok.com</a> → click <strong>Settings</strong> (bottom left)</li>
+          <li>Look for <strong>Custom Instructions</strong> or <strong>Memory</strong> settings</li>
+          <li>Paste your prompt there and save</li>
+          <li>Grok will apply it to future conversations</li>
+        </ol>
+      </div>
+
+      <!-- COPILOT -->
+      <div class="next-option">
+        <strong>🟣 Copilot (copilot.microsoft.com)</strong>
+        <ol>
+          <li>Go to <a href="https://copilot.microsoft.com" target="_blank" style="color:var(--purple);">copilot.microsoft.com</a></li>
+          <li>Start a new chat and paste your prompt at the very top of your first message</li>
+          <li>Say: "This is my background — refer to it whenever you help me." Then ask your question</li>
+        </ol>
+        <p style="margin-top:6px;font-size:0.83rem;color:var(--gray);">Note: Copilot's persistent instructions depend on your Microsoft account settings. If you use Microsoft 365 at work, your IT team may have additional options.</p>
+      </div>
+
+      <!-- FALLBACK -->
+      <div class="next-option" style="border-top:1px solid var(--border);padding-top:16px;margin-top:6px;">
+        <strong>📋 Works with any AI — keep it handy</strong>
+        <p>Download the .txt file → save it in your Notes app or email it to yourself. Paste it at the top of any new chat whenever you need it. Not as automatic, but it works everywhere.</p>
+      </div>
+
     </div>
   </div>
 </div>
