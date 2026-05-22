@@ -373,11 +373,13 @@
       <div class="next-option">
         <strong>⭐ Best: paste it once, forget about it</strong>
         <ol>
-          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → Projects → New Project</li>
-          <li>Paste your prompt into the project instructions</li>
-          <li>Every conversation in that project already knows you</li>
+          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong></li>
+          <li>Click <strong>"Set instructions"</strong> (top of the project page — not the chat box)</li>
+          <li>Paste your prompt there and save</li>
+          <li>Now start a new chat inside that project — it already knows you</li>
         </ol>
-        <p style="margin-top:6px;">Same idea works in ChatGPT (custom instructions), Gemini, Grok, and Copilot.</p>
+        <p style="margin-top:8px;color:#e53e3e;font-weight:600;font-size:0.84rem;">⚠️ Important: paste into the instructions field, not the chat. The chat resets every conversation — the instructions field doesn't.</p>
+        <p style="margin-top:6px;">Same idea in ChatGPT: Settings → Personalization → Custom Instructions. Also works in Gemini, Grok, and Copilot.</p>
       </div>
 
       <div class="next-option">
@@ -492,10 +494,10 @@ ${text}
 
 ## How to use this
 
-- Always apply my preferences and context from above before responding.
-- Never ask me for information I've already given you here.
-- When in doubt, refer back to what I've shared — the details matter.
-- I expect you to remember all of this and use it proactively.`;
+- Use everything above to answer my questions directly — do not ask me for information I have already provided here.
+- Apply my preferences proactively. If I ask for help with travel, food, scheduling, or anything else, use what you know about me before asking clarifying questions.
+- Never start from scratch. I gave you this context so you don't have to ask.
+- When in doubt, refer back to what I've shared. The details matter.`;
 
     promptOutput.value = prompt;
     outputSection.classList.add('visible');
