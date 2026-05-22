@@ -357,24 +357,22 @@
 
   <!-- OUTPUT -->
   <div class="output-section" id="output-section">
-    <h2>Your prompt is ready.</h2>
-    <p class="desc">This is your briefing for any AI. Copy it and paste it once — then your AI knows you every time.</p>
+    <h2>Your prompt is ready. Now save it.</h2>
 
-    <textarea id="prompt-output" readonly></textarea>
-
-    <div class="output-btns">
-      <button class="btn-copy" id="btn-copy">Copy prompt</button>
-      <a class="btn-download" id="btn-download" download="my-ai-prompt.txt">Download .txt</a>
+    <div style="background:#111;color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:24px;font-size:0.92rem;line-height:1.6;">
+      <strong style="display:block;margin-bottom:6px;">⚠️ Don't just copy and paste this into a chat.</strong>
+      Pasting into a chat only works for that one conversation — the next one starts from scratch again. To make your AI remember you every time, you need to save it in the right place. Takes 2 minutes. Pick your AI below and follow the steps.
     </div>
 
     <div class="whats-next">
       <h3>Where to save your prompt — pick your AI</h3>
 
-      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:18px;line-height:1.5;">Save it in your AI's instructions once and every conversation already knows you. Pick the one you use:</p>
+      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:18px;line-height:1.5;">Do this once and every conversation already knows you:</p>
 
       <!-- CLAUDE -->
       <div class="next-option">
-        <strong>🟠 Claude (claude.ai)</strong>
+        <strong>🟠 Claude (claude.ai) — two options</strong>
+        <p style="font-size:0.86rem;margin:8px 0 4px;font-weight:600;">Option 1: Projects (recommended)</p>
         <ol>
           <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click <strong>Projects</strong> in the left sidebar</li>
           <li>Click <strong>New Project</strong> → name it (e.g. "My AI assistant") → <strong>Create project</strong></li>
@@ -383,6 +381,14 @@
           <li>Use the chat box inside that project — it knows you every time</li>
         </ol>
         <p style="margin-top:8px;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#7a5800;">⚠️ <strong>Common mistake:</strong> don't paste into the chat box or the "What are you trying to achieve?" box when creating the project — those don't persist. Only the <strong>Add instructions</strong> panel works.</p>
+        <p style="font-size:0.86rem;margin:14px 0 4px;font-weight:600;">Option 2: Memory (simplest)</p>
+        <ol>
+          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click your <strong>profile icon</strong> (bottom left) → <strong>Settings</strong></li>
+          <li>Find <strong>Memory</strong> → make sure it's turned on</li>
+          <li>Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></li>
+          <li>Claude will save the key details and recall them in future conversations automatically</li>
+        </ol>
+        <p style="font-size:0.83rem;color:var(--gray);margin-top:6px;">Note: if you paste your prompt in the chat and Claude tells you it won't persist — that's normal. It will offer to help you set up a Project. Just follow its instructions from there.</p>
       </div>
 
       <!-- CHATGPT -->
@@ -435,6 +441,13 @@
         <p>Download the .txt file → save it in your Notes app or email it to yourself. Paste it at the top of any new chat whenever you need it. Not as automatic, but it works everywhere.</p>
       </div>
 
+    </div>
+
+    <p style="font-size:0.88rem;font-weight:700;margin:28px 0 10px;">Now copy your prompt and go save it 👆</p>
+    <textarea id="prompt-output" readonly></textarea>
+    <div class="output-btns">
+      <button class="btn-copy" id="btn-copy">Copy prompt</button>
+      <a class="btn-download" id="btn-download" download="my-ai-prompt.txt">Download .txt</a>
     </div>
   </div>
 </div>
