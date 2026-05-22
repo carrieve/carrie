@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talk it out — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 600px;
+      padding: 48px 24px 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-decoration: none;
+      margin-bottom: 36px;
+    }
+    .back:hover { color: var(--purple); }
+
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      font-size: 0.98rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* TOPIC GUIDE */
+    .guide-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+
+    .topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .topic {
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    /* RECORD */
+    .record-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .btn-record {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      background: var(--purple);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(139,47,201,0.3);
+    }
+    .btn-record:hover { background: var(--purple-dark); transform: scale(1.04); }
+    .btn-record.recording {
+      background: #e53e3e;
+      box-shadow: 0 4px 20px rgba(229,62,62,0.4);
+      animation: pulse-ring 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(229,62,62,0.4); }
+      70%  { box-shadow: 0 0 0 14px rgba(229,62,62,0); }
+      100% { box-shadow: 0 0 0 0 rgba(229,62,62,0); }
+    }
+
+    .record-status {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    .record-status.active { color: #e53e3e; }
+
+    /* TRANSCRIPT */
+    .transcript-wrap {
+      margin-bottom: 28px;
+    }
+
+    .transcript-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    #transcript {
+      width: 100%;
+      min-height: 140px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--black);
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #transcript:focus { border-color: var(--purple); }
+    #transcript.active { border-color: #e53e3e; background: #fff5f5; }
+
+    .transcript-hint {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+
+    /* GENERATE */
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+      margin-bottom: 12px;
+    }
+    .btn-generate:hover { background: var(--purple-dark); }
+    .btn-generate:disabled { background: #d1d5db; cursor: not-allowed; }
+
+    .generate-note {
+      font-size: 0.82rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    /* OUTPUT */
+    .output-section {
+      display: none;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .output-section.visible { display: block; }
+
+    .output-section h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .output-section .desc {
+      font-size: 0.92rem;
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    #prompt-output {
+      width: 100%;
+      min-height: 180px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--black);
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 14px;
+      background: #fafafa;
+    }
+
+    .output-btns {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn-copy {
+      flex: 1;
+      padding: 14px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-copy:hover { background: var(--purple-dark); }
+    .btn-copy.copied { background: #22c55e; }
+
+    .btn-download {
+      padding: 14px 20px;
+      background: #fff;
+      color: var(--gray);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-download:hover { border-color: var(--purple); color: var(--purple); }
+
+    /* WHAT'S NEXT */
+    .whats-next {
+      background: var(--purple-light);
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .whats-next h3 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--purple);
+      margin-bottom: 16px;
+    }
+
+    .next-option {
+      margin-bottom: 18px;
+    }
+    .next-option:last-child { margin-bottom: 0; }
+
+    .next-option strong {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--black);
+    }
+
+    .next-option p {
+      font-size: 0.86rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .next-option ol {
+      font-size: 0.86rem;
+      color: var(--gray);
+      line-height: 1.8;
+      padding-left: 18px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      width: 100%;
+    }
+    footer a { color: var(--purple); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <a href="build.html" class="back">← Back</a>
+
+  <h1>🎙 Talk it out</h1>
+  <p class="intro">Just talk — no typing needed. Hit record and cover the topics below in your own words and your own order. The more you share, the better your AI will know you.</p>
+
+  <p class="guide-label">What to talk about</p>
+  <div class="topics">
+    <span class="topic">How you work</span>
+    <span class="topic">Your schedule</span>
+    <span class="topic">Communication style</span>
+    <span class="topic">Travel preferences</span>
+    <span class="topic">Food & coffee</span>
+    <span class="topic">Loyalty programs</span>
+    <span class="topic">Your exec or team</span>
+    <span class="topic">Home & family</span>
+    <span class="topic">What drives you crazy</span>
+    <span class="topic">What you always need</span>
+  </div>
+
+  <div class="record-area">
+    <button class="btn-record" id="btn-record" title="Start recording">🎙</button>
+    <p class="record-status" id="record-status">Tap to start talking</p>
+  </div>
+
+  <div class="transcript-wrap">
+    <p class="transcript-label">What you said</p>
+    <textarea id="transcript" placeholder="Your words will appear here as you talk. You can also type or edit directly."></textarea>
+    <p class="transcript-hint">Not working? Type directly in the box above — it all works the same.</p>
+  </div>
+
+  <button class="btn-generate" id="btn-generate" disabled>Build my prompt →</button>
+  <p class="generate-note">Takes about 2 seconds.</p>
+
+  <!-- OUTPUT -->
+  <div class="output-section" id="output-section">
+    <h2>Your prompt is ready.</h2>
+    <p class="desc">This is your briefing for any AI. Copy it and paste it once — then your AI knows you every time.</p>
+
+    <textarea id="prompt-output" readonly></textarea>
+
+    <div class="output-btns">
+      <button class="btn-copy" id="btn-copy">Copy prompt</button>
+      <a class="btn-download" id="btn-download" download="my-ai-prompt.txt">Download .txt</a>
+    </div>
+
+    <div class="whats-next">
+      <h3>What to do with your prompt</h3>
+
+      <div class="next-option">
+        <strong>⭐ Best: paste it once, forget about it</strong>
+        <ol>
+          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → Projects → New Project</li>
+          <li>Paste your prompt into the project instructions</li>
+          <li>Every conversation in that project already knows you</li>
+        </ol>
+        <p style="margin-top:6px;">Same idea works in ChatGPT (custom instructions), Gemini, Grok, and Copilot.</p>
+      </div>
+
+      <div class="next-option">
+        <strong>Also works: keep it handy</strong>
+        <p>Download the .txt file and save it in your Notes app. Paste it at the top of any new AI chat whenever you need it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 GetCarrieAI &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html">Terms</a>
+</footer>
+
+<script>
+  const btnRecord = document.getElementById('btn-record');
+  const recordStatus = document.getElementById('record-status');
+  const transcriptEl = document.getElementById('transcript');
+  const btnGenerate = document.getElementById('btn-generate');
+  const outputSection = document.getElementById('output-section');
+  const promptOutput = document.getElementById('prompt-output');
+  const btnCopy = document.getElementById('btn-copy');
+  const btnDownload = document.getElementById('btn-download');
+
+  let recognition = null;
+  let isRecording = false;
+  let fullTranscript = '';
+
+  // Enable generate button when there's text
+  transcriptEl.addEventListener('input', () => {
+    btnGenerate.disabled = transcriptEl.value.trim().length < 20;
+  });
+
+  // Speech recognition setup
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (e) => {
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const text = e.results[i][0].transcript;
+        if (e.results[i].isFinal) {
+          fullTranscript += text + ' ';
+        } else {
+          interim = text;
+        }
+      }
+      transcriptEl.value = fullTranscript + interim;
+      btnGenerate.disabled = transcriptEl.value.trim().length < 20;
+    };
+
+    recognition.onerror = (e) => {
+      stopRecording();
+      if (e.error === 'not-allowed') {
+        recordStatus.textContent = 'Microphone access denied — type in the box instead.';
+      }
+    };
+
+    recognition.onend = () => {
+      if (isRecording) recognition.start(); // keep going until manually stopped
+    };
+  }
+
+  btnRecord.addEventListener('click', () => {
+    if (!recognition) {
+      recordStatus.textContent = 'Voice not supported in this browser — type in the box instead.';
+      return;
+    }
+    isRecording ? stopRecording() : startRecording();
+  });
+
+  function startRecording() {
+    isRecording = true;
+    fullTranscript = transcriptEl.value.trim() ? transcriptEl.value + ' ' : '';
+    recognition.start();
+    btnRecord.classList.add('recording');
+    btnRecord.textContent = '⏹';
+    recordStatus.textContent = 'Recording… tap to stop';
+    recordStatus.classList.add('active');
+  }
+
+  function stopRecording() {
+    isRecording = false;
+    recognition && recognition.stop();
+    btnRecord.classList.remove('recording');
+    btnRecord.textContent = '🎙';
+    recordStatus.textContent = 'Done — review above, then build your prompt.';
+    recordStatus.classList.remove('active');
+  }
+
+  // Build prompt from transcript
+  btnGenerate.addEventListener('click', () => {
+    const text = transcriptEl.value.trim();
+    if (!text) return;
+
+    const prompt = `## About me — AI assistant briefing
+
+The following is everything you need to know about me to act as my personal assistant. Read this carefully and refer back to it whenever you help me.
+
+---
+
+${text}
+
+---
+
+## How to use this
+
+- Always apply my preferences and context from above before responding.
+- Never ask me for information I've already given you here.
+- When in doubt, refer back to what I've shared — the details matter.
+- I expect you to remember all of this and use it proactively.`;
+
+    promptOutput.value = prompt;
+    outputSection.classList.add('visible');
+
+    // Set up download
+    const blob = new Blob([prompt], { type: 'text/plain' });
+    btnDownload.href = URL.createObjectURL(blob);
+
+    // Scroll to output
+    setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  });
+
+  // Copy button
+  btnCopy.addEventListener('click', () => {
+    navigator.clipboard.writeText(promptOutput.value).then(() => {
+      btnCopy.textContent = 'Copied!';
+      btnCopy.classList.add('copied');
+      setTimeout(() => {
+        btnCopy.textContent = 'Copy prompt';
+        btnCopy.classList.remove('copied');
+      }, 2000);
+    });
+  });
+</script>
+
+</body>
+</html>

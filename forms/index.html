@@ -3,596 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GetCarrieAI — Stop explaining yourself to AI</title>
+  <title>GetCarrieAI — AI can do almost anything. This makes sure it does it your way.</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --purple: #8B2FC9;
       --purple-light: #f3e8ff;
       --purple-dark: #6b1fa0;
-      --amber: #C68A15;
       --black: #111111;
       --gray: #6b7280;
       --border: #e5e7eb;
     }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-      background: #ffffff;
+      background: #fff;
       color: var(--black);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 40px 24px 60px;
-      width: 100%;
+      text-align: center;
+      padding: 60px 24px;
       max-width: 640px;
-      text-align: center;
+      margin: 0 auto;
     }
-
-    .avatar-wrap {
-      position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 28px;
-    }
-
-    .avatar-wrap img {
-      width: 160px;
-      height: 160px;
-      object-fit: contain;
-      position: relative;
-      z-index: 1;
-      transition: transform 0.3s ease;
-    }
-
-    .avatar-wrap.speaking img {
-      animation: pulse 0.8s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to   { transform: scale(1.06); }
-    }
-
-    .avatar-ring {
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      background: var(--purple-light);
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .avatar-wrap.speaking .avatar-ring {
-      opacity: 1;
-      animation: ring-pulse 0.8s ease-in-out infinite alternate;
-    }
-
-    @keyframes ring-pulse {
-      from { transform: scale(1); opacity: 0.6; }
-      to   { transform: scale(1.1); opacity: 1; }
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 5vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--black);
-      margin-bottom: 12px;
-      line-height: 1.1;
-    }
-
-    h1 span { color: var(--purple); }
-
-    .tagline {
-      font-size: 1.05rem;
-      color: var(--gray);
-      margin-bottom: 36px;
-      line-height: 1.5;
-    }
-
-    /* ── CONVERSATION ── */
-    .conversation {
-      width: 100%;
-      max-height: 280px;
-      overflow-y: auto;
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      scroll-behavior: smooth;
-    }
-
-    .conversation:empty { display: none; }
-
-    .bubble {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 0.97rem;
-      line-height: 1.5;
-      text-align: left;
-      animation: fadeUp 0.2s ease;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .bubble.carrie {
-      background: var(--purple-light);
-      color: var(--black);
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-    }
-
-    .bubble.user {
-      background: var(--purple);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      align-self: flex-end;
-    }
-
-    .bubble.conversion { display: flex; flex-direction: column; gap: 12px; }
-
-    .conversion-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .btn-conversion {
-      padding: 9px 18px;
-      border-radius: 20px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      font-family: inherit;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    .btn-conversion:hover { opacity: 0.85; }
-    .btn-conversion.primary { background: var(--purple); color: #fff; }
-    .btn-conversion.secondary { background: #fff; color: var(--gray); border: 1px solid var(--border); }
-
-    .typing-indicator {
-      display: flex;
-      gap: 5px;
-      padding: 14px 18px;
-      background: var(--purple-light);
-      border-radius: 18px;
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-    }
-
-    .typing-indicator span {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--purple);
-      animation: bounce 1.2s ease-in-out infinite;
-    }
-
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes bounce {
-      0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
-    }
-
-    /* ── INPUT AREA ── */
-    .input-area {
-      width: 100%;
-      position: relative;
-    }
-
-    .input-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f9fafb;
-      border: 2px solid var(--border);
-      border-radius: 28px;
-      padding: 6px 8px 6px 20px;
-      transition: border-color 0.2s;
-    }
-
-    .input-row:focus-within {
-      border-color: var(--purple);
-      background: #fff;
-    }
-
-    .input-row.listening {
-      border-color: var(--purple);
-      background: var(--purple-light);
-    }
-
-    #user-input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 1rem;
-      color: var(--black);
-      outline: none;
-      padding: 8px 0;
-      font-family: inherit;
-      resize: none;
-      min-height: 40px;
-      max-height: 120px;
-      line-height: 1.4;
-    }
-
-    #user-input::placeholder { color: #9ca3af; }
-
-    .btn-mic {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: none;
-      background: var(--purple-light);
-      color: var(--purple);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .btn-mic:hover { background: #e9d5ff; }
-    .btn-mic:active { transform: scale(0.95); }
-    .btn-mic.active { background: var(--purple); color: #fff; }
-
-    .btn-send {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: none;
-      background: var(--purple);
-      color: #fff;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .btn-send:hover { background: var(--purple-dark); }
-    .btn-send:active { transform: scale(0.95); }
-    .btn-send:disabled { background: #d1d5db; cursor: not-allowed; }
-
-    .hint {
+    .eyebrow {
       font-size: 0.8rem;
-      color: #9ca3af;
-      text-align: center;
-      margin-top: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 20px;
     }
-
-    /* ── VOICE TOGGLE ── */
-    .voice-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      font-size: 0.85rem;
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+    h1 span { color: var(--purple); }
+    .subhead {
+      font-size: 1.1rem;
       color: var(--gray);
-      cursor: pointer;
-      user-select: none;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 18px 44px;
+      background: var(--purple);
+      color: #fff;
+      border-radius: 32px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    .nudge {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: #9ca3af;
     }
 
-    .voice-toggle input { display: none; }
-
-    .toggle-track {
-      width: 36px; height: 20px;
-      background: #d1d5db;
-      border-radius: 10px;
-      position: relative;
-      transition: background 0.2s;
-    }
-
-    .toggle-track::after {
-      content: '';
-      position: absolute;
-      top: 2px; left: 2px;
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: #fff;
-      transition: transform 0.2s;
-    }
-
-    .voice-toggle input:checked + .toggle-track { background: var(--purple); }
-    .voice-toggle input:checked + .toggle-track::after { transform: translateX(16px); }
-
-    /* ── BELOW FOLD ── */
-    .below-fold {
-      width: 100%;
+    /* HOW IT WORKS */
+    .how {
       background: #fafafa;
       border-top: 1px solid var(--border);
       padding: 80px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 80px;
     }
-
-    .section { max-width: 600px; width: 100%; text-align: center; }
-
-    .section h2 {
+    .how-inner {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .how h2 {
       font-size: 1.7rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 40px;
-      color: var(--black);
+      margin-bottom: 48px;
     }
-
     .steps {
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 32px;
       text-align: left;
     }
-
-    .step {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-    }
-
+    .step { display: flex; gap: 18px; align-items: flex-start; }
     .step-num {
       width: 36px; height: 36px;
       border-radius: 50%;
       background: var(--purple);
       color: #fff;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
+    .step h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .step p { font-size: 0.92rem; color: var(--gray); line-height: 1.5; }
 
-    .step-body h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-    .step-body p  { font-size: 0.92rem; color: var(--gray); line-height: 1.5; }
-
-    .social-proof {
+    /* SOCIAL PROOF */
+    .proof {
+      padding: 80px 24px;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .proof-card {
       background: var(--purple-light);
       border-radius: 20px;
       padding: 36px;
       font-size: 1rem;
-      line-height: 1.7;
+      line-height: 1.8;
       color: var(--black);
     }
+    .proof-card strong { color: var(--purple); }
 
-    .social-proof strong { color: var(--purple); }
-
-    .email-section h2 { margin-bottom: 12px; }
-    .email-sub { color: var(--gray); font-size: 0.95rem; margin-bottom: 28px; }
-
-    .email-form {
-      display: flex;
-      gap: 10px;
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    .email-form input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      font-size: 0.95rem;
-      outline: none;
-      font-family: inherit;
-      transition: border-color 0.2s;
-    }
-
-    .email-form input:focus { border-color: var(--purple); }
-
-    .email-form button {
-      padding: 12px 22px;
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
-
-    .email-form button:hover { background: var(--purple-dark); }
-
-    .email-success { color: var(--purple); font-weight: 600; margin-top: 12px; display: none; }
-
+    /* FOOTER */
     footer {
+      border-top: 1px solid var(--border);
       padding: 32px 24px;
       text-align: center;
       font-size: 0.82rem;
       color: #9ca3af;
     }
-
-    @media (max-width: 480px) {
-      .email-form { flex-direction: column; }
-      .social-proof { padding: 24px; }
-    }
-
-    /* ── PRIMARY BUTTON ── */
-    .btn-primary {
-      display: inline-block;
-      padding: 16px 36px;
-      background: var(--purple);
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.1s;
-      letter-spacing: -0.01em;
-    }
-    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
-    .btn-primary:active { transform: scale(0.98); }
-
-    /* ── DEMO GRID ── */
-    .demo-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      text-align: left;
-    }
-
-    .demo-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .demo-label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--purple);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .demo-bubble {
-      max-width: 90%;
-      font-size: 0.92rem;
-      animation: none;
-    }
-
-    /* ── CHAT WRAP ── */
-    .chat-wrap {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px;
-    }
-
-    .conversation {
-      width: 100%;
-      max-height: 320px;
-      overflow-y: auto;
-      margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      scroll-behavior: smooth;
-    }
-
-    .conversation:empty { display: none; }
-
-    /* ── TOOLS GRID ── */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-      text-align: left;
-    }
-    .tool-card {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      text-decoration: none;
-      color: var(--black);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .tool-card:hover { border-color: var(--purple); box-shadow: 0 2px 12px rgba(139,47,201,0.08); }
-    .tool-icon { font-size: 1.5rem; flex-shrink: 0; }
-    .tool-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
-    .tool-body p { font-size: 0.9rem; color: var(--gray); line-height: 1.4; }
+    footer a { color: var(--purple); text-decoration: none; }
   </style>
 </head>
 <body>
 
-<!-- ══════════ HERO ══════════ -->
 <section class="hero">
-  <p style="font-size:0.85rem;font-weight:600;color:var(--purple);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:8px;">GetCarrieAI</p>
-  <h1>Stop explaining yourself<br>to AI every time you open it.</h1>
-  <p class="tagline">Do it once — your AI remembers you at work and at home.<br>Free. No account required.</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px;">
-    <a href="onboarding.html?mode=work" class="btn-primary">Teach my AI how I work</a>
-    <a href="onboarding.html" class="btn-primary" style="background:#fff;color:var(--purple);border:2px solid var(--purple);">Teach my AI who I am</a>
-  </div>
-  <p style="margin-top:16px;font-size:0.82rem;color:#9ca3af;">or <a href="#tools" style="color:var(--purple);text-decoration:none;">browse all tools ↓</a></p>
+  <p class="eyebrow">GetCarrieAI</p>
+  <h1>AI can do almost anything.<br><span>This makes sure it does it your way.</span></h1>
+  <p class="subhead">Every AI conversation starts from zero — it doesn't know you, how you work, or what you need. Build your prompt once and that changes permanently.</p>
+  <a href="build.html" class="btn-primary">Build my prompt →</a>
+  <p class="nudge">Free. No account. Works with Claude, ChatGPT, Gemini, and more.</p>
 </section>
 
-<!-- ══════════ BELOW FOLD ══════════ -->
-<div class="below-fold">
-
-  <!-- ── Tools ── -->
-  <div class="section" id="tools">
-    <h2>What do you need help with?</h2>
-
-    <p style="color:var(--gray);margin-bottom:12px;font-size:0.9rem;">At work</p>
-    <div class="tools-grid" style="margin-bottom:32px;">
-      <a href="meeting_notes.html" class="tool-card">
-        <div class="tool-icon">📝</div>
-        <div class="tool-body"><h3>Meeting notes</h3><p>Paste your notes or transcript — AI extracts action items and drafts your follow-up email.</p></div>
-      </a>
-      <a href="agenda.html" class="tool-card">
-        <div class="tool-icon">📋</div>
-        <div class="tool-body"><h3>Build an agenda</h3><p>Describe your meeting — AI builds a full agenda with time blocks and owners.</p></div>
-      </a>
-      <a href="job_posting.html" class="tool-card">
-        <div class="tool-icon">💼</div>
-        <div class="tool-body"><h3>Write a job posting</h3><p>Describe the role — AI writes a polished posting ready for LinkedIn or Indeed.</p></div>
-      </a>
-      <a href="itinerary.html" class="tool-card">
-        <div class="tool-icon">✈️</div>
-        <div class="tool-body"><h3>Plan a trip</h3><p>Describe the trip — get a prompt your AI uses to search flights, find hotels nearby, and plan the whole thing.</p></div>
-      </a>
-      <a href="offsite_planner.html" class="tool-card">
-        <div class="tool-icon">🏨</div>
-        <div class="tool-body"><h3>Plan an offsite</h3><p>Describe the offsite — get a prompt your AI uses to suggest destinations, plan logistics, and draft the announcement.</p></div>
-      </a>
-    </div>
-    <p style="color:var(--gray);margin-bottom:12px;font-size:0.9rem;">At home</p>
-    <div class="tools-grid">
-      <a href="family_profile.html" class="tool-card">
-        <div class="tool-icon">🏠</div>
-        <div class="tool-body"><h3>Household organizer</h3><p>Kids, schedules, providers, routines — all in one profile.</p></div>
-      </a>
-      <a href="itinerary.html?mode=family" class="tool-card">
-        <div class="tool-icon">🗺️</div>
-        <div class="tool-body"><h3>Plan a family trip</h3><p>Describe where you want to go — get a prompt your AI uses to find flights, hotels, and kid-friendly options.</p></div>
-      </a>
+<div class="how">
+  <div class="how-inner">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Tell Carrie about yourself</h3>
+          <p>Talk it out in a few minutes — or fill out a detailed form. You cover your preferences, how you work, and what matters to you.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>We build your prompt</h3>
+          <p>GetCarrieAI turns everything you said into a single block of text — a briefing for any AI, written in language it understands.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Paste it once. Done.</h3>
+          <p>Save your prompt in Claude Projects, ChatGPT custom instructions, Gemini, Grok, or Copilot. Every conversation from that point on already knows you — no re-explaining, no starting from scratch.</p>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
 
-<footer style="padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;border-top:1px solid var(--border);width:100%;">
-  &copy; 2026 GetCarrieAI &nbsp;·&nbsp;
-  <a href="about.html" style="color:var(--purple);text-decoration:none;">About</a>
-  &nbsp;·&nbsp;
-  <a href="privacy.html" style="color:var(--purple);text-decoration:none;">Privacy</a>
-  &nbsp;·&nbsp;
-  <a href="terms.html" style="color:var(--purple);text-decoration:none;">Terms</a>
-  &nbsp;·&nbsp;
-  <a href="https://www.linkedin.com/in/carrievanepps" style="color:var(--purple);text-decoration:none;">Built by Carrie Van Epps</a>
-</footer>
+<div class="proof">
+  <div class="proof-card">
+    Built by an EA with <strong>15 years at Bank of America</strong>, C-suite support at <strong>Yuga Labs</strong>, and operations at <strong>a16z</strong>.<br><br>
+    The best assistants brief themselves before they start. This is that briefing — for AI.
+  </div>
+</div>
 
-<script>
-  // placeholder — no JS needed on homepage
-</script>
+<footer>
+  &copy; 2026 GetCarrieAI &nbsp;·&nbsp;
+  <a href="about.html">About</a> &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html">Terms</a> &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/in/carrievanepps">Built by Carrie Van Epps</a>
+</footer>
 
 </body>
 </html>

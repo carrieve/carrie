@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build my prompt — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 600px;
+      padding: 60px 24px 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-decoration: none;
+      margin-bottom: 40px;
+    }
+    .back:hover { color: var(--purple); }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .intro {
+      font-size: 1rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    /* FEATURED PATH */
+    .featured {
+      background: var(--purple);
+      border-radius: 24px;
+      padding: 36px;
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .featured h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .featured .desc {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .what-next {
+      background: rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .what-next strong {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .btn-white {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #fff;
+      color: var(--purple);
+      border-radius: 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-white:hover { opacity: 0.92; transform: translateY(-1px); }
+
+    /* SECONDARY PATHS */
+    .secondary-paths {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .path-card {
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      text-decoration: none;
+      color: var(--black);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .path-card:hover { border-color: var(--purple); box-shadow: 0 2px 12px rgba(139,47,201,0.08); }
+
+    .path-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+
+    .path-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .path-body p { font-size: 0.88rem; color: var(--gray); line-height: 1.5; }
+    .path-next {
+      font-size: 0.82rem;
+      color: var(--purple);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* DIVIDER */
+    .or-divider {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      margin: 24px 0 8px;
+      position: relative;
+    }
+    .or-divider::before, .or-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--border);
+    }
+    .or-divider::before { left: 0; }
+    .or-divider::after { right: 0; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      width: 100%;
+    }
+    footer a { color: var(--purple); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <a href="index.html" class="back">← Back</a>
+
+  <p class="eyebrow">GetCarrieAI</p>
+  <h1>How do you want to build your prompt?</h1>
+  <p class="intro">The more you share, the better your AI performs. Pick the way that works for you — you can always come back and go deeper.</p>
+
+  <!-- FEATURED: TALK IT OUT -->
+  <div class="featured">
+    <span class="featured-badge">Easiest</span>
+    <h2>🎙 Talk it out</h2>
+    <p class="desc">Hit record and talk for a few minutes. Carrie will guide you through what to cover — your preferences, how you work, what drives you crazy. No typing required.</p>
+    <div class="what-next">
+      <strong>What happens after</strong>
+      You'll get a ready-to-paste prompt. Save it in Claude Projects, ChatGPT custom instructions, Gemini, Grok, or Copilot — and every conversation from that point on already knows you.
+    </div>
+    <a href="talk.html" class="btn-white">Start talking →</a>
+  </div>
+
+  <div class="or-divider">or go deeper</div>
+
+  <!-- SECONDARY PATHS -->
+  <div class="secondary-paths">
+
+    <a href="forms.html" class="path-card">
+      <div class="path-icon">📋</div>
+      <div class="path-body">
+        <h3>Fill out a form</h3>
+        <p>Structured and comprehensive. Great if you're an EA setting up a new executive, or anyone who wants to be thorough. Pick the forms that apply to you.</p>
+        <p class="path-next">→ Same output: a prompt you copy and paste</p>
+      </div>
+    </a>
+
+    <a href="import.html" class="path-card">
+      <div class="path-icon">📄</div>
+      <div class="path-body">
+        <h3>Paste existing notes</h3>
+        <p>Already have a Word doc, email, or notes somewhere? Paste them in and Carrie will turn them into a clean prompt.</p>
+        <p class="path-next">→ Same output: a prompt you copy and paste</p>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 GetCarrieAI &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html">Terms</a>
+</footer>
+
+</body>
+</html>

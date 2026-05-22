@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forms — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 640px;
+      padding: 48px 24px 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-decoration: none;
+      margin-bottom: 36px;
+    }
+    .back:hover { color: var(--purple); }
+
+    h1 {
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .intro {
+      font-size: 0.98rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 48px;
+      max-width: 520px;
+    }
+    .intro strong { color: var(--black); }
+
+    /* AUDIENCE SECTION */
+    .audience {
+      margin-bottom: 48px;
+    }
+
+    .audience-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .audience-header h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .audience-why {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.5;
+      margin-bottom: 18px;
+      padding-left: 2px;
+    }
+
+    /* FORM CARDS */
+    .form-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--black);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-card:hover { border-color: var(--purple); box-shadow: 0 2px 10px rgba(139,47,201,0.08); }
+
+    .form-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+    .form-body { flex: 1; }
+    .form-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+    .form-body p { font-size: 0.85rem; color: var(--gray); line-height: 1.4; }
+
+    .form-arrow { color: #d1d5db; font-size: 0.9rem; flex-shrink: 0; }
+    .form-card:hover .form-arrow { color: var(--purple); }
+
+    /* DIVIDER */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 48px;
+    }
+
+    /* PROMPT REMINDER */
+    .reminder {
+      background: var(--purple-light);
+      border-radius: 16px;
+      padding: 22px 24px;
+      font-size: 0.9rem;
+      color: var(--black);
+      line-height: 1.6;
+    }
+    .reminder strong { color: var(--purple); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9ca3af;
+      width: 100%;
+    }
+    footer a { color: var(--purple); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <a href="build.html" class="back">← Back</a>
+
+  <h1>Your right hand — for whatever you need.</h1>
+  <p class="intro">These forms build a complete picture of you, your executive, or your business. <strong>The more detail you put in, the better your AI performs.</strong> Pick the ones that apply — you don't have to do them all at once.</p>
+
+  <!-- EA / PA -->
+  <div class="audience">
+    <div class="audience-header">
+      <h2>💼 I'm an EA or PA</h2>
+    </div>
+    <p class="audience-why">You support someone else. These forms capture everything about your executive so your AI can answer questions instantly, prep you before meetings, and never make you ask the same thing twice.</p>
+    <div class="form-list">
+      <a href="executive_form.html" class="form-card">
+        <div class="form-icon">👤</div>
+        <div class="form-body">
+          <h3>Executive profile</h3>
+          <p>Calendar rules, contact tiers, how they make decisions, what they hate, decline scripts</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="travel_form.html" class="form-card">
+        <div class="form-icon">✈️</div>
+        <div class="form-body">
+          <h3>Travel preferences</h3>
+          <p>Airlines, seats, hotels, loyalty numbers, ground transport, dietary needs on the road</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="food_form.html" class="form-card">
+        <div class="form-icon">☕</div>
+        <div class="form-body">
+          <h3>Food & coffee</h3>
+          <p>Daily orders, dietary restrictions, favorite restaurants, delivery address</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="team_profile.html" class="form-card">
+        <div class="form-icon">👥</div>
+        <div class="form-body">
+          <h3>Team & org chart</h3>
+          <p>Direct reports, 1:1 schedules, review cycles, who needs what</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="family_profile.html" class="form-card">
+        <div class="form-icon">🏠</div>
+        <div class="form-body">
+          <h3>Household & family</h3>
+          <p>Spouse, kids, pets, medical, advisors, home details, security</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="aviation_profile.html" class="form-card">
+        <div class="form-icon">🛩️</div>
+        <div class="form-body">
+          <h3>Private aviation</h3>
+          <p>Owned aircraft, fractional, jet card, charter preferences, FBOs, catering</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- EXEC / PROFESSIONAL -->
+  <div class="audience">
+    <div class="audience-header">
+      <h2>🙋 I'm an executive or busy professional</h2>
+    </div>
+    <p class="audience-why">You need AI to know how you work without you having to explain it every time. Fill these out once and your AI becomes the assistant that already knows you.</p>
+    <div class="form-list">
+      <a href="executive_form.html" class="form-card">
+        <div class="form-icon">📅</div>
+        <div class="form-body">
+          <h3>How I work</h3>
+          <p>Your calendar rules, communication style, decision-making, what you need from your team</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="travel_form.html" class="form-card">
+        <div class="form-icon">✈️</div>
+        <div class="form-body">
+          <h3>Travel preferences</h3>
+          <p>Your airlines, seats, hotels, loyalty numbers, what you always need on a trip</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="food_form.html" class="form-card">
+        <div class="form-icon">☕</div>
+        <div class="form-body">
+          <h3>Food & coffee</h3>
+          <p>Your orders, restrictions, favorite spots, delivery address</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- BUSINESS OWNER -->
+  <div class="audience">
+    <div class="audience-header">
+      <h2>🏪 I run a business</h2>
+    </div>
+    <p class="audience-why">Your AI should know your business as well as you do — your voice, your customers, your pain points. This form gives it the full picture so it can write emails, handle admin, and think like you.</p>
+    <div class="form-list">
+      <a href="business_quick_form.html" class="form-card">
+        <div class="form-icon">💼</div>
+        <div class="form-body">
+          <h3>Business profile</h3>
+          <p>What you do, your communication style, email pain points, tools, busiest hours</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- TASK TOOLS -->
+  <div class="audience">
+    <div class="audience-header">
+      <h2>🛠 Task tools — for anyone</h2>
+    </div>
+    <p class="audience-why">These aren't profile forms — they're one-time tools. Drop in your content and get something useful back.</p>
+    <div class="form-list">
+      <a href="meeting_notes.html" class="form-card">
+        <div class="form-icon">📝</div>
+        <div class="form-body">
+          <h3>Meeting notes</h3>
+          <p>Paste a transcript or rough notes — get action items and a follow-up email</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="agenda.html" class="form-card">
+        <div class="form-icon">📋</div>
+        <div class="form-body">
+          <h3>Build an agenda</h3>
+          <p>Describe your meeting — get a full agenda with time blocks and owners</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="itinerary.html" class="form-card">
+        <div class="form-icon">🗺️</div>
+        <div class="form-body">
+          <h3>Trip itinerary</h3>
+          <p>Describe the trip — get a prompt that plans flights, hotels, and logistics</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+      <a href="offsite_planner.html" class="form-card">
+        <div class="form-icon">🏨</div>
+        <div class="form-body">
+          <h3>Offsite planner</h3>
+          <p>Describe the offsite — get destination ideas, logistics, and a draft announcement</p>
+        </div>
+        <span class="form-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="reminder">
+    Every form outputs a prompt you copy and paste into any AI — <strong>Claude, ChatGPT, Gemini, Grok, or Copilot</strong>. Save it in your AI's project or custom instructions once and it knows you every time you open it.
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 GetCarrieAI &nbsp;·&nbsp;
+  <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html">Terms</a>
+</footer>
+
+</body>
+</html>
