@@ -282,6 +282,32 @@
       margin-bottom: 16px;
     }
 
+    /* PLATFORM TABS */
+    .platform-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--gray);
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+    .platform-content { display: none; }
+    .platform-content.active { display: block; }
+
     .next-option {
       margin-bottom: 18px;
     }
@@ -366,79 +392,81 @@
 
     <div class="whats-next">
       <h3>Where to save your prompt — pick your AI</h3>
+      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:16px;line-height:1.5;">Do this once and every conversation already knows you.</p>
 
-      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:18px;line-height:1.5;">Do this once and every conversation already knows you:</p>
+      <div class="platform-tabs">
+        <button class="tab-btn active" onclick="showTab('claude')">🟠 Claude</button>
+        <button class="tab-btn" onclick="showTab('chatgpt')">🟢 ChatGPT</button>
+        <button class="tab-btn" onclick="showTab('gemini')">🔵 Gemini</button>
+        <button class="tab-btn" onclick="showTab('grok')">⚫ Grok</button>
+        <button class="tab-btn" onclick="showTab('copilot')">🟣 Copilot</button>
+        <button class="tab-btn" onclick="showTab('other')">📋 Other</button>
+      </div>
 
       <!-- CLAUDE -->
-      <div class="next-option">
-        <strong>🟠 Claude (claude.ai) — two options</strong>
-        <p style="font-size:0.86rem;margin:8px 0 4px;font-weight:600;">Option 1: Projects (recommended)</p>
-        <ol>
+      <div class="platform-content active" id="tab-claude">
+        <p style="font-size:0.86rem;font-weight:700;margin-bottom:6px;">Option 1: Projects (recommended)</p>
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
           <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click <strong>Projects</strong> in the left sidebar</li>
-          <li>Click <strong>New Project</strong> → name it (e.g. "My AI assistant") → <strong>Create project</strong></li>
-          <li>You'll land inside the project — look for <strong>"Add instructions"</strong> in the right-hand panel</li>
+          <li>Click <strong>New Project</strong> → name it → <strong>Create project</strong></li>
+          <li>Inside the project, find <strong>"Add instructions"</strong> in the right-hand panel</li>
           <li>Paste your prompt there → save</li>
-          <li>Use the chat box inside that project — it knows you every time</li>
+          <li>Chat inside that project — it knows you every time</li>
         </ol>
-        <p style="margin-top:8px;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#7a5800;">⚠️ <strong>Common mistake:</strong> don't paste into the chat box or the "What are you trying to achieve?" box when creating the project — those don't persist. Only the <strong>Add instructions</strong> panel works.</p>
-        <p style="font-size:0.86rem;margin:14px 0 4px;font-weight:600;">Option 2: Memory (simplest)</p>
-        <ol>
-          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click your <strong>profile icon</strong> (bottom left) → <strong>Settings</strong></li>
-          <li>Find <strong>Memory</strong> → make sure it's turned on</li>
+        <p style="margin:10px 0;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#7a5800;">⚠️ Don't paste into the chat box or the "What are you trying to achieve?" box when creating the project — those don't stick. Only <strong>Add instructions</strong> works.</p>
+        <p style="font-size:0.86rem;font-weight:700;margin:14px 0 6px;">Option 2: Memory (simplest)</p>
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
+          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → profile icon (bottom left) → <strong>Settings → Memory</strong></li>
+          <li>Make sure Memory is turned on</li>
           <li>Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></li>
-          <li>Claude will save the key details and recall them in future conversations automatically</li>
+          <li>Claude saves the key details and recalls them in future conversations automatically</li>
         </ol>
-        <p style="font-size:0.83rem;color:var(--gray);margin-top:6px;">Note: if you paste your prompt in the chat and Claude tells you it won't persist — that's normal. It will offer to help you set up a Project. Just follow its instructions from there.</p>
+        <p style="font-size:0.83rem;color:var(--gray);margin-top:8px;">💡 If you paste in a regular chat and Claude says it won't persist — that's normal. It will offer to help you set up a Project. Just follow its lead.</p>
       </div>
 
       <!-- CHATGPT -->
-      <div class="next-option">
-        <strong>🟢 ChatGPT (chatgpt.com)</strong>
-        <ol>
+      <div class="platform-content" id="tab-chatgpt">
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
           <li>Go to <a href="https://chatgpt.com" target="_blank" style="color:var(--purple);">chatgpt.com</a> → click your <strong>profile icon</strong> (top right)</li>
-          <li>Click <strong>Settings → Personalization → Custom Instructions</strong></li>
-          <li>Paste your prompt into the top box ("What would you like ChatGPT to know about you?")</li>
+          <li>Go to <strong>Settings → Personalization → Custom Instructions</strong></li>
+          <li>Paste your prompt into the top box</li>
           <li>Save — applies to every new chat automatically</li>
         </ol>
       </div>
 
       <!-- GEMINI -->
-      <div class="next-option">
-        <strong>🔵 Gemini (gemini.google.com)</strong>
-        <ol>
+      <div class="platform-content" id="tab-gemini">
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
           <li>Go to <a href="https://gemini.google.com" target="_blank" style="color:var(--purple);">gemini.google.com</a> → click <strong>Gems</strong> in the left sidebar</li>
           <li>Click <strong>New Gem</strong> → give it a name</li>
-          <li>Paste your prompt into the instructions box</li>
-          <li>Save → open the Gem any time and it knows you</li>
+          <li>Paste your prompt into the instructions box → save</li>
+          <li>Open that Gem any time — it knows you</li>
         </ol>
       </div>
 
       <!-- GROK -->
-      <div class="next-option">
-        <strong>⚫ Grok (x.com or grok.com)</strong>
-        <ol>
+      <div class="platform-content" id="tab-grok">
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
           <li>Go to <a href="https://grok.com" target="_blank" style="color:var(--purple);">grok.com</a> → click <strong>Settings</strong> (bottom left)</li>
-          <li>Look for <strong>Custom Instructions</strong> or <strong>Memory</strong> settings</li>
-          <li>Paste your prompt there and save</li>
-          <li>Grok will apply it to future conversations</li>
+          <li>Look for <strong>Custom Instructions</strong> or <strong>Memory</strong></li>
+          <li>Paste your prompt there → save</li>
+          <li>Grok applies it to future conversations</li>
         </ol>
       </div>
 
       <!-- COPILOT -->
-      <div class="next-option">
-        <strong>🟣 Copilot (copilot.microsoft.com)</strong>
-        <ol>
+      <div class="platform-content" id="tab-copilot">
+        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
           <li>Go to <a href="https://copilot.microsoft.com" target="_blank" style="color:var(--purple);">copilot.microsoft.com</a></li>
-          <li>Start a new chat and paste your prompt at the very top of your first message</li>
-          <li>Say: "This is my background — refer to it whenever you help me." Then ask your question</li>
+          <li>Start a new chat → paste your prompt at the very top</li>
+          <li>Say: <em>"This is my background — refer to it whenever you help me."</em></li>
         </ol>
-        <p style="margin-top:6px;font-size:0.83rem;color:var(--gray);">Note: Copilot's persistent instructions depend on your Microsoft account settings. If you use Microsoft 365 at work, your IT team may have additional options.</p>
+        <p style="font-size:0.83rem;color:var(--gray);margin-top:8px;">Note: if you use Microsoft 365 at work, your IT team may have set up persistent memory options.</p>
       </div>
 
-      <!-- FALLBACK -->
-      <div class="next-option" style="border-top:1px solid var(--border);padding-top:16px;margin-top:6px;">
-        <strong>📋 Works with any AI — keep it handy</strong>
-        <p>Download the .txt file → save it in your Notes app or email it to yourself. Paste it at the top of any new chat whenever you need it. Not as automatic, but it works everywhere.</p>
+      <!-- OTHER -->
+      <div class="platform-content" id="tab-other">
+        <p style="font-size:0.86rem;color:var(--gray);line-height:1.6;">Download the .txt file and save it in your Notes app or email it to yourself. Paste it at the top of any new AI chat whenever you need it. Not as automatic, but it works everywhere.</p>
       </div>
 
     </div>
@@ -571,6 +599,14 @@ ${text}
     // Scroll to output
     setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   });
+
+  // Platform tabs
+  function showTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`[onclick="showTab('${name}')"]`).classList.add('active');
+    document.getElementById(`tab-${name}`).classList.add('active');
+  }
 
   // Copy button
   btnCopy.addEventListener('click', () => {
