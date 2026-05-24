@@ -159,7 +159,7 @@
 
   <div class="page-header">
     <h1>Executive Profile 💼</h1>
-    <p>Fill this out once for each executive you support. Claude will know exactly how they work, how they communicate, and what they care about — so you always have instant answers.</p>
+    <p>Fill this out once for each executive you support. Your AI will know exactly how they work, how they communicate, and what they care about — so you always have instant answers.</p>
     <p class="subtitle">All fields except the executive's name are optional.</p>
   </div>
 
@@ -426,8 +426,58 @@
           </div>
         </div>
         <div>
-          <label>Anything else Claude should know about how they work</label>
+          <label>Anything else your AI should know about how they work</label>
           <textarea name="other_notes" placeholder="e.g. They never read attachments. Always needs 10 minutes before a big meeting. Hates small talk in emails."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scope of Support -->
+    <div class="section">
+      <div class="section-header">
+        <p class="section-label">Section 6</p>
+        <p class="section-title">Scope of Support</p>
+      </div>
+      <div class="section-body">
+        <div>
+          <label>What does this role cover?</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'scope_type')">Professional only</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'scope_type')">Both professional & personal</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'scope_type')">Personal & lifestyle focus</button>
+          </div>
+        </div>
+        <div>
+          <label>Personal tasks included <span class="hint">(select all that apply)</span></label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">Birthdays & gifts</button>
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">Household vendors</button>
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">Returns & errands</button>
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">City recs & dining</button>
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">Holiday & event planning</button>
+            <button type="button" class="chip" onclick="toggleChipMultiPersonal(this)">Property oversight</button>
+          </div>
+        </div>
+        <div>
+          <label>Properties or locations to support <span class="hint">(if any)</span></label>
+          <textarea name="properties_managed" placeholder="e.g. Primary home in NYC, vacation home in Aspen — coordinate cleaners and maintenance vendors"></textarea>
+        </div>
+        <div>
+          <label>Travel support</label>
+          <div class="chip-group">
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_support')">Coordinates from the office</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_support')">Travels with exec sometimes</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_support')">Travels ahead to prep logistics</button>
+            <button type="button" class="chip" onclick="toggleChip(this,'travel_support')">No travel expected</button>
+          </div>
+        </div>
+        <div>
+          <label>What is explicitly NOT in scope <span class="hint">(so your AI never suggests it)</span></label>
+          <textarea name="explicit_out_of_scope" placeholder="e.g. Does not manage household staff. Does not handle personal finances or legal matters. Does not travel with the executive."></textarea>
+        </div>
+        <div>
+          <label>On-call expectations & boundaries</label>
+          <textarea name="scope_other" placeholder="e.g. Weekdays 9–6pm only except genuine emergencies. Not expected to respond on vacation days already approved."></textarea>
         </div>
       </div>
     </div>
@@ -449,7 +499,7 @@
     <div class="steps">
       💡 <strong>What to do next:</strong><br><br>
       1. Upload this file to your AI — works with <a href="https://claude.ai" target="_blank">Claude</a>, ChatGPT, Grok, Gemini, or Copilot.<br>
-      2. <strong>Claude recommended:</strong> go to claude.ai → create a Project for this exec → add this file once. It remembers permanently across every conversation.<br>
+      2. Save it in your AI's Projects or custom instructions once — it remembers permanently.<br>
       3. Also download the <strong>AI Instructions file</strong> below and add it to the same Project — it tells your AI how to behave, not just what to know.<br>
       4. Now ask anything — "what are their calendar rules?" "draft a reply declining this meeting" "who always gets on the calendar?" It already knows.
     </div>
@@ -461,14 +511,10 @@
     <a href="index.html" class="back-link">← Back to GetCarrieAI</a>
   </div>
         <div style="background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
-      <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#0071e3; margin-bottom:6px;">Prefer to skip the file? Paste directly into chat.</p>
-      <p style="font-size:0.84rem; color:#3d3d3f; line-height:1.6; margin-bottom:10px;">Copy your profile as text, open <a href="https://claude.ai" target="_blank" style="color:#0071e3;">Claude.ai</a> or Grok, start a new chat, and paste. No uploading needed.</p>
-      <p style="font-size:0.8rem; color:#6e6e73; margin-bottom:12px;">Then say: <em>"This is my profile. Please remember everything in it."</em></p>
+      <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#0071e3; margin-bottom:6px;">Skip the download — paste directly into Claude Projects.</p>
+      <p style="font-size:0.84rem; color:#3d3d3f; line-height:1.6; margin-bottom:6px;"><strong>To save it permanently:</strong> Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> → Projects → New Project → click <strong>Add instructions</strong> → paste there. Every future conversation already knows you.</p>
+      <p style="font-size:0.8rem; color:#e3720b; margin-bottom:12px;">⚠️ Pasting into a regular chat only lasts that one conversation — it won't stick across sessions.</p>
       <button onclick="copyToChat()" id="copyBtn" style="background:#0071e3; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
-    </div>
-    <div style="text-align:center; margin-top:16px; padding-top:16px; border-top:1px solid #e5e5ea;">
-      <p style="font-size:0.82rem; color:#6e6e73; margin-bottom:10px;">This just saved you time. If it was useful, keep it free for everyone.</p>
-      <a href="https://buymeacoffee.com/getcarrieai" target="_blank" style="display:inline-block; background:#FFDD00; color:#000; font-weight:700; font-size:0.85rem; padding:10px 22px; border-radius:980px; text-decoration:none;">☕ Buy me a coffee</a>
     </div>
 
 </div>
@@ -486,6 +532,10 @@
     el.classList.toggle('selected');
   }
 
+  function toggleChipMultiPersonal(el) {
+    el.classList.toggle('selected');
+  }
+
   document.getElementById('exec-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const form = e.target;
@@ -496,7 +546,8 @@
      'exec_timezone','ea_name','email_signoff','priority_contacts','flag_immediately',
      'never_bother','max_meetings','protected_blocks','other_timezones',
      'tier1_contacts','tier2_contacts','tier3_contacts','focus_block_purpose','decline_script',
-     'urgent_contact','handles_themselves','pet_peeves','other_notes'
+     'urgent_contact','handles_themselves','pet_peeves','other_notes',
+     'properties_managed','explicit_out_of_scope','scope_other'
     ].forEach(name => {
       const val = form.elements[name]?.value.trim();
       if (val) data[name] = val;
@@ -509,7 +560,7 @@
     });
 
     // Single-select chips
-    ['tone','length','info','meettime','video','updates','conflict_rule','decline_style'].forEach(group => {
+    ['tone','length','info','meettime','video','updates','conflict_rule','decline_style','scope_type','travel_support'].forEach(group => {
       if (selections[group]) data[`pref_${group}`] = selections[group];
     });
 
@@ -527,6 +578,12 @@
     });
     if (noMeetingDays.length) data.no_meeting_days = noMeetingDays;
     if (avoidMeetingTypes.length) data.avoid_meeting_types = avoidMeetingTypes;
+
+    const personalTasks = [];
+    document.querySelectorAll('.chip[onclick="toggleChipMultiPersonal(this)"].selected').forEach(el => {
+      personalTasks.push(el.textContent.trim());
+    });
+    if (personalTasks.length) data.personal_tasks_in_scope = personalTasks;
 
     // Download
     const execName = (data.exec_name || 'executive').toLowerCase().replace(/\s+/g, '_');

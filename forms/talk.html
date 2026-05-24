@@ -383,16 +383,12 @@
 
   <!-- OUTPUT -->
   <div class="output-section" id="output-section">
-    <h2>Your prompt is ready. Now save it.</h2>
-
-    <div style="background:#111;color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:24px;font-size:0.92rem;line-height:1.6;">
-      <strong style="display:block;margin-bottom:6px;">⚠️ Don't just copy and paste this into a chat.</strong>
-      Pasting into a chat only works for that one conversation — the next one starts from scratch again. To make your AI remember you every time, you need to save it in the right place. Takes 2 minutes. Pick your AI below and follow the steps.
-    </div>
+    <h2>Your prompt is ready.</h2>
+    <p style="font-size:0.95rem;color:var(--gray);line-height:1.6;margin:8px 0 28px;">Two steps — takes about 2 minutes total.</p>
 
     <div class="whats-next">
-      <h3>Where to save your prompt — pick your AI</h3>
-      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:16px;line-height:1.5;">Do this once and every conversation already knows you.</p>
+      <h3>Step 1 of 2 — Pick where to save it</h3>
+      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:16px;line-height:1.5;">Do this once and every future conversation already knows you. Skipping this means it won't stick.</p>
 
       <div class="platform-tabs">
         <button class="tab-btn active" onclick="showTab('claude')">🟠 Claude</button>
@@ -471,12 +467,16 @@
 
     </div>
 
-    <p style="font-size:0.88rem;font-weight:700;margin:28px 0 10px;">Now copy your prompt and go save it 👆</p>
+    <div style="border-top:1px solid var(--border);margin-top:28px;padding-top:24px;">
+      <p style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Step 2 of 2 — Copy your prompt</p>
+      <p style="font-size:0.84rem;color:var(--gray);margin-bottom:14px;">Then paste it into whichever platform you chose above.</p>
+    </div>
     <textarea id="prompt-output" readonly></textarea>
     <div class="output-btns">
       <button class="btn-copy" id="btn-copy">Copy prompt</button>
       <a class="btn-download" id="btn-download" download="my-ai-prompt.txt">Download .txt</a>
     </div>
+    <p id="copy-nudge" style="display:none;font-size:0.85rem;font-weight:600;color:var(--purple);margin-top:10px;text-align:center;">Copied! Now go paste it into the platform you picked above ↑</p>
   </div>
 </div>
 
@@ -613,6 +613,7 @@ ${text}
     navigator.clipboard.writeText(promptOutput.value).then(() => {
       btnCopy.textContent = 'Copied!';
       btnCopy.classList.add('copied');
+      document.getElementById('copy-nudge').style.display = 'block';
       setTimeout(() => {
         btnCopy.textContent = 'Copy prompt';
         btnCopy.classList.remove('copied');
