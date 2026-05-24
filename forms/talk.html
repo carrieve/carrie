@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Talk it out — GetCarrieAI</title>
+  <title>Talk or type it out — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -266,6 +266,50 @@
     }
     .btn-download:hover { border-color: var(--purple); color: var(--purple); }
 
+    /* MODE TABS */
+    .mode-tabs {
+      display: flex;
+      gap: 6px;
+      background: #f3f4f6;
+      padding: 4px;
+      border-radius: 14px;
+      margin-bottom: 32px;
+    }
+    .mode-tab {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--gray);
+      transition: all 0.15s;
+    }
+    .mode-tab.active {
+      background: #fff;
+      color: var(--black);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    /* PASTE TYPE CHIPS */
+    .type-chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .type-chip {
+      padding: 7px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      color: var(--gray);
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .type-chip.active { border-color: var(--purple); background: var(--purple-light); color: var(--purple-dark); }
+
     /* WHAT'S NEXT */
     .whats-next {
       background: var(--purple-light);
@@ -351,8 +395,15 @@
   <a href="build.html" class="back">← Back</a>
 
   <h1>Talk or type it out</h1>
-  <p class="intro"><strong>Talk or type — your choice.</strong> Hit the mic button to speak, or just type directly in the box below. Cover the topics that apply to you, in your own words and your own order. The more you share, the better your AI will know you.</p>
+  <p class="intro">The more you share, the better your AI will know you. Pick how you want to build your prompt.</p>
 
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="switchMode('talk')">🎙 Talk or type</button>
+    <button class="mode-tab" onclick="switchMode('paste')">📋 Paste existing notes</button>
+  </div>
+
+  <!-- TALK PANEL -->
+  <div id="panel-talk">
   <p class="guide-label">What to talk about</p>
   <div class="topics">
     <span class="topic">How you work</span>
@@ -380,6 +431,27 @@
 
   <button class="btn-generate" id="btn-generate" disabled>Build my prompt →</button>
   <p class="generate-note">Takes about 2 seconds.</p>
+  </div><!-- end panel-talk -->
+
+  <!-- PASTE PANEL -->
+  <div id="panel-paste" style="display:none;">
+    <p class="guide-label" style="margin-bottom:14px;">What type of notes are these? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.82rem;">(optional)</span></p>
+    <div class="type-chips-row">
+      <button class="type-chip active" onclick="setPasteType('general', this)">🧠 General</button>
+      <button class="type-chip" onclick="setPasteType('executive', this)">💼 Executive</button>
+      <button class="type-chip" onclick="setPasteType('travel', this)">✈️ Travel</button>
+      <button class="type-chip" onclick="setPasteType('food', this)">☕ Food & coffee</button>
+      <button class="type-chip" onclick="setPasteType('household', this)">🏠 Household</button>
+      <button class="type-chip" onclick="setPasteType('business', this)">🏪 Business</button>
+    </div>
+    <div class="transcript-wrap">
+      <p class="transcript-label">Paste your notes</p>
+      <textarea id="paste-notes" placeholder="Paste anything — a Google Doc, email thread, bullet points, notes app export. Messy is fine."></textarea>
+      <p class="transcript-hint">Already have notes written down somewhere? This turns them into a ready-to-save AI prompt.</p>
+    </div>
+    <button class="btn-generate" id="btn-generate-paste" disabled>Build my prompt →</button>
+    <p class="generate-note">Takes about 2 seconds.</p>
+  </div><!-- end panel-paste -->
 
   <!-- OUTPUT -->
   <div class="output-section" id="output-section">
@@ -607,6 +679,47 @@ ${text}
     document.querySelector(`[onclick="showTab('${name}')"]`).classList.add('active');
     document.getElementById(`tab-${name}`).classList.add('active');
   }
+
+  // Mode switching
+  function switchMode(mode) {
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`[onclick="switchMode('${mode}')"]`).classList.add('active');
+    document.getElementById('panel-talk').style.display = mode === 'talk' ? 'block' : 'none';
+    document.getElementById('panel-paste').style.display = mode === 'paste' ? 'block' : 'none';
+  }
+
+  // Paste type
+  let pasteNoteType = 'general';
+  const pasteTypeLabels = {
+    general: 'General notes',
+    executive: 'Executive profile notes',
+    travel: 'Travel preference notes',
+    food: 'Food & coffee preferences',
+    household: 'Household & family notes',
+    business: 'Business profile notes'
+  };
+
+  function setPasteType(type, btn) {
+    pasteNoteType = type;
+    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  document.getElementById('paste-notes').addEventListener('input', () => {
+    document.getElementById('btn-generate-paste').disabled = document.getElementById('paste-notes').value.trim().length < 20;
+  });
+
+  document.getElementById('btn-generate-paste').addEventListener('click', () => {
+    const text = document.getElementById('paste-notes').value.trim();
+    if (!text) return;
+    const label = pasteTypeLabels[pasteNoteType];
+    const prompt = `## ${label} — AI assistant briefing\n\nThe following notes contain everything you need to know. Read carefully and use this information whenever you help me.\n\n---\n\n${text}\n\n---\n\n## How to use this\n\n- Use everything above to answer my questions directly — do not ask me for information I have already provided here.\n- Apply my preferences proactively. If I ask for help with travel, food, scheduling, or anything else, use what you know about me before asking clarifying questions.\n- Never start from scratch. I gave you this context so you don't have to ask.\n- When in doubt, refer back to what I've shared. The details matter.`;
+    promptOutput.value = prompt;
+    outputSection.classList.add('visible');
+    const blob = new Blob([prompt], { type: 'text/plain' });
+    btnDownload.href = URL.createObjectURL(blob);
+    setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  });
 
   // Copy button
   btnCopy.addEventListener('click', () => {
