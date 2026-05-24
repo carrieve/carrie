@@ -119,79 +119,6 @@
       margin: 0 0 48px;
     }
 
-    /* NEW ROLE STARTER KIT */
-    .starter-kit {
-      background: #faf7ff;
-      border: 1.5px solid #e0d0f5;
-      border-radius: 20px;
-      padding: 28px 28px 24px;
-      margin-bottom: 48px;
-    }
-
-    .starter-kit-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--purple);
-      margin-bottom: 6px;
-    }
-
-    .starter-kit h2 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .starter-kit .kit-desc {
-      font-size: 0.88rem;
-      color: var(--gray);
-      line-height: 1.55;
-      margin-bottom: 20px;
-    }
-
-    .kit-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .kit-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      background: #fff;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--black);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .kit-card:hover { border-color: var(--purple); box-shadow: 0 2px 10px rgba(139,47,201,0.08); }
-
-    .kit-step {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--purple-light);
-      color: var(--purple);
-      font-size: 0.72rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .kit-icon { font-size: 1.1rem; flex-shrink: 0; }
-    .kit-body { flex: 1; }
-    .kit-body h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 1px; }
-    .kit-body p { font-size: 0.8rem; color: var(--gray); line-height: 1.4; }
-    .kit-arrow { color: #d1d5db; font-size: 0.85rem; flex-shrink: 0; }
-    .kit-card:hover .kit-arrow { color: var(--purple); }
-
     /* PROMPT REMINDER */
     .reminder {
       background: var(--purple-light);
@@ -217,64 +144,10 @@
 <body>
 
 <div class="page">
-  <a href="build.html" class="back">← Back</a>
+  <a href="index.html" class="back">← Back</a>
 
   <h1>Your right hand — for whatever you need.</h1>
   <p class="intro">These forms build a complete picture of you, your executive, or your business. <strong>The more detail you put in, the better your AI performs.</strong> Pick the ones that apply — you don't have to do them all at once.</p>
-
-  <!-- STARTER KIT -->
-  <div class="starter-kit">
-    <p class="starter-kit-eyebrow">Starting a new role?</p>
-    <h2>Brief your AI before day one.</h2>
-    <p class="kit-desc">Fill these out in your first week and your AI already knows your executive, their team, how they travel, and what they eat — before anyone asks you anything twice.</p>
-    <div class="kit-list">
-      <a href="executive_form.html" class="kit-card">
-        <div class="kit-step">1</div>
-        <div class="kit-icon">👤</div>
-        <div class="kit-body">
-          <h3>Executive profile</h3>
-          <p>How they work, calendar rules, communication style, who always gets on the calendar</p>
-        </div>
-        <span class="kit-arrow">→</span>
-      </a>
-      <a href="team_profile.html" class="kit-card">
-        <div class="kit-step">2</div>
-        <div class="kit-icon">👥</div>
-        <div class="kit-body">
-          <h3>Team & org chart</h3>
-          <p>The people around them — direct reports, 1:1 schedules, who needs what</p>
-        </div>
-        <span class="kit-arrow">→</span>
-      </a>
-      <a href="travel_form.html" class="kit-card">
-        <div class="kit-step">3</div>
-        <div class="kit-icon">✈️</div>
-        <div class="kit-body">
-          <h3>Travel preferences</h3>
-          <p>Airlines, seats, hotels, loyalty numbers — ready before the first trip request</p>
-        </div>
-        <span class="kit-arrow">→</span>
-      </a>
-      <a href="food_form.html" class="kit-card">
-        <div class="kit-step">4</div>
-        <div class="kit-icon">☕</div>
-        <div class="kit-body">
-          <h3>Food & coffee</h3>
-          <p>Daily orders, restrictions, favorite spots — the day-one basics</p>
-        </div>
-        <span class="kit-arrow">→</span>
-      </a>
-      <a href="family_profile.html" class="kit-card">
-        <div class="kit-step">5</div>
-        <div class="kit-icon">🏠</div>
-        <div class="kit-body">
-          <h3>Household manual</h3>
-          <p>If personal support is in scope — family, properties, vendors, and everything in between</p>
-        </div>
-        <span class="kit-arrow">→</span>
-      </a>
-    </div>
-  </div>
 
   <!-- EA / PA -->
   <div class="audience">
