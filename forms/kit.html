@@ -431,6 +431,7 @@
       <textarea id="briefing-output" readonly></textarea>
       <div class="output-btns">
         <button class="btn-copy" id="btn-copy">Copy full briefing</button>
+        <a class="btn-download" id="btn-email" href="#">📧 Email to myself</a>
         <button class="btn-clear" onclick="clearKit()">Clear kit</button>
       </div>
     </div>
@@ -506,6 +507,8 @@
 
   document.getElementById('btn-copy').addEventListener('click', () => {
     const text = document.getElementById('briefing-output').value;
+    const subj = encodeURIComponent('Executive Briefing Kit — GetCarrieAI');
+    document.getElementById('btn-email').href = `mailto:?subject=${subj}&body=${encodeURIComponent(text.substring(0, 1800))}`;
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById('btn-copy');
       btn.textContent = 'Copied!';

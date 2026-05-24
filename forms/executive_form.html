@@ -515,7 +515,7 @@
       <p style="font-size:0.84rem; color:#3d3d3f; line-height:1.6; margin-bottom:6px;"><strong>To save it permanently:</strong> Go to <a href="https://claude.ai" target="_blank" style="color:#0071e3;">claude.ai</a> → Projects → New Project → click <strong>Add instructions</strong> → paste there. Every future conversation already knows you.</p>
       <p style="font-size:0.8rem; color:#e3720b; margin-bottom:12px;">⚠️ Pasting into a regular chat only lasts that one conversation — it won't stick across sessions.</p>
       <button onclick="copyToChat()" id="copyBtn" style="background:#0071e3; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
-      <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="team_profile.html" style="color:#8B2FC9;">Team & org chart →</a></p>
+      <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="team_profile.html" style="color:#8B2FC9;">Team & org chart →</a> &nbsp;·&nbsp; <a id="email-self" href="#" style="color:#8B2FC9;font-weight:500;">📧 Email to myself</a></p>
     </div>
 
 </div>
@@ -607,6 +607,8 @@
     if (!window._lastProfile) return;
     const text = JSON.stringify(window._lastProfile, null, 2);
     localStorage.setItem('gcai_kit_executive', text);
+    const subj = encodeURIComponent('Executive Profile — GetCarrieAI');
+    document.getElementById('email-self').href = `mailto:?subject=${subj}&body=${encodeURIComponent(text.substring(0, 1800))}`;
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById('copyBtn');
       const orig = btn.textContent;
