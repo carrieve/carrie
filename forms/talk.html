@@ -352,31 +352,28 @@
     .platform-content { display: none; }
     .platform-content.active { display: block; }
 
-    .next-option {
-      margin-bottom: 18px;
+    .save-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .save-step { display: flex; align-items: flex-start; gap: 12px; }
+    .save-step-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--purple-light); color: var(--purple-dark);
+      font-size: 0.75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
     }
-    .next-option:last-child { margin-bottom: 0; }
-
-    .next-option strong {
-      display: block;
-      font-size: 0.92rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--black);
+    .save-step-text { font-size: 0.9rem; color: var(--black); line-height: 1.55; padding-top: 3px; }
+    .save-step-text a { color: var(--purple); text-decoration: none; }
+    .save-tip {
+      font-size: 0.8rem; color: #7a5800;
+      background: #fffbeb; border-radius: 8px;
+      padding: 10px 12px; margin-bottom: 14px; line-height: 1.5;
     }
-
-    .next-option p {
-      font-size: 0.86rem;
-      color: var(--gray);
-      line-height: 1.5;
+    .secondary-toggle {
+      background: none; border: none; color: var(--gray);
+      font-size: 0.82rem; cursor: pointer; font-family: inherit;
+      padding: 0; text-decoration: underline; text-underline-offset: 3px;
     }
-
-    .next-option ol {
-      font-size: 0.86rem;
-      color: var(--gray);
-      line-height: 1.8;
-      padding-left: 18px;
-    }
+    .secondary-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
 
     footer {
       border-top: 1px solid var(--border);
@@ -471,68 +468,68 @@
 
       <!-- CLAUDE -->
       <div class="platform-content active" id="tab-claude">
-        <p style="font-size:0.86rem;font-weight:700;margin-bottom:6px;">Option 1: Projects (recommended)</p>
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → click <strong>Projects</strong> in the left sidebar</li>
-          <li>Click <strong>New Project</strong> → name it → <strong>Create project</strong></li>
-          <li>Inside the project, find <strong>"Add instructions"</strong> in the right-hand panel</li>
-          <li>Paste your prompt there → save</li>
-          <li>Chat inside that project — it knows you every time</li>
-        </ol>
-        <p style="margin:10px 0;background:#fff3cd;border-radius:8px;padding:10px 12px;font-size:0.83rem;color:#7a5800;">⚠️ Don't paste into the chat box or the "What are you trying to achieve?" box when creating the project — those don't stick. Only <strong>Add instructions</strong> works.</p>
-        <p style="font-size:0.86rem;font-weight:700;margin:14px 0 6px;">Option 2: Memory (simplest)</p>
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://claude.ai" target="_blank" style="color:var(--purple);">claude.ai</a> → profile icon (bottom left) → <strong>Settings → Memory</strong></li>
-          <li>Make sure Memory is turned on</li>
-          <li>Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></li>
-          <li>Claude saves the key details and recalls them in future conversations automatically</li>
-        </ol>
-        <p style="font-size:0.83rem;color:var(--gray);margin-top:8px;">💡 If you paste in a regular chat and Claude says it won't persist — that's normal. It will offer to help you set up a Project. Just follow its lead.</p>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the sidebar</span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Click <strong>New Project</strong> → give it a name</span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Find <strong>Add instructions</strong> in the right panel → paste your prompt → save</span></div>
+          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Chat inside that project — it knows you every time</span></div>
+        </div>
+        <p class="save-tip">⚠️ Only <strong>Add instructions</strong> sticks. Don't paste into the chat box when creating the project.</p>
+        <button class="secondary-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.textContent=this.textContent.includes('↓')?'Hide ↑':'Prefer Memory instead? ↓'">Prefer Memory instead? ↓</button>
+        <div class="secondary-panel" style="display:none;">
+          <div class="save-steps">
+            <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → profile icon → <strong>Settings → Memory</strong> → turn it on</span></div>
+            <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></span></div>
+            <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Claude saves the key details and recalls them automatically going forward</span></div>
+          </div>
+        </div>
       </div>
 
       <!-- CHATGPT -->
       <div class="platform-content" id="tab-chatgpt">
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://chatgpt.com" target="_blank" style="color:var(--purple);">chatgpt.com</a> → click your <strong>profile icon</strong> (top right)</li>
-          <li>Go to <strong>Settings → Personalization → Custom Instructions</strong></li>
-          <li>Paste your prompt into the top box</li>
-          <li>Save — applies to every new chat automatically</li>
-        </ol>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> → click your profile icon (top right)</span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text"><strong>Settings → Personalization → Custom Instructions</strong></span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt into the top box → save</span></div>
+          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Applies to every new chat automatically</span></div>
+        </div>
       </div>
 
       <!-- GEMINI -->
       <div class="platform-content" id="tab-gemini">
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://gemini.google.com" target="_blank" style="color:var(--purple);">gemini.google.com</a> → click <strong>Gems</strong> in the left sidebar</li>
-          <li>Click <strong>New Gem</strong> → give it a name</li>
-          <li>Paste your prompt into the instructions box → save</li>
-          <li>Open that Gem any time — it knows you</li>
-        </ol>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → click <strong>Gems</strong> in the sidebar</span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text"><strong>New Gem</strong> → give it a name</span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt into the instructions box → save</span></div>
+          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Open that Gem any time — it knows you</span></div>
+        </div>
       </div>
 
       <!-- GROK -->
       <div class="platform-content" id="tab-grok">
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://grok.com" target="_blank" style="color:var(--purple);">grok.com</a> → click <strong>Settings</strong> (bottom left)</li>
-          <li>Look for <strong>Custom Instructions</strong> or <strong>Memory</strong></li>
-          <li>Paste your prompt there → save</li>
-          <li>Grok applies it to future conversations</li>
-        </ol>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://grok.com" target="_blank">grok.com</a> → click <strong>Settings</strong></span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Find <strong>Custom Instructions</strong> or <strong>Memory</strong></span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt → save</span></div>
+        </div>
       </div>
 
       <!-- COPILOT -->
       <div class="platform-content" id="tab-copilot">
-        <ol style="font-size:0.86rem;color:var(--gray);line-height:1.9;padding-left:18px;">
-          <li>Go to <a href="https://copilot.microsoft.com" target="_blank" style="color:var(--purple);">copilot.microsoft.com</a></li>
-          <li>Start a new chat → paste your prompt at the very top</li>
-          <li>Say: <em>"This is my background — refer to it whenever you help me."</em></li>
-        </ol>
-        <p style="font-size:0.83rem;color:var(--gray);margin-top:8px;">Note: if you use Microsoft 365 at work, your IT team may have set up persistent memory options.</p>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a></span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat → paste your prompt at the top</span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Say: <em>"This is my background — refer to it whenever you help me."</em></span></div>
+        </div>
       </div>
 
       <!-- OTHER -->
       <div class="platform-content" id="tab-other">
-        <p style="font-size:0.86rem;color:var(--gray);line-height:1.6;">Download the .txt file and save it in your Notes app or email it to yourself. Paste it at the top of any new AI chat whenever you need it. Not as automatic, but it works everywhere.</p>
+        <div class="save-steps">
+          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Download the .txt file below</span></div>
+          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Save it in your Notes app or email it to yourself</span></div>
+          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste it at the top of any new AI chat when you need it</span></div>
+        </div>
       </div>
 
     </div>
