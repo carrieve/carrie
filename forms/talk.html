@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Talk or type it out — GetCarrieAI</title>
+  <title>Tell your AI who you are — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -19,80 +19,67 @@
       background: #fff;
       color: var(--black);
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* HERO INPUT */
+    .hero {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px 80px;
+      max-width: 640px;
+      margin: 0 auto;
     }
 
-    .page {
-      width: 100%;
-      max-width: 600px;
-      padding: 48px 24px 80px;
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 20px;
     }
-
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--gray);
-      text-decoration: none;
-      margin-bottom: 36px;
-    }
-    .back:hover { color: var(--purple); }
 
     h1 {
-      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-size: clamp(2rem, 6vw, 3rem);
       font-weight: 800;
       letter-spacing: -0.03em;
-      margin-bottom: 10px;
+      line-height: 1.1;
+      margin-bottom: 16px;
     }
 
-    .intro {
-      font-size: 0.98rem;
+    .subhead {
+      font-size: 1.05rem;
       color: var(--gray);
       line-height: 1.6;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
+      max-width: 460px;
     }
 
-    /* TOPIC GUIDE */
-    .guide-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--gray);
-      margin-bottom: 14px;
-    }
-
+    /* TOPIC CHIPS */
     .topics {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 36px;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 32px;
     }
-
     .topic {
       background: var(--purple-light);
       color: var(--purple-dark);
       border-radius: 20px;
-      padding: 7px 14px;
-      font-size: 0.88rem;
+      padding: 6px 14px;
+      font-size: 0.84rem;
       font-weight: 500;
     }
 
-    /* RECORD */
-    .record-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
+    /* MIC BUTTON */
     .btn-record {
-      width: 80px;
-      height: 80px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       border: none;
       background: var(--purple);
@@ -101,7 +88,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 1.8rem;
+      margin: 0 auto 14px;
       transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
       box-shadow: 0 4px 20px rgba(139,47,201,0.3);
     }
@@ -111,7 +99,6 @@
       box-shadow: 0 4px 20px rgba(229,62,62,0.4);
       animation: pulse-ring 1.2s ease-in-out infinite;
     }
-
     @keyframes pulse-ring {
       0%   { box-shadow: 0 0 0 0 rgba(229,62,62,0.4); }
       70%  { box-shadow: 0 0 0 14px rgba(229,62,62,0); }
@@ -119,120 +106,169 @@
     }
 
     .record-status {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--gray);
-      font-weight: 500;
+      margin-bottom: 20px;
     }
     .record-status.active { color: #e53e3e; }
 
-    /* TRANSCRIPT */
-    .transcript-wrap {
-      margin-bottom: 28px;
-    }
-
-    .transcript-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--gray);
-      margin-bottom: 10px;
-    }
-
+    /* INPUT BOX */
     #transcript {
       width: 100%;
-      min-height: 140px;
+      min-height: 160px;
       border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      font-size: 0.95rem;
+      border-radius: 20px;
+      padding: 18px 20px;
+      font-size: 0.98rem;
       font-family: inherit;
       color: var(--black);
       line-height: 1.6;
       resize: vertical;
       outline: none;
       transition: border-color 0.2s;
+      text-align: left;
+      margin-bottom: 16px;
     }
     #transcript:focus { border-color: var(--purple); }
     #transcript.active { border-color: #e53e3e; background: #fff5f5; }
 
-    .transcript-hint {
-      font-size: 0.8rem;
-      color: #9ca3af;
-      margin-top: 8px;
-    }
-
-    /* GENERATE */
+    /* GENERATE BUTTON */
     .btn-generate {
-      width: 100%;
-      padding: 16px;
+      display: inline-block;
+      padding: 18px 44px;
       background: var(--purple);
       color: #fff;
       border: none;
-      border-radius: 16px;
-      font-size: 1rem;
+      border-radius: 32px;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
-      transition: background 0.2s;
-      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 10px;
     }
-    .btn-generate:hover { background: var(--purple-dark); }
-    .btn-generate:disabled { background: #d1d5db; cursor: not-allowed; }
+    .btn-generate:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    .btn-generate:disabled { background: #d1d5db; cursor: not-allowed; transform: none; }
 
     .generate-note {
       font-size: 0.82rem;
       color: #9ca3af;
-      text-align: center;
     }
 
     /* OUTPUT */
     .output-section {
       display: none;
-      margin-top: 40px;
-      padding-top: 40px;
+      padding: 80px 24px;
+      max-width: 640px;
+      margin: 0 auto;
       border-top: 1px solid var(--border);
     }
-
     .output-section.visible { display: block; }
 
     .output-section h2 {
-      font-size: 1.3rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+      text-align: center;
     }
 
-    .output-section .desc {
-      font-size: 0.92rem;
+    .output-section .subdesc {
+      font-size: 1rem;
       color: var(--gray);
-      margin-bottom: 20px;
-      line-height: 1.5;
+      line-height: 1.6;
+      text-align: center;
+      margin-bottom: 48px;
     }
 
+    /* PLATFORM TABS */
+    .save-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+
+    .platform-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--gray);
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+    .platform-content { display: none; margin-bottom: 32px; }
+    .platform-content.active { display: block; }
+
+    .save-steps { display: flex; flex-direction: column; gap: 12px; }
+    .save-step { display: flex; align-items: flex-start; gap: 12px; }
+    .save-step-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--purple-light); color: var(--purple-dark);
+      font-size: 0.75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .save-step-text { font-size: 0.92rem; color: var(--black); line-height: 1.6; }
+    .save-step-text a { color: var(--purple); text-decoration: none; }
+    .save-tip {
+      font-size: 0.82rem; color: #7a5800;
+      background: #fffbeb; border-radius: 10px;
+      padding: 10px 14px; margin-top: 14px; line-height: 1.5;
+    }
+    .secondary-toggle {
+      background: none; border: none; color: var(--gray);
+      font-size: 0.82rem; cursor: pointer; font-family: inherit;
+      padding: 0; text-decoration: underline; text-underline-offset: 3px;
+      margin-top: 12px; display: block;
+    }
+    .secondary-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+
+    /* COPY AREA */
+    .copy-area {
+      background: #fafafa;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+    }
+    .copy-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
     #prompt-output {
       width: 100%;
-      min-height: 180px;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      font-size: 0.9rem;
+      min-height: 160px;
+      border: none;
+      background: transparent;
+      font-size: 0.88rem;
       font-family: inherit;
       color: var(--black);
       line-height: 1.6;
       resize: vertical;
       outline: none;
-      margin-bottom: 14px;
-      background: #fafafa;
+      margin-bottom: 16px;
     }
-
-    .output-btns {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
+    .output-btns { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn-copy {
       flex: 1;
       padding: 14px;
@@ -248,7 +284,6 @@
     }
     .btn-copy:hover { background: var(--purple-dark); }
     .btn-copy.copied { background: #22c55e; }
-
     .btn-download {
       padding: 14px 20px;
       background: #fff;
@@ -259,292 +294,146 @@
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: border-color 0.15s;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
+      transition: border-color 0.15s;
     }
     .btn-download:hover { border-color: var(--purple); color: var(--purple); }
 
-    /* MODE TABS */
-    .mode-tabs {
-      display: flex;
-      gap: 6px;
-      background: #f3f4f6;
-      padding: 4px;
-      border-radius: 14px;
-      margin-bottom: 32px;
-    }
-    .mode-tab {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: none;
-      background: transparent;
+    #copy-nudge {
+      display: none;
       font-size: 0.88rem;
       font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      color: var(--gray);
-      transition: all 0.15s;
-    }
-    .mode-tab.active {
-      background: #fff;
-      color: var(--black);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    }
-
-    /* PASTE TYPE CHIPS */
-    .type-chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-    .type-chip {
-      padding: 7px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: #fff;
-      color: var(--gray);
-      font-family: inherit;
-      transition: all 0.15s;
-    }
-    .type-chip.active { border-color: var(--purple); background: var(--purple-light); color: var(--purple-dark); }
-
-    /* WHAT'S NEXT */
-    .whats-next {
-      background: var(--purple-light);
-      border-radius: 18px;
-      padding: 24px;
-    }
-
-    .whats-next h3 {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
       color: var(--purple);
-      margin-bottom: 16px;
+      text-align: center;
+      margin-top: 14px;
     }
-
-    /* PLATFORM TABS */
-    .platform-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      padding: 8px 14px;
-      border-radius: 20px;
-      border: 1.5px solid var(--border);
-      background: #fff;
-      font-size: 0.86rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      color: var(--gray);
-      transition: all 0.15s;
-    }
-    .tab-btn:hover { border-color: var(--purple); color: var(--purple); }
-    .tab-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
-
-    .platform-content { display: none; }
-    .platform-content.active { display: block; }
-
-    .save-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .save-step { display: flex; align-items: flex-start; gap: 12px; }
-    .save-step-num {
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--purple-light); color: var(--purple-dark);
-      font-size: 0.75rem; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
-    .save-step-text { font-size: 0.9rem; color: var(--black); line-height: 1.55; padding-top: 3px; }
-    .save-step-text a { color: var(--purple); text-decoration: none; }
-    .save-tip {
-      font-size: 0.8rem; color: #7a5800;
-      background: #fffbeb; border-radius: 8px;
-      padding: 10px 12px; margin-bottom: 14px; line-height: 1.5;
-    }
-    .secondary-toggle {
-      background: none; border: none; color: var(--gray);
-      font-size: 0.82rem; cursor: pointer; font-family: inherit;
-      padding: 0; text-decoration: underline; text-underline-offset: 3px;
-    }
-    .secondary-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
 
     footer {
       border-top: 1px solid var(--border);
-      padding: 28px 24px;
+      padding: 32px 24px;
       text-align: center;
       font-size: 0.82rem;
       color: #9ca3af;
-      width: 100%;
     }
     footer a { color: var(--purple); text-decoration: none; }
   </style>
 </head>
 <body>
 
-<div class="page">
-  <a href="build.html" class="back">← Back</a>
+<div class="hero">
+  <p class="eyebrow">GetCarrieAI</p>
+  <h1>Tell your AI<br>who you are</h1>
+  <p class="subhead">Your job, your life, what you need handled. No format required — just say it.</p>
 
-  <h1>Talk or type it out</h1>
-  <p class="intro">Tell your AI about yourself — your job, your life, what you need handled, what drives you crazy. No format required. The more you share, the better it knows you.</p>
-
-  <div class="mode-tabs">
-    <button class="mode-tab active" onclick="switchMode('talk')">🎙 Talk or type</button>
-    <button class="mode-tab" onclick="switchMode('paste')">📋 Paste existing notes</button>
-  </div>
-
-  <!-- TALK PANEL -->
-  <div id="panel-talk">
-  <p class="guide-label">Things to cover</p>
   <div class="topics">
     <span class="topic">What you need help with</span>
     <span class="topic">How you communicate</span>
     <span class="topic">Your work & schedule</span>
-    <span class="topic">What you hate explaining</span>
-    <span class="topic">What you always need</span>
-    <span class="topic">Home & family</span>
-    <span class="topic">Travel & food</span>
     <span class="topic">What drives you crazy</span>
+    <span class="topic">Travel & food</span>
+    <span class="topic">Home & family</span>
   </div>
 
-  <div class="record-area">
-    <button class="btn-record" id="btn-record" title="Start recording">🎙</button>
-    <p class="record-status" id="record-status">Tap to speak — or skip this and type below</p>
-  </div>
+  <button class="btn-record" id="btn-record" title="Start recording">🎙</button>
+  <p class="record-status" id="record-status">Tap to speak — or skip this and type below</p>
 
-  <div class="transcript-wrap">
-    <p class="transcript-label">What you said</p>
-    <textarea id="transcript" placeholder="Your words will appear here as you talk. You can also type or edit directly."></textarea>
-    <p class="transcript-hint">Prefer to type? Just write directly in the box — works exactly the same as talking.</p>
-  </div>
+  <textarea id="transcript" placeholder="Talk or type it out. Or paste in existing notes. Messy is fine — just get it out."></textarea>
 
   <button class="btn-generate" id="btn-generate" disabled>Build my prompt →</button>
   <p class="generate-note">Takes about 2 seconds.</p>
-  </div><!-- end panel-talk -->
+</div>
 
-  <!-- PASTE PANEL -->
-  <div id="panel-paste" style="display:none;">
-    <p class="guide-label" style="margin-bottom:14px;">What type of notes are these? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.82rem;">(optional)</span></p>
-    <div class="type-chips-row">
-      <button class="type-chip active" onclick="setPasteType('general', this)">🧠 General</button>
-      <button class="type-chip" onclick="setPasteType('executive', this)">💼 Executive</button>
-      <button class="type-chip" onclick="setPasteType('travel', this)">✈️ Travel</button>
-      <button class="type-chip" onclick="setPasteType('food', this)">☕ Food & coffee</button>
-      <button class="type-chip" onclick="setPasteType('household', this)">🏠 Household</button>
-      <button class="type-chip" onclick="setPasteType('business', this)">🏪 Business</button>
+<!-- OUTPUT -->
+<div class="output-section" id="output-section">
+  <h2>Your prompt is ready.</h2>
+  <p class="subdesc">Pick where to save it — takes 2 minutes, works forever.</p>
+
+  <p class="save-label">Where do you use AI?</p>
+  <div class="platform-tabs">
+    <button class="tab-btn active" onclick="showTab('claude')">🟠 Claude</button>
+    <button class="tab-btn" onclick="showTab('chatgpt')">🟢 ChatGPT</button>
+    <button class="tab-btn" onclick="showTab('gemini')">🔵 Gemini</button>
+    <button class="tab-btn" onclick="showTab('grok')">⚫ Grok</button>
+    <button class="tab-btn" onclick="showTab('copilot')">🟣 Copilot</button>
+    <button class="tab-btn" onclick="showTab('other')">📋 Other</button>
+  </div>
+
+  <!-- CLAUDE -->
+  <div class="platform-content active" id="tab-claude">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → profile icon → <strong>Settings → Memory</strong> → turn it on</span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></span></div>
+      <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Done — Claude recalls it automatically in every future chat</span></div>
     </div>
-    <div class="transcript-wrap">
-      <p class="transcript-label">Paste your notes</p>
-      <textarea id="paste-notes" placeholder="Paste anything — a Google Doc, email thread, bullet points, notes app export. Messy is fine."></textarea>
-      <p class="transcript-hint">Already have notes written down somewhere? This turns them into a ready-to-save AI prompt.</p>
+    <button class="secondary-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.textContent=this.textContent.includes('↓')?'Hide Claude Projects ↑':'Prefer Claude Projects? ↓'">Prefer Claude Projects? ↓</button>
+    <div class="secondary-panel" style="display:none;">
+      <div class="save-steps">
+        <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the sidebar → <strong>New Project</strong></span></div>
+        <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Look for <strong>Add instructions</strong> — paste your prompt there and save</span></div>
+        <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Always start chats from inside that project — it knows you every time</span></div>
+      </div>
+      <p class="save-tip">⚠️ Find <strong>Add instructions</strong> — not the chat box. Only the instructions field saves permanently.</p>
     </div>
-    <button class="btn-generate" id="btn-generate-paste" disabled>Build my prompt →</button>
-    <p class="generate-note">Takes about 2 seconds.</p>
-  </div><!-- end panel-paste -->
+  </div>
 
-  <!-- OUTPUT -->
-  <div class="output-section" id="output-section">
-    <h2>Your prompt is ready.</h2>
-    <p style="font-size:0.95rem;color:var(--gray);line-height:1.6;margin:8px 0 28px;">Two steps — takes about 2 minutes total.</p>
-
-    <div class="whats-next">
-      <h3>Step 1 of 2 — Pick where to save it</h3>
-      <p style="font-size:0.86rem;color:var(--gray);margin-bottom:16px;line-height:1.5;">Do this once and every future conversation already knows you. Skipping this means it won't stick.</p>
-
-      <div class="platform-tabs">
-        <button class="tab-btn active" onclick="showTab('claude')">🟠 Claude</button>
-        <button class="tab-btn" onclick="showTab('chatgpt')">🟢 ChatGPT</button>
-        <button class="tab-btn" onclick="showTab('gemini')">🔵 Gemini</button>
-        <button class="tab-btn" onclick="showTab('grok')">⚫ Grok</button>
-        <button class="tab-btn" onclick="showTab('copilot')">🟣 Copilot</button>
-        <button class="tab-btn" onclick="showTab('other')">📋 Other</button>
-      </div>
-
-      <!-- CLAUDE -->
-      <div class="platform-content active" id="tab-claude">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the sidebar</span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Click <strong>New Project</strong> → give it a name</span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Find <strong>Add instructions</strong> in the right panel → paste your prompt → save</span></div>
-          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Chat inside that project — it knows you every time</span></div>
-        </div>
-        <p class="save-tip">⚠️ Only <strong>Add instructions</strong> sticks. Don't paste into the chat box when creating the project.</p>
-        <button class="secondary-toggle" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.textContent=this.textContent.includes('↓')?'Hide ↑':'Prefer Memory instead? ↓'">Prefer Memory instead? ↓</button>
-        <div class="secondary-panel" style="display:none;">
-          <div class="save-steps">
-            <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → profile icon → <strong>Settings → Memory</strong> → turn it on</span></div>
-            <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat, paste your prompt, and say: <em>"Please remember all of this about me."</em></span></div>
-            <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Claude saves the key details and recalls them automatically going forward</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CHATGPT -->
-      <div class="platform-content" id="tab-chatgpt">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> → click your profile icon (top right)</span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text"><strong>Settings → Personalization → Custom Instructions</strong></span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt into the top box → save</span></div>
-          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Applies to every new chat automatically</span></div>
-        </div>
-      </div>
-
-      <!-- GEMINI -->
-      <div class="platform-content" id="tab-gemini">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → click <strong>Gems</strong> in the sidebar</span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text"><strong>New Gem</strong> → give it a name</span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt into the instructions box → save</span></div>
-          <div class="save-step"><span class="save-step-num">4</span><span class="save-step-text">Open that Gem any time — it knows you</span></div>
-        </div>
-      </div>
-
-      <!-- GROK -->
-      <div class="platform-content" id="tab-grok">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://grok.com" target="_blank">grok.com</a> → click <strong>Settings</strong></span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Find <strong>Custom Instructions</strong> or <strong>Memory</strong></span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste your prompt → save</span></div>
-        </div>
-      </div>
-
-      <!-- COPILOT -->
-      <div class="platform-content" id="tab-copilot">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a></span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat → paste your prompt at the top</span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Say: <em>"This is my background — refer to it whenever you help me."</em></span></div>
-        </div>
-      </div>
-
-      <!-- OTHER -->
-      <div class="platform-content" id="tab-other">
-        <div class="save-steps">
-          <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Download the .txt file below</span></div>
-          <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Save it in your Notes app or email it to yourself</span></div>
-          <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Paste it at the top of any new AI chat when you need it</span></div>
-        </div>
-      </div>
-
+  <!-- CHATGPT -->
+  <div class="platform-content" id="tab-chatgpt">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> → profile icon → <strong>Settings → Personalization → Custom Instructions</strong></span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Paste your prompt into the top box → save</span></div>
+      <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Applies to every new chat automatically</span></div>
     </div>
+  </div>
 
-    <div style="border-top:1px solid var(--border);margin-top:28px;padding-top:24px;">
-      <p style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Step 2 of 2 — Copy your prompt</p>
-      <p style="font-size:0.84rem;color:var(--gray);margin-bottom:14px;">Then paste it into whichever platform you chose above.</p>
+  <!-- GEMINI -->
+  <div class="platform-content" id="tab-gemini">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → click <strong>Gems</strong> in the sidebar → <strong>New Gem</strong></span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Paste your prompt into the instructions box → save</span></div>
+      <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Open that Gem any time — it knows you</span></div>
     </div>
+  </div>
+
+  <!-- GROK -->
+  <div class="platform-content" id="tab-grok">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://grok.com" target="_blank">grok.com</a> → <strong>Settings → Custom Instructions</strong></span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Paste your prompt → save</span></div>
+    </div>
+  </div>
+
+  <!-- COPILOT -->
+  <div class="platform-content" id="tab-copilot">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Go to <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a></span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Start a new chat → paste your prompt at the top</span></div>
+      <div class="save-step"><span class="save-step-num">3</span><span class="save-step-text">Say: <em>"This is my background — refer to it whenever you help me."</em></span></div>
+    </div>
+  </div>
+
+  <!-- OTHER -->
+  <div class="platform-content" id="tab-other">
+    <div class="save-steps">
+      <div class="save-step"><span class="save-step-num">1</span><span class="save-step-text">Download the .txt file below and save it somewhere handy</span></div>
+      <div class="save-step"><span class="save-step-num">2</span><span class="save-step-text">Paste it at the top of any new AI chat when you need it</span></div>
+    </div>
+  </div>
+
+  <div class="copy-area">
+    <p class="copy-label">Your prompt</p>
     <textarea id="prompt-output" readonly></textarea>
     <div class="output-btns">
       <button class="btn-copy" id="btn-copy">Copy prompt</button>
       <a class="btn-download" id="btn-download" download="my-ai-prompt.txt">Download .txt</a>
     </div>
-    <p id="copy-nudge" style="display:none;font-size:0.85rem;font-weight:600;color:var(--purple);margin-top:10px;text-align:center;">Copied! Now go paste it into the platform you picked above ↑</p>
+    <p id="copy-nudge">Copied! Now paste it into the platform you picked above ↑</p>
   </div>
+
+  <p style="margin-top:32px;text-align:center;font-size:0.88rem;color:var(--gray);line-height:1.6;">
+    Want to go deeper? <a href="forms.html" style="color:var(--purple);text-decoration:none;">Browse detail forms →</a>
+  </p>
 </div>
 
 <footer>
@@ -567,51 +456,34 @@
   let isRecording = false;
   let fullTranscript = '';
 
-  // Enable generate button when there's text
   transcriptEl.addEventListener('input', () => {
     btnGenerate.disabled = transcriptEl.value.trim().length < 20;
   });
 
-  // Speech recognition setup
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
-
     recognition.onresult = (e) => {
       let interim = '';
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const text = e.results[i][0].transcript;
-        if (e.results[i].isFinal) {
-          fullTranscript += text + ' ';
-        } else {
-          interim = text;
-        }
+        if (e.results[i].isFinal) { fullTranscript += text + ' '; } else { interim = text; }
       }
       transcriptEl.value = fullTranscript + interim;
       btnGenerate.disabled = transcriptEl.value.trim().length < 20;
     };
-
     recognition.onerror = (e) => {
       stopRecording();
-      if (e.error === 'not-allowed') {
-        recordStatus.textContent = 'Microphone access denied — type in the box instead.';
-      }
+      if (e.error === 'not-allowed') recordStatus.textContent = 'Microphone access denied — type in the box instead.';
     };
-
-    recognition.onend = () => {
-      if (isRecording) recognition.start(); // keep going until manually stopped
-    };
+    recognition.onend = () => { if (isRecording) recognition.start(); };
   }
 
   btnRecord.addEventListener('click', () => {
-    if (!recognition) {
-      recordStatus.textContent = 'Voice not supported in this browser — type in the box instead.';
-      return;
-    }
+    if (!recognition) { recordStatus.textContent = 'Voice not supported in this browser — type in the box instead.'; return; }
     isRecording ? stopRecording() : startRecording();
   });
 
@@ -634,40 +506,17 @@
     recordStatus.classList.remove('active');
   }
 
-  // Build prompt from transcript
   btnGenerate.addEventListener('click', () => {
     const text = transcriptEl.value.trim();
     if (!text) return;
-
-    const prompt = `## About me — AI assistant briefing
-
-The following is everything you need to know about me to act as my personal assistant. Read this carefully and refer back to it whenever you help me.
-
----
-
-${text}
-
----
-
-## How to use this
-
-- Use everything above to answer my questions directly — do not ask me for information I have already provided here.
-- Apply my preferences proactively. If I ask for help with travel, food, scheduling, or anything else, use what you know about me before asking clarifying questions.
-- Never start from scratch. I gave you this context so you don't have to ask.
-- When in doubt, refer back to what I've shared. The details matter.`;
-
+    const prompt = `## About me — AI assistant briefing\n\nThe following is everything you need to know about me to act as my personal assistant. Read this carefully and refer back to it whenever you help me.\n\n---\n\n${text}\n\n---\n\n## How to use this\n\n- Use everything above to answer my questions directly — do not ask me for information I have already provided here.\n- Apply my preferences proactively. If I ask for help with travel, food, scheduling, or anything else, use what you know about me before asking clarifying questions.\n- Never start from scratch. I gave you this context so you don't have to ask.\n- When in doubt, refer back to what I've shared. The details matter.`;
     promptOutput.value = prompt;
     outputSection.classList.add('visible');
-
-    // Set up download
     const blob = new Blob([prompt], { type: 'text/plain' });
     btnDownload.href = URL.createObjectURL(blob);
-
-    // Scroll to output
     setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
   });
 
-  // Platform tabs
   function showTab(name) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
@@ -675,57 +524,12 @@ ${text}
     document.getElementById(`tab-${name}`).classList.add('active');
   }
 
-  // Mode switching
-  function switchMode(mode) {
-    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
-    document.querySelector(`[onclick="switchMode('${mode}')"]`).classList.add('active');
-    document.getElementById('panel-talk').style.display = mode === 'talk' ? 'block' : 'none';
-    document.getElementById('panel-paste').style.display = mode === 'paste' ? 'block' : 'none';
-  }
-
-  // Paste type
-  let pasteNoteType = 'general';
-  const pasteTypeLabels = {
-    general: 'General notes',
-    executive: 'Executive profile notes',
-    travel: 'Travel preference notes',
-    food: 'Food & coffee preferences',
-    household: 'Household & family notes',
-    business: 'Business profile notes'
-  };
-
-  function setPasteType(type, btn) {
-    pasteNoteType = type;
-    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  document.getElementById('paste-notes').addEventListener('input', () => {
-    document.getElementById('btn-generate-paste').disabled = document.getElementById('paste-notes').value.trim().length < 20;
-  });
-
-  document.getElementById('btn-generate-paste').addEventListener('click', () => {
-    const text = document.getElementById('paste-notes').value.trim();
-    if (!text) return;
-    const label = pasteTypeLabels[pasteNoteType];
-    const prompt = `## ${label} — AI assistant briefing\n\nThe following notes contain everything you need to know. Read carefully and use this information whenever you help me.\n\n---\n\n${text}\n\n---\n\n## How to use this\n\n- Use everything above to answer my questions directly — do not ask me for information I have already provided here.\n- Apply my preferences proactively. If I ask for help with travel, food, scheduling, or anything else, use what you know about me before asking clarifying questions.\n- Never start from scratch. I gave you this context so you don't have to ask.\n- When in doubt, refer back to what I've shared. The details matter.`;
-    promptOutput.value = prompt;
-    outputSection.classList.add('visible');
-    const blob = new Blob([prompt], { type: 'text/plain' });
-    btnDownload.href = URL.createObjectURL(blob);
-    setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-  });
-
-  // Copy button
   btnCopy.addEventListener('click', () => {
     navigator.clipboard.writeText(promptOutput.value).then(() => {
       btnCopy.textContent = 'Copied!';
       btnCopy.classList.add('copied');
       document.getElementById('copy-nudge').style.display = 'block';
-      setTimeout(() => {
-        btnCopy.textContent = 'Copy prompt';
-        btnCopy.classList.remove('copied');
-      }, 2000);
+      setTimeout(() => { btnCopy.textContent = 'Copy prompt'; btnCopy.classList.remove('copied'); }, 2000);
     });
   });
 </script>
