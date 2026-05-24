@@ -252,10 +252,12 @@
   function copyToChat() {
     if (!window._lastProfile) return;
     const text = JSON.stringify(window._lastProfile, null, 2);
+    localStorage.setItem('gcai_kit_food', text);
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById('copyBtn');
       const orig = btn.textContent;
-      btn.textContent = '✅ Copied! Now paste into your AI chat.';
+      btn.textContent = '✅ Copied & saved to your kit!';
+      document.getElementById('kit-nudge').style.display = 'block';
       setTimeout(() => btn.textContent = orig, 3000);
     });
   }
@@ -598,6 +600,7 @@
 </form>
 
 <div class="toast" id="toast"></div>
+<p id="kit-nudge" style="display:none;text-align:center;margin-top:16px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved to your kit — <a href="kit.html" style="color:#8B2FC9;">view full briefing →</a></p>
 
 <script>
   function addRestaurantRow() {
@@ -654,6 +657,8 @@
 
     const _download = () => {
       window._lastProfile = data;
+      localStorage.setItem('gcai_kit_food', JSON.stringify(data, null, 2));
+      document.getElementById('kit-nudge').style.display = 'block';
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

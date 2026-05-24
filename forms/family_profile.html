@@ -91,6 +91,7 @@
       <button class="btn-copy" id="copy-btn" onclick="copyOutput()">Copy prompt</button>
       <button class="btn-reset" onclick="resetForm()">Start over</button>
     </div>
+    <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;text-align:center;">✓ Saved to your kit — <a href="kit.html" style="color:#8B2FC9;">view full briefing →</a></p>
     <div class="tip-box">
       💡 <strong>Want your AI to know you even better?</strong> Use the <a href="onboarding.html">Teach my AI who I am →</a> trainer to generate a full personal system prompt — so your AI always has the full picture, not just your household.
     </div>
@@ -146,10 +147,13 @@ Output ONLY the prompt — no intro, no explanation, just the prompt text.`,
   }
 
   function copyOutput() {
-    navigator.clipboard.writeText(document.getElementById('output-box').textContent).then(() => {
+    const text = document.getElementById('output-box').textContent;
+    localStorage.setItem('gcai_kit_household', text);
+    navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById('copy-btn');
-      btn.textContent = 'Copied!';
+      btn.textContent = 'Copied & saved to kit!';
       btn.classList.add('copied');
+      document.getElementById('kit-nudge').style.display = 'block';
       setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 2000);
     });
   }
