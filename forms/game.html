@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The EA Challenge — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #8B2FC9;
+      --purple-light: #f3e8ff;
+      --purple-dark: #6b1fa0;
+      --black: #111111;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+      background: #fff;
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      padding: 40px 24px 20px;
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 0.95rem;
+      color: var(--gray);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .profile-card {
+      max-width: 920px;
+      margin: 20px auto;
+      padding: 0 24px;
+    }
+    .profile-inner {
+      background: var(--purple-light);
+      border-radius: 16px;
+      padding: 14px 18px;
+    }
+    .profile-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--purple-dark);
+      margin-bottom: 8px;
+    }
+    .profile-rules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .rule-chip {
+      font-size: 0.8rem;
+      background: #fff;
+      border: 1px solid #d8b4fe;
+      border-radius: 20px;
+      padding: 4px 10px;
+      color: var(--purple-dark);
+      font-weight: 500;
+    }
+
+    .game-area {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 16px 24px 0;
+      display: grid;
+      grid-template-columns: 1fr 248px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* CALENDAR */
+    .calendar-wrap { overflow-x: auto; }
+    .calendar {
+      display: grid;
+      grid-template-columns: 48px repeat(5, 1fr);
+      min-width: 460px;
+    }
+    .cal-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px 4px 10px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cal-header.travel { color: #b45309; }
+    .time-label {
+      font-size: 0.7rem;
+      color: var(--gray);
+      text-align: right;
+      padding-right: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 50px;
+    }
+    .cal-cell {
+      height: 50px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      margin: 2px;
+      cursor: pointer;
+      transition: background 0.1s, border-color 0.1s, opacity 0.1s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cal-cell.blocked {
+      background: #f9fafb;
+      cursor: not-allowed;
+      border-style: dashed;
+      border-color: #e5e7eb;
+    }
+    .cal-cell.lunch {
+      background: #f3f4f6;
+      cursor: not-allowed;
+      border-color: transparent;
+    }
+    .cal-cell.existing {
+      cursor: default;
+      border-color: transparent;
+    }
+    .cal-cell.available {
+      background: #f3e8ff;
+      border-color: #d8b4fe;
+      cursor: pointer;
+    }
+    .cal-cell.available:hover {
+      background: var(--purple-light);
+      border-color: var(--purple);
+    }
+    .cal-cell.unavailable {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .cal-cell.placed-cell {
+      border-color: transparent;
+      cursor: pointer;
+    }
+    .cal-cell.conflict-flash {
+      border-color: var(--red) !important;
+      background: #fef2f2 !important;
+    }
+    .cell-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 3px 5px;
+      border-radius: 5px;
+      line-height: 1.3;
+      pointer-events: none;
+      width: 100%;
+      margin: 2px;
+    }
+
+    /* TASK INBOX */
+    .task-inbox { display: flex; flex-direction: column; gap: 8px; }
+    .inbox-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--gray);
+      margin-bottom: 2px;
+    }
+    .task-card {
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .task-card:hover:not(.is-placed) { border-color: var(--purple); }
+    .task-card.selected { border-color: var(--purple); background: var(--purple-light); box-shadow: 0 0 0 3px rgba(139,47,201,0.12); }
+    .task-card.is-placed { cursor: pointer; }
+    .task-emoji { font-size: 1.1rem; margin-bottom: 3px; }
+    .task-name { font-size: 0.86rem; font-weight: 700; margin-bottom: 3px; }
+    .task-constraint { font-size: 0.76rem; color: var(--gray); line-height: 1.4; }
+    .task-placed-label { font-size: 0.73rem; font-weight: 600; margin-top: 5px; }
+    .inbox-hint { font-size: 0.75rem; color: var(--gray); line-height: 1.5; margin-top: 4px; }
+
+    /* SUBMIT */
+    .submit-bar {
+      max-width: 920px;
+      margin: 16px auto 0;
+      padding: 0 24px 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-submit {
+      padding: 13px 28px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 32px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--purple-dark); }
+    .btn-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+    .submit-hint { font-size: 0.84rem; color: var(--gray); }
+
+    /* OVERLAY */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .overlay.show { display: flex; }
+    .score-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px 28px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+    }
+    .score-emoji { font-size: 2.6rem; margin-bottom: 14px; }
+    .score-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .score-sub { font-size: 0.92rem; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+    .score-breakdown { text-align: left; margin-bottom: 20px; border-top: 1px solid var(--border); }
+    .score-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.86rem;
+    }
+    .score-icon { font-size: 1rem; width: 22px; flex-shrink: 0; margin-top: 1px; }
+    .score-item-label { flex: 1; line-height: 1.4; }
+    .score-item-label small { font-size: 0.75rem; color: var(--gray); display: block; margin-top: 1px; }
+    .score-result { font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .score-result.correct { color: var(--green); }
+    .score-result.wrong { color: var(--red); }
+    .btn-cta {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: background 0.2s;
+    }
+    .btn-cta:hover { background: var(--purple-dark); }
+    .btn-retry {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 11px;
+      width: 100%;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--gray);
+      transition: border-color 0.15s;
+    }
+    .btn-retry:hover { border-color: var(--gray); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9ca3af;
+    }
+    footer a { color: var(--purple); text-decoration: none; }
+
+    @media (max-width: 660px) {
+      .game-area { grid-template-columns: 1fr; }
+      .task-inbox { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <p class="eyebrow">GetCarrieAI</p>
+  <h1>The EA Challenge</h1>
+  <p>You're supporting Jordan Reeves, CEO. Four meetings just hit your inbox. Can you fit them all in without breaking a single rule?</p>
+</div>
+
+<div class="profile-card">
+  <div class="profile-inner">
+    <div class="profile-name">Jordan Reeves — CEO &nbsp;·&nbsp; Your exec's rules</div>
+    <div class="profile-rules">
+      <span class="rule-chip">🕘 No meetings before 9am or after 5pm</span>
+      <span class="rule-chip">🥗 Lunch 12–1pm always blocked</span>
+      <span class="rule-chip">✈️ Wednesday = travel day, no meetings</span>
+      <span class="rule-chip">⏸ No back-to-back meetings</span>
+    </div>
+  </div>
+</div>
+
+<div class="game-area">
+  <div class="calendar-wrap">
+    <div class="calendar" id="calendar"></div>
+  </div>
+  <div class="task-inbox">
+    <div class="inbox-label">Your inbox (4 new)</div>
+    <div id="task-list"></div>
+    <p class="inbox-hint">Select a meeting, then click a slot to place it. Click a placed meeting to move it.</p>
+  </div>
+</div>
+
+<div class="submit-bar">
+  <button class="btn-submit" id="btn-submit" disabled onclick="submitGame()">Check my schedule</button>
+  <span class="submit-hint" id="submit-hint">Place all 4 meetings first</span>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="score-card">
+    <div class="score-emoji" id="score-emoji"></div>
+    <div class="score-title" id="score-title"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="score-breakdown" id="score-breakdown"></div>
+    <a href="kit.html" class="btn-cta">Build Jordan's full briefing kit →</a>
+    <button class="btn-retry" onclick="resetGame()">Try again</button>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">← Home</a> &nbsp;·&nbsp;
+  <a href="kit.html">EA Briefing Kit</a>
+</footer>
+
+<script>
+  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  const HOURS = [9, 10, 11, 12, 13, 14, 15, 16];
+
+  const EXISTING = [
+    { day: 0, hour: 9,  label: 'All-hands' },
+    { day: 0, hour: 15, label: 'Legal review' },
+    { day: 1, hour: 10, label: 'Product sync' },
+    { day: 3, hour: 9,  label: 'Board meeting' },
+    { day: 3, hour: 14, label: 'Investor call' },
+    { day: 4, hour: 11, label: 'Team lunch' },
+  ];
+
+  const TASK_META = {
+    press:       { bg: '#fef3c7', border: '#f59e0b', text: '#78350f' },
+    engineering: { bg: '#dbeafe', border: '#3b82f6', text: '#1e3a8a' },
+    hr:          { bg: '#d1fae5', border: '#10b981', text: '#064e3b' },
+    demo:        { bg: '#ede9fe', border: '#8b5cf6', text: '#4c1d95' },
+  };
+
+  const TASKS = [
+    {
+      id: 'press',
+      emoji: '🎙',
+      label: 'Press interview',
+      constraint: 'Must happen before Thursday 9am',
+      validate: (day, hour) => day < 2,
+      explanation: 'Before Thurs means Mon or Tue — Wed is a travel day.',
+    },
+    {
+      id: 'engineering',
+      emoji: '⚙️',
+      label: 'Engineering 1:1',
+      constraint: 'Jordan only does these on Tuesdays',
+      validate: (day, hour) => day === 1,
+      explanation: 'Jordan keeps 1:1s on Tuesdays.',
+    },
+    {
+      id: 'hr',
+      emoji: '📋',
+      label: 'HR review',
+      constraint: 'Any day except Wednesday',
+      validate: (day, hour) => day !== 2,
+      explanation: 'Any day works — just not the travel day.',
+    },
+    {
+      id: 'demo',
+      emoji: '🚀',
+      label: 'Product demo',
+      constraint: 'Jordan wants this on Friday',
+      validate: (day, hour) => day === 4,
+      explanation: 'Jordan specifically asked for Friday.',
+    },
+  ];
+
+  let placements = {};
+  let selectedTask = null;
+  let submitted = false;
+
+  function occupiedSet(exceptId = null) {
+    const s = new Set();
+    for (const e of EXISTING) s.add(`${e.day}-${e.hour}`);
+    for (const [id, p] of Object.entries(placements)) {
+      if (id !== exceptId) s.add(`${p.day}-${p.hour}`);
+    }
+    return s;
+  }
+
+  function isBlocked(day, hour) {
+    return day === 2 || hour === 12;
+  }
+
+  function existingAt(day, hour) {
+    return EXISTING.find(e => e.day === day && e.hour === hour) || null;
+  }
+
+  function placedAt(day, hour) {
+    return Object.entries(placements).find(([, p]) => p.day === day && p.hour === hour) || null;
+  }
+
+  function canPlace(day, hour, taskId) {
+    if (isBlocked(day, hour)) return false;
+    if (existingAt(day, hour)) return false;
+    const other = placedAt(day, hour);
+    if (other && other[0] !== taskId) return false;
+    const occ = occupiedSet(taskId);
+    if (occ.has(`${day}-${hour - 1}`) || occ.has(`${day}-${hour + 1}`)) return false;
+    return true;
+  }
+
+  function fmt(h) {
+    if (h === 12) return '12pm';
+    return h < 12 ? `${h}am` : `${h - 12}pm`;
+  }
+
+  function renderCalendar() {
+    const cal = document.getElementById('calendar');
+    cal.innerHTML = '';
+
+    // Header
+    cal.appendChild(document.createElement('div'));
+    for (let d = 0; d < 5; d++) {
+      const h = document.createElement('div');
+      h.className = 'cal-header' + (d === 2 ? ' travel' : '');
+      h.textContent = DAYS[d] + (d === 2 ? ' ✈️' : '');
+      cal.appendChild(h);
+    }
+
+    for (const hour of HOURS) {
+      const tl = document.createElement('div');
+      tl.className = 'time-label';
+      tl.textContent = fmt(hour);
+      cal.appendChild(tl);
+
+      for (let day = 0; day < 5; day++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell';
+
+        const ex = existingAt(day, hour);
+        const placed = placedAt(day, hour);
+
+        if (isBlocked(day, hour)) {
+          cell.classList.add('blocked');
+          if (hour === 12) {
+            cell.classList.add('lunch');
+            if (day !== 2) {
+              const lbl = document.createElement('div');
+              lbl.className = 'cell-label';
+              lbl.style.cssText = 'color:#9ca3af;font-size:0.65rem;';
+              lbl.textContent = 'lunch';
+              cell.appendChild(lbl);
+            }
+          }
+        } else if (ex) {
+          cell.classList.add('existing');
+          const lbl = document.createElement('div');
+          lbl.className = 'cell-label';
+          lbl.style.cssText = 'background:#e0e7ff;color:#3730a3;';
+          lbl.textContent = ex.label;
+          cell.appendChild(lbl);
+        } else if (placed) {
+          const [taskId] = placed;
+          const task = TASKS.find(t => t.id === taskId);
+          const meta = TASK_META[taskId];
+          cell.classList.add('placed-cell');
+          cell.style.background = meta.bg;
+          cell.style.borderColor = meta.border;
+          const lbl = document.createElement('div');
+          lbl.className = 'cell-label';
+          lbl.style.cssText = `color:${meta.text};`;
+          lbl.textContent = task.emoji + ' ' + task.label;
+          cell.appendChild(lbl);
+          if (!submitted) {
+            cell.addEventListener('click', () => {
+              selectedTask = taskId;
+              delete placements[taskId];
+              render();
+            });
+          }
+        } else if (selectedTask) {
+          if (canPlace(day, hour, selectedTask)) {
+            cell.classList.add('available');
+            cell.addEventListener('click', () => {
+              placements[selectedTask] = { day, hour };
+              selectedTask = null;
+              render();
+            });
+          } else {
+            cell.classList.add('unavailable');
+          }
+        } else {
+          cell.addEventListener('click', () => {
+            const flash = document.querySelector(`[data-day="${day}"][data-hour="${hour}"]`);
+          });
+        }
+
+        cell.dataset.day = day;
+        cell.dataset.hour = hour;
+        cal.appendChild(cell);
+      }
+    }
+  }
+
+  function renderTasks() {
+    const list = document.getElementById('task-list');
+    list.innerHTML = '';
+
+    for (const task of TASKS) {
+      const card = document.createElement('div');
+      card.className = 'task-card';
+      const meta = TASK_META[task.id];
+      card.style.borderColor = placements[task.id] ? meta.border : '';
+
+      if (submitted) {
+        const p = placements[task.id];
+        const correct = p && task.validate(p.day, p.hour);
+        card.style.background = correct ? '#f0fdf4' : '#fef2f2';
+        card.style.borderColor = correct ? '#22c55e' : '#ef4444';
+      } else if (selectedTask === task.id) {
+        card.classList.add('selected');
+      } else if (placements[task.id]) {
+        card.classList.add('is-placed');
+        card.style.background = meta.bg;
+      }
+
+      const p = placements[task.id];
+      card.innerHTML = `
+        <div class="task-emoji">${task.emoji}</div>
+        <div class="task-name">${task.label}</div>
+        <div class="task-constraint">${task.constraint}</div>
+        ${p ? `<div class="task-placed-label" style="color:${meta.text}">→ ${DAYS[p.day]} ${fmt(p.hour)} &nbsp;<span style="font-weight:400;color:var(--gray);font-size:0.7rem;">(click to move)</span></div>` : ''}
+      `;
+
+      if (!submitted) {
+        card.addEventListener('click', () => {
+          if (placements[task.id]) {
+            selectedTask = task.id;
+            delete placements[task.id];
+          } else {
+            selectedTask = selectedTask === task.id ? null : task.id;
+          }
+          render();
+        });
+      }
+
+      list.appendChild(card);
+    }
+
+    const placed = Object.keys(placements).length;
+    const remaining = TASKS.length - placed;
+    const btn = document.getElementById('btn-submit');
+    const hint = document.getElementById('submit-hint');
+    btn.disabled = remaining > 0;
+    hint.textContent = remaining > 0
+      ? `${remaining} meeting${remaining !== 1 ? 's' : ''} left to place`
+      : 'Ready — check your schedule!';
+  }
+
+  function render() {
+    renderCalendar();
+    renderTasks();
+  }
+
+  function submitGame() {
+    submitted = true;
+    let correct = 0;
+    const results = [];
+
+    for (const task of TASKS) {
+      const p = placements[task.id];
+      const ok = p && task.validate(p.day, p.hour);
+      if (ok) correct++;
+      results.push({ task, ok, p });
+    }
+
+    const overlay = document.getElementById('overlay');
+    overlay.classList.add('show');
+
+    const emojis = ['😬', '🤔', '👏', '🌟', '🏆'];
+    const titles = ['Rough start.', 'Getting there.', 'Not bad!', 'Nice work!', 'You nailed it!'];
+    const subs = [
+      "Jordan's week is chaos. Review the rules and retry.",
+      "A few slip-ups — Jordan noticed. Try again.",
+      "Solid instincts. One or two tweaks needed.",
+      "Almost perfect. Jordan would approve.",
+      "You clearly know your exec. Now make sure your AI does too."
+    ];
+
+    document.getElementById('score-emoji').textContent = emojis[correct];
+    document.getElementById('score-title').textContent = `${correct}/4 — ${titles[correct]}`;
+    document.getElementById('score-sub').textContent = subs[correct];
+
+    const bd = document.getElementById('score-breakdown');
+    bd.innerHTML = '';
+    for (const { task, ok, p } of results) {
+      const item = document.createElement('div');
+      item.className = 'score-item';
+      item.innerHTML = `
+        <span class="score-icon">${task.emoji}</span>
+        <span class="score-item-label">
+          <strong>${task.label}</strong>
+          <small>${ok ? (p ? `${DAYS[p.day]} ${fmt(p.hour)} ✓` : '') : task.explanation}</small>
+        </span>
+        <span class="score-result ${ok ? 'correct' : 'wrong'}">${ok ? '✓' : '✗'}</span>
+      `;
+      bd.appendChild(item);
+    }
+
+    render();
+  }
+
+  function resetGame() {
+    placements = {};
+    selectedTask = null;
+    submitted = false;
+    document.getElementById('overlay').classList.remove('show');
+    render();
+  }
+
+  render();
+</script>
+</body>
+</html>
