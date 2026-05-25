@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Load Demo Data — GetCarrieAI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      background: #fff; color: #111;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 40px 24px; text-align: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8B2FC9; margin-bottom: 12px; }
+    h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+    p { font-size: 0.92rem; color: #6b7280; line-height: 1.6; max-width: 360px; margin-bottom: 28px; }
+    .btn {
+      padding: 14px 32px; background: #8B2FC9; color: #fff;
+      border: none; border-radius: 32px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background 0.2s; margin-bottom: 12px; display: block;
+    }
+    .btn:hover { background: #6b1fa0; }
+    .btn-clear { background: none; border: 1.5px solid #e5e7eb; color: #6b7280; border-radius: 32px; padding: 10px 24px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .btn-clear:hover { border-color: #ef4444; color: #ef4444; }
+    .note { font-size: 0.78rem; color: #9ca3af; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <p class="eyebrow">GetCarrieAI — Demo</p>
+  <h1>Load demo data</h1>
+  <p>Populates all 5 kit sections with a fictional exec (Marcus Chen, CEO) so you can demo the full briefing flow.</p>
+  <button class="btn" onclick="loadDemo()">Load demo data → open kit</button>
+  <button class="btn-clear" onclick="clearDemo()">Clear demo data</button>
+  <p class="note">This only affects your browser. Nothing is sent anywhere.</p>
+
+<script>
+  function loadDemo() {
+    localStorage.setItem('gcai_kit_executive', `Executive: Marcus Chen, CEO — Veridian Software
+
+COMMUNICATION STYLE
+- Short, direct emails only — bullet points, no preamble
+- Text for urgent, time-sensitive items only
+- Never CC him unless he needs to take action
+- Response windows: board/investors within 2 hrs, direct reports same day, others EOD
+
+CALENDAR RULES
+- No meetings before 9am or after 6pm
+- Lunch (12–1pm) blocked unless it's a pre-arranged business meal
+- Friday after 2pm = protected deep work, no meetings
+- Max 3 back-to-back meetings — always build in a 15-min break after
+- Block the full day before any board meeting for prep
+
+CONTACT TIERS
+- Always interrupt: board members David Park and Sandra Liu, wife Sarah Chen
+- Same-day response: Series B investors, all direct reports
+- Route first: media/press → comms team; legal → Jennifer Walsh (CFO)
+- Decline directly: recruiters, unsolicited vendors, cold outreach
+
+DECLINE SCRIPTS
+- "Marcus's calendar is fully committed — I'll keep your information on file."
+- "He's heads-down on a product milestone right now, not taking new meetings."
+- "That's outside Marcus's current focus areas, but thank you for reaching out."`);
+
+    localStorage.setItem('gcai_kit_team', `DIRECT REPORTS
+- Jennifer Walsh, CFO — finance, legal, ops. Detail-oriented. Email preferred.
+- Raj Patel, CPO — product roadmap. Works closely with Marcus daily. Texts fine.
+- Alex Kim, CTO — engineering. In early, leaves by 5pm. Email preferred.
+- Tom Briggs, VP Sales — revenue, partnerships. Travels frequently. Text for urgency.
+- Maya Torres, Head of HR — people ops. Confidential matters go directly to her.
+
+1:1 SCHEDULE (weekly, recurring)
+- Jennifer Walsh: Tuesday 10am, 30 min
+- Raj Patel: Tuesday 2pm, 45 min
+- Alex Kim: Wednesday 10am, 30 min
+- Tom Briggs: Wednesday 2pm, 30 min
+- Maya Torres: Thursday 11am, 30 min
+
+ALL-HANDS
+- Monthly, first Monday, 10–11am, full company
+
+BOARD
+- David Park (Sequoia, lead investor) — quarterly board meetings + monthly check-ins
+- Sandra Liu (independent director) — prefers written updates, not calls
+- Board meetings: quarterly, always in-person in San Francisco`);
+
+    localStorage.setItem('gcai_kit_travel', `HOME AIRPORT: SFO
+
+AIRLINES
+- United Airlines, 1K status | MileagePlus #: UA12345678
+- Seat: Aisle only — exit row or bulkhead, never middle, never basic economy
+- Direct flights only — no connections unless absolutely unavoidable
+- Known Traveler Number (KTN): TT123456
+
+HOTELS
+- Primary: Marriott (Titanium Elite) | Bonvoy #: 987654321
+- Room: Above 10th floor, quiet side, king bed, away from elevator
+- Backup: Hyatt Globalist | World of Hyatt #: HY567890
+
+GROUND TRANSPORT
+- Uber Black or Lyft Lux only — no shared rides, no UberX
+- Pickup 10 minutes before needed
+- SFO: always Terminal G (United)
+
+LOGISTICS
+- Carry-on only for trips under 4 days
+- Expenses: submit within 5 business days via Expensify
+- International: minimum 3 weeks notice, always verify visa requirements`);
+
+    localStorage.setItem('gcai_kit_food', `DAILY ORDERS
+- Morning coffee: oat milk latte, extra shot, no sugar
+  Starbucks: "Venti oat latte, triple shot, no sweetener"
+- Lunch: eats at desk most days — Sweetgreen, grain bowls, sushi
+- Afternoon: Topo Chico sparkling water, no soda
+
+DIETARY RESTRICTIONS
+- Shellfish allergy — serious. No shrimp, crab, lobster, or scallops. Always confirm with restaurants.
+- Light on red meat — prefers chicken, fish, vegetarian options
+- Otherwise adventurous — no other restrictions
+
+CATERING & TEAM MEALS
+- Board meetings: Gary Danko or equivalent upscale catering
+- Team lunches: Sweetgreen, Chipotle — always include a vegetarian option
+- Always provide: still water, sparkling water, non-dairy milk for coffee
+
+FAVORITE RESTAURANTS (SF)
+- Zuni Café — go-to for business lunches
+- Gary Danko — board dinners and special occasions
+- Cotogna — casual, good for team dinners
+- Bix — cocktails and client entertaining
+
+BOOKING NOTES
+- Always request a quiet table
+- OpenTable name: Marcus Chen
+- Groups over 4: call ahead to confirm`);
+
+    localStorage.setItem('gcai_kit_household', `Here is everything you need to know about Marcus Chen's household.
+
+FAMILY
+- Wife: Sarah Chen — high school history teacher, summers off. Primary contact for all personal coordination.
+- Daughter: Emma Chen, 14 — freshman at Palo Alto High. Soccer on Saturdays. Birthday: July 12.
+- Son: Tyler Chen, 10 — 5th grade, Barron Park Elementary. Baseball Thursdays. Birthday: November 8.
+- Wedding anniversary: September 15.
+
+PROPERTIES
+- Primary home: Palo Alto, CA
+- Lake Tahoe cabin: used most weekends Oct–Mar, occasional summer trips. 3BR, sleeps 8.
+
+HOUSEHOLD STAFF & VENDORS
+- Housekeeper: Maria — every Monday, has a key. Coordinate through Sarah.
+- Landscaper: Green Thumb Co. — bi-weekly, Tuesday mornings
+- Pool service: Blue Wave Pools — weekly, Fridays
+- Handyman: Rick Torres — on-call, (650) 555-0142
+
+MEDICAL
+- Primary care: Dr. Adaeze Okonkwo — Palo Alto Medical Foundation, (650) 555-0190
+- Dentist: Dr. James Lee — (650) 555-0177. Cleanings due June & December.
+- Kids' pediatrician: Dr. Sandra Park — same practice as Dr. Okonkwo
+- Dog: Biscuit, 4-year-old golden retriever. Vet: Palo Alto Animal Hospital, (650) 555-0155. Walker: Jake, M/W/F at noon.
+
+IMPORTANT DATES
+- Sarah's birthday: April 3
+- Emma's birthday: July 12
+- Tyler's birthday: November 8
+- Anniversary: September 15
+
+NOTES
+- Sarah manages household day-to-day — copy her on anything home-related
+- Marcus rarely checks personal email; text Sarah for time-sensitive personal matters
+- Gift preferences: experiences over things — concert tickets, wine, travel`);
+
+    window.location.href = 'kit.html';
+  }
+
+  function clearDemo() {
+    ['executive','team','travel','food','household'].forEach(k => localStorage.removeItem('gcai_kit_' + k));
+    alert('Demo data cleared.');
+  }
+</script>
+</body>
+</html>
