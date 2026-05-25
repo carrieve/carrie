@@ -104,7 +104,7 @@
       flex-shrink: 0;
     }
     .check-icon.complete { background: var(--green); color: #fff; }
-    .check-icon.pending { background: #f3f4f6; color: #9ca3af; border: 1.5px dashed #d1d5db; }
+    .check-icon.pending { background: #f3f4f6; color: #9ca3af; border: 1.5px dashed #d1d5db; font-size: 1rem; }
 
     .check-body { flex: 1; }
     .check-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
@@ -308,7 +308,7 @@
 <div class="hero">
   <p class="eyebrow">GetCarrieAI</p>
   <h1 id="kit-title">Your EA briefing kit</h1>
-  <p class="subhead" id="kit-subhead">Complete the forms below, then copy your full briefing and paste it into your AI — once.</p>
+  <p class="subhead" id="kit-subhead">Fill in what you know now, in any order — your briefing builds as you go. Start with one section, copy it, and come back to add more anytime.</p>
 </div>
 
 <div class="kit-progress">
@@ -362,14 +362,10 @@
 </div>
 
 <div class="copy-section">
-  <div id="empty-state" class="empty-state">
-    <p>Fill out each form in order. Every section you complete gets added to your briefing automatically — copy it all at the end in one paste.</p>
-    <a href="executive_form.html" class="btn-primary">Start with Step 1 — Executive profile →</a>
-  </div>
-
   <div id="briefing-ready" style="display:none;">
     <h2>Your full briefing</h2>
     <p class="desc">Copy this and paste it into your AI — once. Every conversation will already know your executive.</p>
+    <p id="partial-note" style="font-size:0.85rem;color:#6b7280;margin-bottom:20px;display:none;"></p>
 
     <div id="save-instructions"></div>
 
@@ -382,6 +378,7 @@
       </div>
     </div>
     <p id="copy-nudge">Copied! Now paste it into the platform you picked above ↑</p>
+    <p id="recopy-note" style="display:none;font-size:0.85rem;color:#6b7280;margin-top:16px;line-height:1.6;">Added a new section since last time? Re-copy your briefing and update your AI memory — it takes 30 seconds.</p>
   </div>
 </div>
 
@@ -395,11 +392,11 @@
 <script src="save-instructions.js"></script>
 <script>
   const SECTIONS = [
-    { key: 'executive', label: 'Executive profile' },
-    { key: 'team',      label: 'Team & org chart' },
-    { key: 'travel',    label: 'Travel preferences' },
-    { key: 'food',      label: 'Food & coffee' },
-    { key: 'household', label: 'Household manual' },
+    { key: 'executive', label: 'Executive profile',  icon: '👤' },
+    { key: 'team',      label: 'Team & org chart',   icon: '👥' },
+    { key: 'travel',    label: 'Travel preferences', icon: '✈️' },
+    { key: 'food',      label: 'Food & coffee',      icon: '☕' },
+    { key: 'household', label: 'Household manual',   icon: '🏠' },
   ];
 
   function buildBriefing() {
@@ -422,7 +419,7 @@
       const icon = document.getElementById('icon-' + s.key);
       icon.classList.toggle('complete', done);
       icon.classList.toggle('pending', !done);
-      icon.textContent = done ? '✓' : SECTIONS.indexOf(s) + 1;
+      icon.textContent = done ? '✓' : s.icon;
       document.getElementById('action-' + s.key).textContent = done ? 'Edit →' : 'Start →';
     }
 
@@ -433,14 +430,25 @@
     const briefing = buildBriefing();
     const isEmpty = !briefing;
 
-    document.getElementById('empty-state').style.display = isEmpty ? 'block' : 'none';
     document.getElementById('briefing-ready').style.display = isEmpty ? 'none' : 'block';
+
+    const partialNote = document.getElementById('partial-note');
+    if (!isEmpty && complete < SECTIONS.length) {
+      partialNote.textContent = `You have ${complete} of 5 sections — already useful. Add the rest anytime.`;
+      partialNote.style.display = 'block';
+    } else {
+      partialNote.style.display = 'none';
+    }
 
     if (!isEmpty) {
       document.getElementById('briefing-output').value = briefing;
+      document.getElementById('recopy-note').style.display = complete < SECTIONS.length ? 'block' : 'none';
       if (complete === SECTIONS.length) {
         document.getElementById('kit-title').textContent = 'Your briefing is complete.';
         document.getElementById('kit-subhead').textContent = 'Copy your full briefing below and paste it into your AI — once.';
+      } else {
+        document.getElementById('kit-title').textContent = 'Welcome back.';
+        document.getElementById('kit-subhead').textContent = `You have ${complete} of 5 sections saved — your progress is right here. Pick up where you left off.`;
       }
     }
   }
