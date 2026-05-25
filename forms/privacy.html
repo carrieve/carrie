@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GetCarrieAI — Privacy Policy</title>
+  <title>Privacy & Data — GetCarrieAI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --purple: #8B2FC9; --black: #111; --gray: #6b7280; --border: #e5e7eb; }
@@ -21,56 +21,84 @@
     h2 { font-size: 1.1rem; font-weight: 700; margin: 36px 0 10px; }
     p { margin-bottom: 14px; color: #333; }
     ul { padding-left: 20px; margin-bottom: 14px; color: #333; }
-    ul li { margin-bottom: 6px; }
+    ul li { margin-bottom: 8px; }
     .highlight {
       background: #f3e8ff; border-left: 3px solid var(--purple);
       padding: 14px 18px; border-radius: 0 10px 10px 0;
       margin: 24px 0; font-size: 0.95rem;
     }
+    .warning {
+      background: #fffbeb; border-left: 3px solid #f59e0b;
+      padding: 14px 18px; border-radius: 0 10px 10px 0;
+      margin: 24px 0; font-size: 0.92rem; color: #78350f;
+    }
+    .warning strong { display: block; margin-bottom: 4px; }
+    .platform-list { margin: 16px 0; }
+    .platform-list li { margin-bottom: 10px; }
+    .platform-list a { color: var(--purple); }
     footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--gray); font-size: 0.85rem; }
+    code { font-family: monospace; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
   </style>
 </head>
 <body>
   <a href="index.html" class="logo">← GetCarrieAI</a>
 
-  <h1>Privacy Policy</h1>
-  <p class="date">Last updated: May 21, 2026</p>
+  <h1>Privacy & Data</h1>
+  <p class="date">Last updated: May 25, 2026</p>
 
   <div class="highlight">
-    The short version: your profile data stays on your device. We don't store it on our servers. When you talk to Carrie, your messages go to Anthropic's API and are subject to their privacy policy.
+    <strong>The short version:</strong> Everything you type stays in your browser. We have no servers, no accounts, no database. GetCarrieAI never sees your data. When you copy your briefing and paste it into an AI platform, that data goes to that platform — and their privacy policy governs it from that point on.
   </div>
 
-  <h2>What we collect</h2>
-  <p>When you use GetCarrieAI, here's what happens with your information:</p>
+  <h2>What stays in your browser</h2>
+  <p>The EA Briefing Kit stores everything you enter in your browser's local storage — a private area on your device, not accessible to us or anyone else on the internet. Nothing is transmitted to GetCarrieAI servers (we don't have any).</p>
+  <p>The five local storage keys used:</p>
   <ul>
-    <li><strong>Profile data you enter during onboarding</strong> — name, preferences, travel details, communication style — is built into a JSON file entirely in your browser. It is never sent to our servers. You download it and keep it.</li>
-    <li><strong>Conversation messages</strong> — when you type or speak to Carrie on this site, your messages are sent to Anthropic's API (api.anthropic.com) via our serverless function. We do not log, store, or read your conversation content.</li>
-    <li><strong>Email address</strong> — if you sign up for our mailing list, your email is stored by Netlify Forms. We use it only to send product updates. You can unsubscribe at any time.</li>
+    <li><code>gcai_kit_executive</code> — exec profile, calendar rules, communication style</li>
+    <li><code>gcai_kit_team</code> — org chart, direct reports, review cycles</li>
+    <li><code>gcai_kit_travel</code> — airlines, hotels, loyalty numbers, seat preferences</li>
+    <li><code>gcai_kit_food</code> — daily orders, dietary restrictions, restaurants</li>
+    <li><code>gcai_kit_household</code> — family, properties, vendors, medical contacts</li>
   </ul>
+  <p>This data persists until you clear it using the "Clear kit" button or clear your browser's site data. It does not sync across devices or browsers.</p>
 
-  <h2>What we do NOT collect</h2>
-  <ul>
-    <li>We do not store your profile data on any server</li>
-    <li>We do not read or log your conversations with Carrie</li>
-    <li>We do not sell data to third parties</li>
-    <li>We do not use tracking pixels or behavioral advertising</li>
-    <li>We do not collect passport numbers or government ID — this feature is disabled until further notice</li>
+  <h2>What leaves your device — and where it goes</h2>
+  <p>When you click "Copy full briefing" and paste it into an AI platform, that text leaves your device and goes to that platform's servers. GetCarrieAI is not involved in that transfer in any way.</p>
+  <p>Depending on which platform you use, your briefing is governed by:</p>
+  <ul class="platform-list">
+    <li><strong>Claude (Anthropic)</strong> — <a href="https://www.anthropic.com/privacy" target="_blank">anthropic.com/privacy</a></li>
+    <li><strong>ChatGPT (OpenAI)</strong> — <a href="https://openai.com/policies/privacy-policy" target="_blank">openai.com/policies/privacy-policy</a></li>
+    <li><strong>Gemini (Google)</strong> — <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></li>
+    <li><strong>Grok (xAI)</strong> — <a href="https://x.ai/privacy" target="_blank">x.ai/privacy</a></li>
+    <li><strong>Copilot (Microsoft)</strong> — <a href="https://privacy.microsoft.com" target="_blank">privacy.microsoft.com</a></li>
   </ul>
+  <p>We recommend reviewing your chosen platform's data retention and training policies before pasting sensitive information.</p>
 
-  <h2>Your profile file</h2>
-  <p>Your profile is a JSON file that lives on your device. You control it completely — you can read it, edit it, delete it, or upload it to Claude.ai. When you upload it to a Claude Project, it is governed by <a href="https://www.anthropic.com/privacy" target="_blank" style="color:var(--purple)">Anthropic's Privacy Policy</a>.</p>
+  <div class="warning">
+    <strong>A note on sensitive data</strong>
+    The Household Manual section may contain deeply personal information — family members' names and schedules, home addresses, medical contacts, and financial advisors. The Travel section may contain loyalty numbers and Known Traveler Numbers. Be thoughtful about what you include and which AI platform you share it with. Consumer AI accounts are personal accounts — if that account were compromised, this information would be exposed.
+  </div>
 
-  <h2>Anthropic API</h2>
-  <p>Conversations on this site use the Anthropic API. Your messages are processed by Anthropic in accordance with their <a href="https://www.anthropic.com/privacy" target="_blank" style="color:var(--purple)">Privacy Policy</a> and <a href="https://www.anthropic.com/legal/usage-policy" target="_blank" style="color:var(--purple)">Usage Policy</a>. We pass your messages to their API and return the response — nothing more.</p>
+  <h2>Using GetCarrieAI at work</h2>
+  <p>If you're using GetCarrieAI to support an executive at a company, be aware that pasting executive or company information into a consumer AI platform may conflict with your company's data security or acceptable use policies — particularly in regulated industries like finance, healthcare, or legal.</p>
+  <p>If your company has an IT or security team, check with them before using consumer AI tools with work-related information. Many enterprises have approved AI tools with business-grade data agreements. Your company's approved AI platform is always the right choice when one exists.</p>
 
-  <h2>Cookies and local storage</h2>
-  <p>We use browser local storage only to remember your voice preference (on/off). We do not use cookies for tracking or advertising.</p>
+  <h2>How to delete your data</h2>
+  <p>To remove all saved data from your browser, go to the <a href="kit.html" style="color:var(--purple)">Briefing Kit</a> and click <strong>Clear kit</strong> at the bottom of the page. This permanently removes all five sections from your browser's local storage.</p>
+  <p>You can also clear it manually: in your browser settings, find "Site data" or "Local storage" for getcarrieai.com and delete it. This has the same effect.</p>
+  <p>GetCarrieAI has no record of your data to delete on your behalf — because we never had it.</p>
+
+  <h2>Device and browser security</h2>
+  <p>Because your data lives in your browser, anyone with access to your device and browser profile can read it. If you share a computer or use a shared browser profile, consider clearing your kit when you're done, or using a private/incognito window (note: private windows don't persist local storage between sessions).</p>
+
+  <h2>What GetCarrieAI does collect</h2>
+  <p>We collect almost nothing. The site is hosted on Netlify, which may log standard web server data (IP addresses, page requests, timestamps) for security and reliability purposes. We do not use analytics tracking, advertising pixels, or cookies. We do not have user accounts.</p>
 
   <h2>Children</h2>
   <p>GetCarrieAI is not intended for children under 13. We do not knowingly collect information from children.</p>
 
   <h2>Changes to this policy</h2>
-  <p>If we make material changes, we'll update the date at the top of this page. Continued use of the site after changes constitutes acceptance.</p>
+  <p>If we make material changes, we'll update the date at the top of this page.</p>
 
   <h2>Contact</h2>
   <p>Questions? Reach out via <a href="https://www.linkedin.com/in/carrievanepps" target="_blank" style="color:var(--purple)">LinkedIn</a>.</p>
