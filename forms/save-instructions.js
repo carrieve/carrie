@@ -38,19 +38,11 @@
 
       <div class="si-content si-active" id="si-claude">
         <div class="si-steps">
-          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → profile icon → <strong>Settings → Memory</strong> → turn it on</span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Copy your prompt below → open a new chat → paste it → say: <em>"Please remember all of this about my executive."</em></span></div>
-          <div class="si-step"><span class="si-num">3</span><span class="si-text">Done — Claude recalls it automatically in every future chat</span></div>
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong></span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
+          <div class="si-step"><span class="si-num">3</span><span class="si-text">Start every chat from inside that project — Claude already knows your executive</span></div>
         </div>
-        <button class="si-toggle" onclick="var p=this.nextElementSibling;p.style.display=p.style.display==='none'?'block':'none';this.textContent=this.textContent.includes('↓')?'Hide Claude Projects ↑':'Prefer Claude Projects? ↓'">Prefer Claude Projects? ↓</button>
-        <div class="si-secondary" style="display:none;">
-          <div class="si-steps">
-            <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → <strong>Projects</strong> → <strong>New Project</strong></span></div>
-            <div class="si-step"><span class="si-num">2</span><span class="si-text">Find <strong>Add instructions</strong> — paste your prompt there and save</span></div>
-            <div class="si-step"><span class="si-num">3</span><span class="si-text">Always start chats from inside that project</span></div>
-          </div>
-          <p class="si-tip">⚠️ Use <strong>Add instructions</strong> — not the chat box. Only the instructions field saves permanently.</p>
-        </div>
+        <p class="si-tip">⚠️ Paste into <strong>Add instructions</strong> — not the chat box. The chat box only lasts one conversation. Instructions stick permanently.</p>
       </div>
 
       <div class="si-content" id="si-chatgpt">
