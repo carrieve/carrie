@@ -91,6 +91,7 @@
       </ol>
     </div>
     <div class="output-box" id="output-box"></div>
+    <div id="save-instructions" style="margin:16px 0;"></div>
     <div class="output-actions">
       <button class="btn-copy" id="copy-btn" onclick="copyOutput()">Copy prompt</button>
       <button class="btn-reset" onclick="resetForm()">Start over</button>
@@ -172,5 +173,6 @@ Output ONLY the prompt — no intro, no explanation, just the prompt text.`,
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
+<script src="save-instructions.js"></script>
 </body>
 </html>
