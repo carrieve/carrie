@@ -29,16 +29,28 @@
     <div class="si-wrap">
       <p class="si-heading">Step 1 — Pick where to save it. <span>Do this once and your AI always knows.</span></p>
       <div class="si-tabs">
-        <button class="si-tab si-active" onclick="siTab('claude',this)">🟠 Claude</button>
+        <button class="si-tab si-active" onclick="siTab('cowork',this)">⭐ Claude CoWork</button>
+        <button class="si-tab" onclick="siTab('claude',this)">🟠 Claude</button>
         <button class="si-tab" onclick="siTab('chatgpt',this)">🟢 ChatGPT</button>
         <button class="si-tab" onclick="siTab('gemini',this)">🔵 Gemini</button>
         <button class="si-tab" onclick="siTab('grok',this)">⚫ Grok</button>
         <button class="si-tab" onclick="siTab('copilot',this)">🟣 Copilot</button>
       </div>
 
-      <div class="si-content si-active" id="si-claude">
+      <div class="si-content si-active" id="si-cowork">
         <div class="si-steps">
-          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong></span></div>
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Open <a href="https://claude.ai" target="_blank">claude.ai</a> → click the <strong>Cowork</strong> tab at the top</span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong> → name it (e.g. "Executive Support") → <strong>Continue</strong></span></div>
+          <div class="si-step"><span class="si-num">3</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
+          <div class="si-step"><span class="si-num">4</span><span class="si-text">In the sidebar click <strong>Customize</strong> → connect <strong>Google Calendar</strong> and <strong>Gmail</strong> for maximum power</span></div>
+          <div class="si-step"><span class="si-num">5</span><span class="si-text">Start every task from inside that project — CoWork already knows your executive</span></div>
+        </div>
+        <p class="si-tip">⭐ <strong>CoWork is the most powerful option.</strong> With Google Calendar and Gmail connected, your AI can check your exec's schedule, draft emails in your voice, and manage tasks — all with the briefing as its foundation. Requires Claude Pro.</p>
+      </div>
+
+      <div class="si-content" id="si-claude">
+        <div class="si-steps">
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → <strong>Chat</strong> tab → click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong></span></div>
           <div class="si-step"><span class="si-num">2</span><span class="si-text">Give the project a name (e.g. "My Executive") → click <strong>Continue</strong></span></div>
           <div class="si-step"><span class="si-num">3</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
           <div class="si-step"><span class="si-num">4</span><span class="si-text">Start every chat from inside that project — Claude already knows your executive</span></div>
