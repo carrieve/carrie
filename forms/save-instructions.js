@@ -42,10 +42,10 @@
           <div class="si-step"><span class="si-num">1</span><span class="si-text">Open <a href="https://claude.ai" target="_blank">claude.ai</a> → click the <strong>Cowork</strong> tab at the top</span></div>
           <div class="si-step"><span class="si-num">2</span><span class="si-text">Click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong> → name it (e.g. "Executive Support") → <strong>Continue</strong></span></div>
           <div class="si-step"><span class="si-num">3</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
-          <div class="si-step"><span class="si-num">4</span><span class="si-text">In the sidebar click <strong>Customize</strong> → connect <strong>Google Calendar</strong> and <strong>Gmail</strong> for maximum power</span></div>
-          <div class="si-step"><span class="si-num">5</span><span class="si-text">Start every task from inside that project — CoWork already knows your executive</span></div>
+          <div class="si-step"><span class="si-num">4</span><span class="si-text">Click <strong>Live artifacts</strong> in the left sidebar → start a new session and ask Claude to build you a live dashboard for your executive's day</span></div>
+          <div class="si-step"><span class="si-num">5</span><span class="si-text">Connect <strong>Gmail</strong>, <strong>Google Calendar</strong>, and <strong>Google Drive</strong> as connectors — your dashboard will pull fresh data every time you open it</span></div>
         </div>
-        <p class="si-tip">⭐ <strong>CoWork is the most powerful option.</strong> With Google Calendar and Gmail connected, your AI can check your exec's schedule, draft emails in your voice, and manage tasks — all with the briefing as its foundation. Requires Claude Pro.</p>
+        <p class="si-tip">⭐ <strong>CoWork is the most powerful option.</strong> Live artifacts are self-refreshing dashboards — your exec's calendar, emails, and tasks, always up to date. Not a snapshot from last Tuesday. Requires Claude Pro.</p>
       </div>
 
       <div class="si-content" id="si-claude">
