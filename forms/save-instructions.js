@@ -48,32 +48,36 @@
 
       <div class="si-content" id="si-chatgpt">
         <div class="si-steps">
-          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> → profile icon → <strong>Settings → Personalization → Custom Instructions</strong></span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your prompt into the top box → save</span></div>
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> → click your profile icon → <strong>Customize ChatGPT</strong></span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">In the first box — <em>"What would you like ChatGPT to know about you?"</em> — paste your briefing → save</span></div>
           <div class="si-step"><span class="si-num">3</span><span class="si-text">Applies to every new chat automatically</span></div>
         </div>
+        <p class="si-tip">💡 Use the <strong>first box</strong>, not the second. The second box is for response style, not context.</p>
       </div>
 
       <div class="si-content" id="si-gemini">
         <div class="si-steps">
-          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → <strong>Gems</strong> → <strong>New Gem</strong></span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your prompt into the instructions box → save</span></div>
-          <div class="si-step"><span class="si-num">3</span><span class="si-text">Open that Gem any time — it knows your executive</span></div>
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → click <strong>Gem manager</strong> in the left sidebar → <strong>New gem</strong></span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Give it a name (e.g. "My Executive") → paste your briefing into the instructions box → save</span></div>
+          <div class="si-step"><span class="si-num">3</span><span class="si-text">Open that Gem any time — it already knows your executive</span></div>
         </div>
       </div>
 
       <div class="si-content" id="si-grok">
         <div class="si-steps">
-          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://grok.com" target="_blank">grok.com</a> → <strong>Settings → Custom Instructions</strong></span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your prompt → save</span></div>
+          <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://grok.com" target="_blank">grok.com</a> → click the <strong>three-dot menu</strong> or your profile → <strong>Settings → Memory</strong></span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your briefing → save</span></div>
+          <div class="si-step"><span class="si-num">3</span><span class="si-text">Grok will reference it in future conversations</span></div>
         </div>
+        <p class="si-tip">⚠️ Grok's settings update frequently — if you don't see Memory, look for <strong>Custom Instructions</strong> or <strong>Personalization</strong> in the same menu.</p>
       </div>
 
       <div class="si-content" id="si-copilot">
         <div class="si-steps">
           <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a> → start a new chat</span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your prompt and say: <em>"This is my executive's profile — refer to it whenever you help me."</em></span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Paste your briefing and say: <em>"This is my executive's profile — refer to it whenever you help me."</em></span></div>
         </div>
+        <p class="si-tip">⚠️ Copilot doesn't save instructions permanently across sessions. You'll need to paste the briefing at the start of each new conversation. If your company uses <strong>Microsoft 365 Copilot</strong>, ask your IT team about persistent memory options.</p>
       </div>
     </div>
   `;
