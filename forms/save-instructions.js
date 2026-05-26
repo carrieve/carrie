@@ -39,8 +39,9 @@
       <div class="si-content si-active" id="si-claude">
         <div class="si-steps">
           <div class="si-step"><span class="si-num">1</span><span class="si-text">Go to <a href="https://claude.ai" target="_blank">claude.ai</a> → click <strong>Projects</strong> in the left sidebar → <strong>New Project</strong></span></div>
-          <div class="si-step"><span class="si-num">2</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
-          <div class="si-step"><span class="si-num">3</span><span class="si-text">Start every chat from inside that project — Claude already knows your executive</span></div>
+          <div class="si-step"><span class="si-num">2</span><span class="si-text">Give the project a name (e.g. "My Executive") → click <strong>Continue</strong></span></div>
+          <div class="si-step"><span class="si-num">3</span><span class="si-text">Click <strong>Add instructions</strong> → paste your briefing → save</span></div>
+          <div class="si-step"><span class="si-num">4</span><span class="si-text">Start every chat from inside that project — Claude already knows your executive</span></div>
         </div>
         <p class="si-tip">⚠️ Paste into <strong>Add instructions</strong> — not the chat box. The chat box only lasts one conversation. Instructions stick permanently.</p>
       </div>
