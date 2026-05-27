@@ -728,15 +728,10 @@
 
     const _download = () => {
       window._lastProfile = data;
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const displayName = data.preferred_name || (data.name || 'traveler').split(' ')[0];
-      const safeName = displayName.toLowerCase().replace(/\s+/g, '_');
-      a.href = url;
-      a.download = `${safeName}_travel_profile.json`;
-      a.click();
-      showToast(`Saved! Head back to your kit page to copy the full briefing when you're done.`, 'success');
+      localStorage.setItem('gcai_kit_travel', JSON.stringify(data, null, 2));
+      document.getElementById('copy-chat-section').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('copy-chat-section').offsetTop - 20, behavior: 'smooth' });
+      showToast('Travel profile saved to your kit!', 'success');
     };
 
     try {
@@ -746,8 +741,7 @@
         body: JSON.stringify(data),
       });
       if (res.ok) {
-        showToast('Profile saved successfully!', 'success');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        _download();
       } else {
         _download();
       }
