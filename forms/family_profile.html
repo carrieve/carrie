@@ -65,14 +65,15 @@
   <h1>🏠 Household Manual</h1>
   <p class="subtitle">Brain dump your executive's household — family, properties, vendors, medical contacts, important dates. Your AI will know the full picture so you can support them beyond the office.</p>
 
-  <div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:0.84rem;color:#78350f;line-height:1.6;">
-    <strong>Heads up — this section contains sensitive personal information.</strong> Family names, home addresses, medical contacts, and vendor details are the kind of data that should only go into AI platforms you trust. Use your company's approved AI tool if you have one, and only include details your executive has agreed to share. <a href="privacy.html" style="color:#92400e;font-weight:600;">How your data is handled →</a>
+  <div style="background:#f0f7ff;border:1px solid #d0e8ff;border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:0.84rem;color:#1e3a5f;line-height:1.6;">
+    <strong>Sensitive section.</strong> Only include details your executive has agreed to share, and use your company's approved AI platform. <a href="privacy.html" style="color:#0071e3;font-weight:600;">How your data is handled →</a>
   </div>
 
   <div class="card" id="input-card">
     <label>Tell me about your executive's household</label>
     <textarea id="brain-dump" rows="9" placeholder="e.g. Marcus has two kids — Emma (14) and Tyler (10). Wife Sarah is a teacher, off summers. They have a housekeeper Maria on Mondays and a lake house in Tahoe used most weekends Oct–Mar. Primary care is Dr. Okonkwo at Palo Alto Medical. Important dates: Sarah's birthday April 3, anniversary September 15. Marcus has a golden retriever named Biscuit — dog walker Jake comes M/W/F. He prefers experiences as gifts (concerts, wine, travel)."></textarea>
     <button class="btn-generate" id="generate-btn" onclick="generatePrompt()">Build my household prompt →</button>
+    <p style="text-align:center;font-size:0.82rem;color:#6b7280;margin-top:10px;">Your formatted prompt will appear below — then pick where to save it.</p>
   </div>
 
   <div class="loading" id="loading">
