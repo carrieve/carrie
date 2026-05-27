@@ -91,7 +91,6 @@
       </ol>
     </div>
     <div class="output-box" id="output-box"></div>
-    <div id="save-instructions" style="margin:16px 0;"></div>
     <div class="output-actions">
       <button class="btn-copy" id="copy-btn" onclick="copyOutput()">Copy prompt</button>
       <button class="btn-reset" onclick="resetForm()">Start over</button>
@@ -102,6 +101,7 @@
     </div>
   </div>
 
+  <div id="save-instructions" style="display:none;margin:16px 0;"></div>
   <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
 </div>
 
@@ -142,6 +142,7 @@ Output ONLY the prompt — no intro, no explanation, just the prompt text.`,
       document.getElementById('output-box').textContent = data.content;
       document.getElementById('loading').classList.remove('visible');
       document.getElementById('output-section').classList.add('visible');
+      document.getElementById('save-instructions').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       document.getElementById('loading').classList.remove('visible');
@@ -167,6 +168,7 @@ Output ONLY the prompt — no intro, no explanation, just the prompt text.`,
 
   function resetForm() {
     document.getElementById('output-section').classList.remove('visible');
+    document.getElementById('save-instructions').style.display = 'none';
     document.getElementById('output-box').textContent = '';
     document.getElementById('input-card').style.display = 'block';
     document.getElementById('generate-btn').disabled = false;
