@@ -22,16 +22,32 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* NAV */
+    .top-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .top-nav-inner {
+      max-width: 640px; margin: 0 auto; padding: 0 24px;
+      height: 54px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-weight: 800; font-size: 0.95rem; color: var(--purple); text-decoration: none; }
+    .nav-back { font-size: 0.82rem; color: var(--gray); text-decoration: none; }
+    .nav-back:hover { color: var(--purple); }
+
     .hero {
-      min-height: 40vh;
+      min-height: 36vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 24px 40px;
+      padding: 52px 24px 36px;
       max-width: 640px;
       margin: 0 auto;
+      background: linear-gradient(180deg, #faf5ff 0%, #fff 70%);
     }
 
     .eyebrow {
@@ -66,12 +82,18 @@
     }
 
     .progress-label {
-      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--gray);
-      margin-bottom: 14px;
+      letter-spacing: 0.06em;
+      color: var(--purple-dark);
+      background: var(--purple-light);
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 16px;
     }
 
     .checklist {
@@ -84,27 +106,34 @@
     .check-item {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
+      gap: 16px;
+      padding: 16px 20px;
       border: 1.5px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
       color: var(--black);
-      transition: border-color 0.15s;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
     }
     .check-item.done { border-color: var(--green); background: #f0fdf4; }
-    .check-item:hover { border-color: var(--purple); }
+    .check-item:hover { border-color: var(--purple); box-shadow: 0 4px 16px rgba(139,47,201,0.12); transform: translateY(-1px); }
 
     .check-icon {
-      width: 28px; height: 28px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem;
+      font-size: 1.2rem;
       font-weight: 800;
       flex-shrink: 0;
     }
-    .check-icon.complete { background: var(--green); color: #fff; }
-    .check-icon.pending { background: #f3f4f6; color: #9ca3af; border: 1.5px dashed #d1d5db; font-size: 1rem; }
+    .check-icon.complete { background: var(--green); color: #fff; font-size: 1rem; }
+    /* Per-section icon colors */
+    .icon-executive { background: #f3e8ff; }
+    .icon-team      { background: #dbeafe; }
+    .icon-travel    { background: #fff7ed; }
+    .icon-food      { background: #dcfce7; }
+    .icon-household { background: #fce7f3; }
 
     .check-body { flex: 1; }
     .check-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
@@ -305,18 +334,28 @@
 </head>
 <body>
 
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="index.html" class="nav-logo">GetCarrieAI</a>
+    <a href="index.html" class="nav-back">← Home</a>
+  </div>
+</nav>
+
 <div class="hero">
   <p class="eyebrow">GetCarrieAI</p>
   <h1 id="kit-title">Your EA briefing kit</h1>
   <p class="subhead" id="kit-subhead">Fill in what you know now, in any order — your briefing builds as you go. Start with one section, copy it, and come back to add more anytime.</p>
 </div>
 
-<div style="max-width:640px;margin:0 auto 8px;padding:0 24px;">
-  <p style="font-size:0.88rem;font-weight:600;color:#374151;line-height:1.6;">
-    🔒 Everything stays in your browser — we have no servers and never see your data.
-    When you paste your briefing into an AI, that platform's privacy policy applies.
-    <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;font-weight:700;">Learn more →</a>
-  </p>
+<div style="max-width:640px;margin:0 auto 16px;padding:0 24px;">
+  <div style="display:flex;align-items:flex-start;gap:10px;background:#f8f4ff;border:1px solid #e9d5ff;border-radius:12px;padding:12px 16px;">
+    <span style="font-size:1rem;flex-shrink:0;margin-top:1px;">🔒</span>
+    <p style="font-size:0.84rem;color:#374151;line-height:1.55;">
+      Everything stays in your browser — we have no servers and never see your data.
+      When you paste into an AI, that platform's privacy policy applies.
+      <a href="privacy.html" style="color:var(--purple);text-decoration:none;font-weight:700;">Learn more →</a>
+    </p>
+  </div>
 </div>
 
 <div class="kit-progress">
@@ -425,8 +464,7 @@
       if (done) complete++;
       document.getElementById('check-' + s.key).classList.toggle('done', done);
       const icon = document.getElementById('icon-' + s.key);
-      icon.classList.toggle('complete', done);
-      icon.classList.toggle('pending', !done);
+      icon.className = done ? 'check-icon complete' : `check-icon icon-${s.key}`;
       icon.textContent = done ? '✓' : s.icon;
       document.getElementById('action-' + s.key).textContent = done ? 'Edit →' : 'Start →';
     }
