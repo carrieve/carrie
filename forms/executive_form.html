@@ -9,13 +9,13 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-      background: #f5f5f7;
+      background: #fff;
       color: #1d1d1f;
-      padding: 48px 20px 80px;
+      padding: 0 20px 80px;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container { max-width: 640px; margin: 0 auto; }
+    .container { max-width: 640px; margin: 0 auto; padding-top: 40px; }
 
     .page-header { margin-bottom: 48px; }
     .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
@@ -70,7 +70,7 @@
       transition: border-color 0.2s;
       -webkit-appearance: none;
     }
-    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    input:focus, select:focus, textarea:focus { border-color: #8B2FC9; }
     textarea { min-height: 90px; resize: none; line-height: 1.55; }
 
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -88,11 +88,11 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+    .chip.selected { border-color: #8B2FC9; background: #8B2FC9; color: #fff; }
 
     /* Notice */
     .notice {
-      background: #f0f7ff;
+      background: #f3e8ff;
       border-radius: 14px;
       padding: 16px 18px;
       font-size: 0.85rem;
@@ -100,15 +100,15 @@
       line-height: 1.6;
       margin-top: 8px;
     }
-    .notice strong { color: #0071e3; }
-    .notice a { color: #0071e3; text-decoration: none; }
+    .notice strong { color: #8B2FC9; }
+    .notice a { color: #8B2FC9; text-decoration: none; }
 
     /* Submit */
     .submit-section { margin-top: 8px; }
     .btn-download {
       width: 100%;
       padding: 18px;
-      background: #0071e3;
+      background: #8B2FC9;
       color: #fff;
       border: none;
       border-radius: 14px;
@@ -118,7 +118,7 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
     }
-    .btn-download:hover { background: #0077ed; }
+    .btn-download:hover { background: #7a28b8; }
     .btn-download:active { transform: scale(0.99); }
 
     .success-msg { display: none; text-align: center; padding: 40px 20px; }
@@ -132,7 +132,7 @@
     .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
     .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
     .success-msg .steps {
-      background: #f0f7ff;
+      background: #f3e8ff;
       border-radius: 14px;
       padding: 18px 20px;
       font-size: 0.85rem;
@@ -140,9 +140,9 @@
       line-height: 1.9;
       text-align: left;
     }
-    .success-msg .steps a { color: #0071e3; text-decoration: none; }
+    .success-msg .steps a { color: #8B2FC9; text-decoration: none; }
 
-    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+    .back-link { display: block; text-align: center; color: #8B2FC9; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
 
     @media (max-width: 600px) {
       body { padding: 40px 16px 80px; }
@@ -155,10 +155,19 @@
   </style>
 </head>
 <body>
+
+<nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:680px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="index.html" style="font-weight:800;font-size:0.95rem;color:#8B2FC9;text-decoration:none;">GetCarrieAI</a>
+    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Back to kit</a>
+  </div>
+</nav>
+
 <div class="container">
 
   <div class="page-header">
-    <h1>Executive Profile 💼</h1>
+    <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8B2FC9;margin-bottom:16px;">GetCarrieAI</p>
+    <h1>Executive Profile</h1>
     <p>Fill this out once for each executive you support. Your AI will know exactly how they work, how they communicate, and what they care about — so you always have instant answers.</p>
     <p class="subtitle">All fields except the executive's name are optional.</p>
   </div>
@@ -502,7 +511,7 @@
     </div>
     <a href="kit.html" class="back-link">← Back to briefing kit</a>
   </div>
-        <div style="background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
+        <div style="background:#f0f7ff; border:1px solid #e9d5ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
       <div id="save-instructions"></div>
       <p style="font-size:0.84rem;font-weight:700;margin-bottom:8px;">Step 2 — Copy your prompt</p>
       <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9; color:#fff; border:none; border-radius:980px; padding:12px 24px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit;">📋 Copy prompt</button>
@@ -512,6 +521,13 @@
 </div>
 
 <script src="save-instructions.js"></script>
+
+<footer style="border-top:1px solid #e5e7eb;padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;margin-top:20px;">
+  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Back to kit</a> &nbsp;·&nbsp;
+  <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html" style="color:#8B2FC9;text-decoration:none;">Terms</a>
+</footer>
+
 <script>
   const selections = {};
 

@@ -17,12 +17,9 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
       background: #fff; color: var(--black); min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center;
-      padding: 40px 24px 80px; -webkit-font-smoothing: antialiased;
+      -webkit-font-smoothing: antialiased;
     }
-    .container { max-width: 620px; width: 100%; }
-    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .logo { font-weight: 700; font-size: 1rem; color: var(--purple); text-decoration: none; }
+    .container { max-width: 620px; width: 100%; margin: 0 auto; padding: 40px 24px 80px; }
     h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
     .subtitle { font-size: 0.95rem; color: var(--gray); line-height: 1.6; margin-bottom: 32px; }
     .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 28px; margin-bottom: 16px; }
@@ -57,16 +54,22 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="top-bar">
-    <a href="index.html" class="logo">GetCarrieAI</a>
-  </div>
 
-  <h1>🏠 Household Manual</h1>
+<nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:680px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="index.html" style="font-weight:800;font-size:0.95rem;color:#8B2FC9;text-decoration:none;">GetCarrieAI</a>
+    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Back to kit</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8B2FC9;margin-bottom:16px;">GetCarrieAI</p>
+  <h1>Household Manual</h1>
   <p class="subtitle">Brain dump your executive's household — family, properties, vendors, medical contacts, important dates. Your AI will know the full picture so you can support them beyond the office.</p>
 
-  <div style="background:#f0f7ff;border:1px solid #d0e8ff;border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:0.84rem;color:#1e3a5f;line-height:1.6;">
-    <strong>Sensitive section.</strong> Only include details your executive has agreed to share, and use your company's approved AI platform. <a href="privacy.html" style="color:#0071e3;font-weight:600;">How your data is handled →</a>
+  <div style="background:#f3e8ff;border:1px solid #e9d5ff;border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:0.84rem;color:#4c1d95;line-height:1.6;">
+    <strong>Sensitive section.</strong> Only include details your executive has agreed to share, and use your company's approved AI platform. <a href="privacy.html" style="color:#8B2FC9;font-weight:600;">How your data is handled →</a>
   </div>
 
   <div class="card" id="input-card">
@@ -103,8 +106,13 @@
   </div>
 
   <div id="save-instructions" style="display:none;margin:16px 0;"></div>
-  <div class="back-link"><a href="index.html">← Back to GetCarrieAI</a></div>
 </div>
+
+<footer style="border-top:1px solid #e5e7eb;padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;margin-top:20px;">
+  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Back to kit</a> &nbsp;·&nbsp;
+  <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html" style="color:#8B2FC9;text-decoration:none;">Terms</a>
+</footer>
 
 <script>
   async function generatePrompt() {

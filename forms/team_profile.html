@@ -9,13 +9,13 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-      background: #f5f5f7;
+      background: #fff;
       color: #1d1d1f;
-      padding: 48px 20px 80px;
+      padding: 0 20px 80px;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container { max-width: 640px; margin: 0 auto; }
+    .container { max-width: 640px; margin: 0 auto; padding-top: 40px; }
 
     .page-header { margin-bottom: 32px; }
     .page-header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 10px; }
@@ -23,7 +23,7 @@
     .page-header .subtitle { font-size: 0.88rem; color: #6e6e73; margin-top: 6px; }
 
     .notice {
-      background: #f0f7ff;
+      background: #f3e8ff;
       border-radius: 16px;
       padding: 16px 20px;
       margin-bottom: 28px;
@@ -31,7 +31,7 @@
       color: #3d3d3f;
       line-height: 1.65;
     }
-    .notice strong { color: #0071e3; }
+    .notice strong { color: #8B2FC9; }
 
     .section {
       background: #fff;
@@ -61,7 +61,7 @@
       transition: border-color 0.2s;
       -webkit-appearance: none;
     }
-    input:focus, select:focus, textarea:focus { border-color: #0071e3; }
+    input:focus, select:focus, textarea:focus { border-color: #8B2FC9; }
     textarea { min-height: 72px; resize: none; line-height: 1.55; }
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
@@ -77,7 +77,7 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .chip.selected { border-color: #0071e3; background: #0071e3; color: #fff; }
+    .chip.selected { border-color: #8B2FC9; background: #8B2FC9; color: #fff; }
     .chip.selected.warn { border-color: #e3720b; background: #e3720b; }
     .chip.selected.flag { border-color: #ff3b30; background: #ff3b30; }
 
@@ -120,23 +120,23 @@
       width: 100%;
       font-size: 0.85rem;
       font-family: inherit;
-      color: #0071e3;
+      color: #8B2FC9;
       cursor: pointer;
       transition: all 0.15s;
     }
-    .add-btn:hover { border-color: #0071e3; background: #f0f7ff; }
+    .add-btn:hover { border-color: #8B2FC9; background: #f3e8ff; }
 
     /* Status colors */
     .status-on-track.selected { border-color: #34c759; background: #34c759; }
     .status-ramping.selected { border-color: #5856d6; background: #5856d6; }
     .status-attention.selected { border-color: #ff9500; background: #ff9500; }
-    .status-promotion.selected { border-color: #0071e3; background: #0071e3; }
+    .status-promotion.selected { border-color: #8B2FC9; background: #8B2FC9; }
     .status-concern.selected { border-color: #ff3b30; background: #ff3b30; }
 
     .btn-download {
       width: 100%;
       padding: 18px;
-      background: #0071e3;
+      background: #8B2FC9;
       color: #fff;
       border: none;
       border-radius: 14px;
@@ -146,7 +146,7 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .btn-download:hover { background: #0077ed; }
+    .btn-download:hover { background: #7a28b8; }
 
     .success-msg { display: none; text-align: center; padding: 40px 20px; }
     .success-msg .check {
@@ -159,7 +159,7 @@
     .success-msg h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
     .success-msg p { font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
     .success-msg .steps {
-      background: #f0f7ff;
+      background: #f3e8ff;
       border-radius: 14px;
       padding: 18px 20px;
       font-size: 0.85rem;
@@ -167,8 +167,8 @@
       line-height: 1.9;
       text-align: left;
     }
-    .success-msg .steps a { color: #0071e3; text-decoration: none; }
-    .back-link { display: block; text-align: center; color: #0071e3; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
+    .success-msg .steps a { color: #8B2FC9; text-decoration: none; }
+    .back-link { display: block; text-align: center; color: #8B2FC9; font-size: 0.88rem; text-decoration: none; margin-top: 20px; }
 
     @media (max-width: 600px) {
       body { padding: 40px 16px 80px; }
@@ -181,10 +181,19 @@
   </style>
 </head>
 <body>
+
+<nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;">
+  <div style="max-width:680px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="index.html" style="font-weight:800;font-size:0.95rem;color:#8B2FC9;text-decoration:none;">GetCarrieAI</a>
+    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Back to kit</a>
+  </div>
+</nav>
+
 <div class="container">
 
   <div class="page-header">
-    <h1>Team Profile 🗂️</h1>
+    <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8B2FC9;margin-bottom:16px;">GetCarrieAI</p>
+    <h1>Team Profile</h1>
     <p>Who reports to the exec, how they meet, what each person owns, and when review season hits. Fill this out once and your AI always has the full picture — no more hunting through notes before a 1:1.</p>
     <p class="subtitle">All fields are optional. Add as many or as few team members as useful.</p>
   </div>
@@ -396,7 +405,7 @@
   </div>
         <div style="background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
       <div id="save-instructions"></div>
-      <button onclick="copyToChat()" id="copyBtn" style="background:#0071e3; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
+      <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
       <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="travel_form.html" style="color:#8B2FC9;">Travel preferences →</a> &nbsp;·&nbsp; <a id="email-self" href="#" style="color:#8B2FC9;font-weight:500;">📧 Email to myself</a></p>
     </div>
     <div style="text-align:center; margin-top:16px; padding-top:16px; border-top:1px solid #e5e5ea;">
@@ -615,5 +624,12 @@
   }
 </script>
 <script src="save-instructions.js"></script>
+
+<footer style="border-top:1px solid #e5e7eb;padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;margin-top:20px;">
+  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Back to kit</a> &nbsp;·&nbsp;
+  <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
+  <a href="terms.html" style="color:#8B2FC9;text-decoration:none;">Terms</a>
+</footer>
+
 </body>
 </html>
