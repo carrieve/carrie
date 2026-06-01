@@ -258,21 +258,21 @@
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;">
   <div style="max-width:680px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;">
     <a href="index.html" style="font-weight:800;font-size:0.95rem;color:#8B2FC9;text-decoration:none;">GetCarrieAI</a>
-    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Back to kit</a>
+    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Home</a>
   </div>
 </nav>
 
 <div class="page-header">
   <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8B2FC9;margin-bottom:16px;">GetCarrieAI</p>
   <h1>Travel Preferences</h1>
-  <p class="subtitle" id="form-subtitle">Fill this out once — your AI will know your exec's travel preferences for every trip you book. Airlines, seats, hotels, loyalty numbers, all of it. All fields except name are optional.</p>
+  <p class="subtitle" id="form-subtitle">Fill in what you know. The more detail you add, the better your AI will handle bookings, loyalty numbers, and preferences without you having to repeat yourself.</p>
   <div class="notice" id="form-notice">
-    ✓ Your answers will be added to your EA briefing kit automatically. When you're done with all sections, copy your full briefing from the <a href="kit.html" style="color:#8B2FC9;">kit page</a>.
+    Hit <strong>Save & Copy Prompt</strong> at the bottom — then paste into your AI of choice. Takes 30 seconds.
   </div>
   <div id="copy-chat-section" style="display:none; background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
     <div id="save-instructions"></div>
-    <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
-    <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="food_form.html" style="color:#8B2FC9;">Food & coffee →</a> &nbsp;·&nbsp; <a id="email-self" href="#" style="color:#8B2FC9;font-weight:500;">📧 Email to myself</a></p>
+    <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9;color:#fff;border:none;border-radius:980px;padding:10px 20px;font-size:0.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:12px;">📋 Copy again</button>
+    <p style="margin-top:16px;font-size:0.84rem;color:#6b7280;">Want to add more context? <a href="executive_form.html" style="color:#8B2FC9;text-decoration:none;">Executive →</a> &nbsp;·&nbsp; <a href="team_profile.html" style="color:#8B2FC9;text-decoration:none;">Team →</a> &nbsp;·&nbsp; <a href="food_form.html" style="color:#8B2FC9;text-decoration:none;">Food & Coffee →</a> &nbsp;·&nbsp; <a href="family_profile.html" style="color:#8B2FC9;text-decoration:none;">Household →</a></p>
   </div>
 </div>
 
@@ -292,17 +292,11 @@
 })();
 
   function copyToChat() {
-    if (!window._lastProfile) return;
-    const text = JSON.stringify(window._lastProfile, null, 2);
-    localStorage.setItem('gcai_kit_travel', text);
-    const subj = encodeURIComponent('Travel Preferences — GetCarrieAI');
-    document.getElementById('email-self').href = `mailto:?subject=${subj}&body=${encodeURIComponent(text.substring(0, 1800))}`;
-    navigator.clipboard.writeText(text).then(() => {
+    if (!window._lastPrompt) return;
+    navigator.clipboard.writeText(window._lastPrompt).then(() => {
       const btn = document.getElementById('copyBtn');
-      const orig = btn.textContent;
-      btn.textContent = '✅ Copied & saved to your kit!';
-      document.getElementById('kit-nudge').style.display = 'block';
-      setTimeout(() => btn.textContent = orig, 3000);
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy again', 2000);
     });
   }
 </script>
@@ -649,7 +643,7 @@
   </div>
 
   <div class="submit-area">
-    <button type="submit" class="btn-submit">Save My Travel Profile</button>
+    <button type="submit" class="btn-submit">Save & Copy Prompt →</button>
   </div>
 
 </form>
@@ -690,6 +684,77 @@
     t.textContent = msg;
     t.className = `toast ${type} visible`;
     setTimeout(() => t.className = 'toast', 7000);
+  }
+
+  function buildPrompt(data) {
+    function line(label, val) { return val ? `${label}: ${val}\n` : ''; }
+    function arr(label, val) { return (val && val.length) ? `${label}: ${val.join(', ')}\n` : ''; }
+    let t = `## Travel Preferences\n\n`;
+    t += line('Executive', data.name);
+    t += line('Preferred name', data.preferred_name);
+    t += line('Home airport(s)', data.home_airports);
+    if ([data.passport_country,data.passport_expiry,data.dob,data.ktn,data.clear_id,data.emergency_contact_name].some(Boolean) || data.trusted_traveler?.length) {
+      t += `\n### Travel Documents\n`;
+      t += line('Passport country', data.passport_country);
+      t += line('Passport expiry', data.passport_expiry);
+      t += line('Date of birth', data.dob);
+      t += line('Gender (as on passport)', data.gender === 'M' ? 'Male' : data.gender === 'F' ? 'Female' : data.gender);
+      t += arr('Trusted traveler programs', data.trusted_traveler);
+      t += line('Known Traveler Number (KTN)', data.ktn);
+      t += line('CLEAR ID', data.clear_id);
+      if (data.emergency_contact_name) t += `Emergency contact: ${data.emergency_contact_name}${data.emergency_contact_phone ? ', ' + data.emergency_contact_phone : ''}\n`;
+    }
+    if ([data.preferred_airlines,data.avoided_airlines,data.seat_pref,data.class_pref,data.routing_pref,data.min_connection,data.meal_pref].some(Boolean) || data.frequent_flyer?.filter(f=>f.airline).length) {
+      t += `\n### Air Travel\n`;
+      t += line('Preferred airlines', data.preferred_airlines);
+      t += line('Airlines to avoid', data.avoided_airlines);
+      t += line('Seat preference', data.seat_pref);
+      t += line('Class of service', data.class_pref);
+      t += line('Class notes', data.class_notes);
+      t += line('Routing', data.routing_pref);
+      t += line('Min connection time', data.min_connection);
+      t += line('In-flight meal', data.meal_pref);
+      if (data.frequent_flyer?.filter(f=>f.airline).length) {
+        t += 'Frequent flyer:\n';
+        data.frequent_flyer.filter(f=>f.airline).forEach(f => { t += `  ${f.airline}: ${f.number||'—'}\n`; });
+      }
+    }
+    if ([data.preferred_hotels,data.avoided_hotels,data.bed_pref,data.floor_pref,data.hotel_location,data.hotel_notes].some(Boolean) || data.hotel_loyalty?.filter(h=>h.chain).length) {
+      t += `\n### Hotels\n`;
+      t += line('Preferred chains', data.preferred_hotels);
+      t += line('Chains to avoid', data.avoided_hotels);
+      t += line('Bed type', data.bed_pref);
+      t += line('Floor preference', data.floor_pref);
+      t += line('Location preference', data.hotel_location);
+      t += line('Smoking', data.smoking_pref);
+      t += arr('Desired amenities', data.hotel_amenities);
+      if (data.hotel_loyalty?.filter(h=>h.chain).length) {
+        t += 'Hotel loyalty:\n';
+        data.hotel_loyalty.filter(h=>h.chain).forEach(h => { t += `  ${h.chain}: ${h.number||'—'}\n`; });
+      }
+      t += line('Hotel notes', data.hotel_notes);
+    }
+    if ([data.ground_pref,data.rental_car_company,data.car_service_pref,data.ground_notes].some(Boolean)) {
+      t += `\n### Ground Transport\n`;
+      t += line('Preferred transport', data.ground_pref);
+      t += line('Rental car company', data.rental_car_company);
+      t += line('Rental car loyalty', data.rental_car_loyalty);
+      t += line('Car type', data.car_type_pref);
+      t += line('Car service', data.car_service_pref);
+      t += line('Ground notes', data.ground_notes);
+    }
+    if (data.dietary_restrictions?.length || data.food_allergies || data.food_notes) {
+      t += `\n### Food & Dietary\n`;
+      t += arr('Dietary restrictions', data.dietary_restrictions);
+      t += line('Food allergies', data.food_allergies);
+      t += line('Food notes', data.food_notes);
+    }
+    if (data.medical_notes || data.additional_notes) {
+      t += `\n### Additional Notes\n`;
+      t += line('Medical/accessibility', data.medical_notes);
+      t += line('Other notes', data.additional_notes);
+    }
+    return t.trim();
   }
 
   document.getElementById('travel-form').addEventListener('submit', async (e) => {
@@ -735,34 +800,19 @@
 
     data.updated_at = new Date().toISOString();
 
-    const _download = () => {
-      window._lastProfile = data;
-      localStorage.setItem('gcai_kit_travel', JSON.stringify(data, null, 2));
-      document.getElementById('copy-chat-section').style.display = 'block';
-      window.scrollTo({ top: document.getElementById('copy-chat-section').offsetTop - 20, behavior: 'smooth' });
-      showToast('Travel profile saved to your kit!', 'success');
-    };
-
-    try {
-      const res = await fetch('/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
-        _download();
-      } else {
-        _download();
-      }
-    } catch {
-      _download();
-    }
+    const prompt = buildPrompt(data);
+    localStorage.setItem('gcai_kit_travel', prompt);
+    window._lastPrompt = prompt;
+    navigator.clipboard.writeText(prompt).catch(() => {});
+    document.getElementById('copy-chat-section').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('copy-chat-section').offsetTop - 20, behavior: 'smooth' });
+    showToast('Copied to clipboard!', 'success');
   });
 </script>
 <script src="save-instructions.js"></script>
 
 <footer style="border-top:1px solid #e5e7eb;padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;margin-top:20px;">
-  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Back to kit</a> &nbsp;·&nbsp;
+  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Home</a> &nbsp;·&nbsp;
   <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
   <a href="terms.html" style="color:#8B2FC9;text-decoration:none;">Terms</a>
 </footer>

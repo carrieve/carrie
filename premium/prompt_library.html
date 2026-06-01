@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GetCarrieAI — Prompt Library</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #1d1d1f;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 48px 80px;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Cover */
+    .cover {
+      text-align: center;
+      padding: 60px 0 80px;
+      border-bottom: 1px solid #e5e5ea;
+      margin-bottom: 60px;
+    }
+    .cover-badge {
+      display: inline-block;
+      background: #f0f7ff;
+      color: #0071e3;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 980px;
+      padding: 6px 16px;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .cover p {
+      font-size: 1rem;
+      color: #6e6e73;
+      max-width: 440px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+    .cover-meta { font-size: 0.82rem; color: #aeaeb2; }
+    .cover-meta a { color: #0071e3; text-decoration: none; }
+
+    /* Section */
+    .section { margin-bottom: 56px; }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aeaeb2;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 0.875rem;
+      color: #6e6e73;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5ea;
+    }
+
+    /* Prompt cards */
+    .prompts { display: flex; flex-direction: column; gap: 10px; }
+    .prompt-card {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .prompt-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1d1d1f;
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+    .prompt-note {
+      font-size: 0.78rem;
+      color: #6e6e73;
+      line-height: 1.5;
+    }
+    .prompt-fill {
+      color: #0071e3;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* How to use box */
+    .how-box {
+      background: #f0f7ff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 56px;
+    }
+    .how-box h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; }
+    .how-box p { font-size: 0.875rem; color: #3d3d3f; line-height: 1.65; }
+    .how-box p + p { margin-top: 10px; }
+
+    a { color: #0071e3; text-decoration: none; }
+
+    @media print {
+      body { padding: 40px 32px; }
+      .cover { padding: 40px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-badge">GetCarrieAI — Premium Pack</div>
+    <h1>Prompt Library 💬</h1>
+    <p>30 copy-paste prompts for travel, food, scheduling, and admin — organized by what you're trying to do. Use these inside your Claude Project.</p>
+    <div class="cover-meta">Built by <a href="https://getcarrieai.com">getcarrieai.com</a></div>
+  </div>
+
+  <!-- How to use -->
+  <div class="how-box">
+    <h3>How to use this library</h3>
+    <p>Copy any prompt, open Claude inside your Project (not a regular chat — your Project), and paste it in. Replace anything in <span style="color:#0071e3; font-weight:600;">[brackets]</span> with your actual details.</p>
+    <p>Claude already knows your preferences from your uploaded profile — these prompts tell it what to do with them.</p>
+  </div>
+
+  <!-- Travel -->
+  <div class="section">
+    <p class="section-label">Travel</p>
+    <p class="section-title">✈️ Flights & Airports</p>
+    <p class="section-sub">Use these when you're planning a trip or need to look something up fast.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"What are my flight preferences?"</p>
+        <p class="prompt-note">Gets Claude to read your profile and summarize your airline, seat, and class preferences in one shot.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Find me a nonstop flight from <span class="prompt-fill">[city]</span> to <span class="prompt-fill">[city]</span> on <span class="prompt-fill">[date]</span> — use my preferences."</p>
+        <p class="prompt-note">Claude will reference your preferred airline, seat, and class and search accordingly.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What's my TSA PreCheck number?"</p>
+        <p class="prompt-note">Instant lookup from your profile. No digging through emails.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What's my frequent flyer number for <span class="prompt-fill">[airline]</span>?"</p>
+        <p class="prompt-note">Works for any airline you've added to your profile.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"I'm flying to <span class="prompt-fill">[city]</span> next <span class="prompt-fill">[day]</span>. What do I need to know or prep?"</p>
+        <p class="prompt-note">Claude will remind you of your preferences and help you think through logistics.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hotels -->
+  <div class="section">
+    <p class="section-label">Travel</p>
+    <p class="section-title">🏨 Hotels</p>
+    <p class="section-sub">Look up loyalty info or get hotel recommendations in seconds.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"What hotel chain do I prefer and what's my loyalty number?"</p>
+        <p class="prompt-note">Quick reference for when you're booking at the front desk or on the phone.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Find a <span class="prompt-fill">[Marriott / Hilton / Hyatt]</span> in <span class="prompt-fill">[city]</span> for <span class="prompt-fill">[check-in date]</span> to <span class="prompt-fill">[check-out date]</span>."</p>
+        <p class="prompt-note">Claude will use your loyalty program and room preferences from your profile.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What are my hotel room preferences?"</p>
+        <p class="prompt-note">Pulls your bed type, floor preference, and any room notes from your profile.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"I'm checking into a hotel. What should I ask for at the front desk based on my preferences?"</p>
+        <p class="prompt-note">Great for when you're standing at check-in and want to make sure you don't forget anything.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Food & Coffee -->
+  <div class="section">
+    <p class="section-label">Food & Coffee</p>
+    <p class="section-title">☕ Orders & Restaurants</p>
+    <p class="section-sub">Never explain your order again.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"What's my usual coffee order?"</p>
+        <p class="prompt-note">Fast lookup. Perfect for when someone else is making a coffee run.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What are my dietary restrictions?"</p>
+        <p class="prompt-note">Instant answer for restaurant menus, catering forms, or travel situations.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Find a good <span class="prompt-fill">[cuisine]</span> restaurant near <span class="prompt-fill">[location]</span> that works for my dietary needs."</p>
+        <p class="prompt-note">Claude will factor in your restrictions and preferences when searching.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"I'm ordering from <span class="prompt-fill">[restaurant]</span>. What should I get based on my usual preferences?"</p>
+        <p class="prompt-note">Good for unfamiliar menus when you want a recommendation that fits your taste.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What's my delivery address?"</p>
+        <p class="prompt-note">Pulls your saved delivery address from your food profile.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scheduling & Comms -->
+  <div class="section">
+    <p class="section-label">Scheduling & Communications</p>
+    <p class="section-title">📅 Calendar & Email</p>
+    <p class="section-sub">Draft faster. Schedule smarter.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"Schedule a <span class="prompt-fill">[30 / 60]</span>-minute meeting with <span class="prompt-fill">[name]</span> next week. My availability is <span class="prompt-fill">[times]</span>."</p>
+        <p class="prompt-note">Claude can draft the invite or suggest times and write the outreach message.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Draft a follow-up email to <span class="prompt-fill">[name]</span> after our meeting today. We discussed: <span class="prompt-fill">[topic]</span>. Action items: <span class="prompt-fill">[list]</span>."</p>
+        <p class="prompt-note">Claude writes it in a professional, warm tone — ready to copy and send.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Process these meeting notes and give me action items: <span class="prompt-fill">[paste notes]</span>"</p>
+        <p class="prompt-note">Claude extracts who's doing what and by when. Works with rough notes or full transcripts.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Draft a professional email declining this meeting: <span class="prompt-fill">[paste invite]</span>"</p>
+        <p class="prompt-note">Warm, concise, no awkward wording. Just paste the invite and Claude handles the reply.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Write a thank-you email to <span class="prompt-fill">[name]</span> after <span class="prompt-fill">[context]</span>."</p>
+        <p class="prompt-note">Claude keeps it genuine and specific — not a generic template.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EA-specific -->
+  <div class="section">
+    <p class="section-label">For Executive Assistants</p>
+    <p class="section-title">💼 Supporting Executives</p>
+    <p class="section-sub">If you've uploaded profiles for multiple travelers, use their name in the prompt and Claude will pull the right one.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"What are <span class="prompt-fill">[name]</span>'s travel preferences?"</p>
+        <p class="prompt-note">Full summary of their airline, seat, hotel, loyalty programs — everything in one go.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What's <span class="prompt-fill">[name]</span>'s TSA PreCheck or Global Entry number?"</p>
+        <p class="prompt-note">Instant lookup while you're on the phone with an airline or filling out a booking form.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What hotel does <span class="prompt-fill">[name]</span> prefer? What's their loyalty number?"</p>
+        <p class="prompt-note">Never ask the same question twice.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Book a flight for <span class="prompt-fill">[name]</span> to <span class="prompt-fill">[city]</span> on <span class="prompt-fill">[date]</span>. Use their preferences."</p>
+        <p class="prompt-note">Claude will pull their profile and walk you through the search with their preferences applied.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Does <span class="prompt-fill">[name]</span> have any dietary restrictions I should know about for this event?"</p>
+        <p class="prompt-note">Great before catering orders, restaurant bookings, or team events.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Small Business -->
+  <div class="section">
+    <p class="section-label">Small Business Owners</p>
+    <p class="section-title">🏪 Admin & Client Communication</p>
+    <p class="section-sub">Once your business profile is uploaded, Claude knows your context — use these to move faster.</p>
+    <div class="prompts">
+      <div class="prompt-card">
+        <p class="prompt-text">"Draft a quote email to <span class="prompt-fill">[client name]</span> for <span class="prompt-fill">[service]</span> at <span class="prompt-fill">[price]</span>."</p>
+        <p class="prompt-note">Claude writes it in your voice and tone based on your business profile.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Write a follow-up to a client who hasn't responded in <span class="prompt-fill">[X]</span> days."</p>
+        <p class="prompt-note">Friendly but professional. Not pushy. Ready to send.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Help me respond to this client complaint: <span class="prompt-fill">[paste message]</span>"</p>
+        <p class="prompt-note">Claude de-escalates and drafts a response that protects the relationship.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"Draft a weekly update email to my clients about <span class="prompt-fill">[topic or project]</span>."</p>
+        <p class="prompt-note">Claude knows your business context and keeps the tone consistent.</p>
+      </div>
+      <div class="prompt-card">
+        <p class="prompt-text">"What are my biggest admin time drains, and how can Claude help with each one?"</p>
+        <p class="prompt-note">Start here if you're not sure where to begin. Claude will read your profile and suggest where it can take things off your plate.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #e5e5ea; text-align: center; color: #aeaeb2; font-size: 0.8rem;">
+    GetCarrieAI &nbsp;·&nbsp; <a href="https://getcarrieai.com">getcarrieai.com</a> &nbsp;·&nbsp; Built by a career EA who needed this to exist.
+  </div>
+
+</body>
+</html>

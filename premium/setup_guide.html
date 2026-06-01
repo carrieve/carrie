@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GetCarrieAI — Setup Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #1d1d1f;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 48px 80px;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Cover */
+    .cover {
+      text-align: center;
+      padding: 60px 0 80px;
+      border-bottom: 1px solid #e5e5ea;
+      margin-bottom: 60px;
+    }
+    .cover-badge {
+      display: inline-block;
+      background: #f0f7ff;
+      color: #0071e3;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 980px;
+      padding: 6px 16px;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .cover p {
+      font-size: 1rem;
+      color: #6e6e73;
+      max-width: 440px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+    .cover-meta {
+      font-size: 0.82rem;
+      color: #aeaeb2;
+    }
+    .cover-meta a { color: #0071e3; text-decoration: none; }
+
+    /* Section headings */
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      color: #1d1d1f;
+    }
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1d1d1f;
+    }
+
+    /* Steps */
+    .step-block {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 48px;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: #0071e3;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; }
+    .step-content h2 { margin-bottom: 8px; }
+    .step-content p { color: #3d3d3f; margin-bottom: 12px; }
+    .step-content p:last-child { margin-bottom: 0; }
+
+    /* Tip boxes */
+    .tip {
+      background: #f0f7ff;
+      border-left: 3px solid #0071e3;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      color: #3d3d3f;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+    .tip strong { color: #0071e3; }
+
+    /* Code / prompt blocks */
+    .prompt-block {
+      background: #f5f5f7;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #1d1d1f;
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+
+    /* Section divider */
+    .section-header {
+      margin-bottom: 36px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5ea;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aeaeb2;
+      margin-bottom: 6px;
+    }
+
+    /* What's included box */
+    .included-box {
+      background: #f5f5f7;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 60px;
+    }
+    .included-box h3 { font-size: 1rem; margin-bottom: 16px; }
+    .included-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .included-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #3d3d3f;
+    }
+    .included-list li::before {
+      content: "✓";
+      color: #34c759;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* System prompt */
+    .system-prompt {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      border-radius: 14px;
+      padding: 24px 28px;
+      font-size: 0.85rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      line-height: 1.7;
+      margin-top: 16px;
+      white-space: pre-wrap;
+    }
+
+    /* Link */
+    a { color: #0071e3; text-decoration: none; }
+
+    /* Print */
+    @media print {
+      body { padding: 40px 32px; }
+      .cover { padding: 40px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-badge">GetCarrieAI — Premium Pack</div>
+    <h1>Setup Guide ✈️☕</h1>
+    <p>Get your Claude Project running in under 10 minutes. By the end of this guide, Claude will know your preferences — and you'll never have to repeat yourself again.</p>
+    <div class="cover-meta">Built by <a href="https://getcarrieai.com">getcarrieai.com</a> &nbsp;·&nbsp; Questions? carrie@getcarrieai.com</div>
+  </div>
+
+  <!-- What's included -->
+  <div class="included-box">
+    <h3>What's in this pack</h3>
+    <ul class="included-list">
+      <li>This setup guide — step by step, no technical experience needed</li>
+      <li>Prompt Library PDF — 30 copy-paste prompts organized by use case</li>
+      <li>Free profile forms at getcarrieai.com — Quick, Travel, Food, and Business</li>
+      <li>Recommended Claude Project system prompt — paste it in and Claude is ready</li>
+    </ul>
+  </div>
+
+  <!-- Steps -->
+  <div class="section-header">
+    <p class="section-label">The Setup</p>
+    <h2>Five steps to get Claude working for you</h2>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h2>Fill out your profile</h2>
+      <p>Go to <a href="https://getcarrieai.com">getcarrieai.com</a> and fill out one or more forms. Start with the Quick Profile — it takes 2 minutes and covers the essentials: name, airline, hotel, coffee, food.</p>
+      <p>If you travel frequently, fill out the full Travel Preferences form too. If you run a small business, add the Business Profile. Each form downloads a small JSON file when you're done — that's your profile.</p>
+      <div class="tip"><strong>Tip:</strong> Fill out all the forms that apply to you. The more Claude knows upfront, the less you ever have to explain.</div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h2>Create a free Claude account</h2>
+      <p>Go to <a href="https://claude.ai">claude.ai</a> and sign up for free. You just need an email address.</p>
+      <p>The free plan works for basic use. If you want Claude to help with browser-based tasks (searching flights, looking up hotels), upgrade to Claude Pro for $20/month — but start free and see if you love it first.</p>
+      <div class="tip"><strong>Free plan is enough</strong> for: looking up your preferences, drafting emails, processing meeting notes, getting recommendations. Claude Pro adds hands-on browser automation.</div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h2>Create a Claude Project</h2>
+      <p>Once you're logged in to claude.ai:</p>
+      <p><strong>On desktop:</strong> Look for "Projects" in the left sidebar → click "New Project" → give it a name like "My EA Assistant" or "Travel + Preferences."</p>
+      <p><strong>On mobile (iPhone/Android):</strong> Open the Claude app → tap the menu icon → tap "Projects" → tap "New Project."</p>
+      <div class="tip"><strong>What is a Project?</strong> A Claude Project is a persistent workspace. Any files you upload and any instructions you add stay with every conversation in that project — Claude always has the context.</div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <h2>Upload your profile files</h2>
+      <p>Inside your new project, look for a paperclip or "Add files" option. Upload the JSON file(s) you downloaded in Step 1.</p>
+      <p>You can upload multiple files — one for travel, one for food, one for business. Claude reads all of them.</p>
+      <div class="tip"><strong>Update anytime:</strong> If your preferences change, just fill out the form again on getcarrieai.com and re-upload the new file. Delete the old one from the project.</div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <h2>Add your project instructions</h2>
+      <p>In your project settings, find "Project Instructions" or "System Prompt." This tells Claude how to behave in every conversation. Copy and paste the prompt below — customize the name and details to match yours:</p>
+      <div class="system-prompt">You are my personal AI executive assistant. My preference profile is uploaded in this project — always reference it before making recommendations or bookings.
+
+My name is [YOUR NAME]. I am based in [YOUR CITY].
+
+How to help me:
+- Look up my preferences before suggesting anything (flights, hotels, food, etc.)
+- Be concise — I'm busy. Bullet points where possible.
+- When I ask about bookings, walk me through my options based on my preferences.
+- When I ask "what's my [X]", look it up from my profile and tell me directly.
+- Draft emails and messages in a professional but warm tone.
+- If you're not sure about something, ask — don't guess.
+
+Always feel free to say "I don't see that in your profile — want to add it?"</div>
+      <div class="tip"><strong>That's it.</strong> Claude is now set up and ready. Start a new conversation inside the project and try one of the prompts from your Prompt Library.</div>
+    </div>
+  </div>
+
+  <!-- First prompts to try -->
+  <div class="section-header" style="margin-top: 20px;">
+    <p class="section-label">Start Here</p>
+    <h2>First 3 prompts to try right now</h2>
+  </div>
+
+  <p style="color: #3d3d3f; margin-bottom: 20px;">Open a conversation inside your Claude Project and try these to confirm everything is working:</p>
+
+  <div class="prompt-block">"What are my travel preferences?"</div>
+  <div class="prompt-block" style="margin-top: 10px;">"What's my coffee order?"</div>
+  <div class="prompt-block" style="margin-top: 10px;">"What hotel loyalty program do I use and what's my number?"</div>
+
+  <div class="tip" style="margin-top: 20px;">Claude should answer all three directly from your profile — no searching, no guessing. If it doesn't, double-check that your JSON file is uploaded in the project and the conversation is happening inside the project (not a regular chat).</div>
+
+  <!-- Footer -->
+  <div style="margin-top: 72px; padding-top: 24px; border-top: 1px solid #e5e5ea; text-align: center; color: #aeaeb2; font-size: 0.8rem;">
+    GetCarrieAI &nbsp;·&nbsp; <a href="https://getcarrieai.com">getcarrieai.com</a> &nbsp;·&nbsp; Built by a career EA who needed this to exist.
+  </div>
+
+</body>
+</html>

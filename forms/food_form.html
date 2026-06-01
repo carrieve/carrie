@@ -236,16 +236,16 @@
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;">
   <div style="max-width:680px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;">
     <a href="index.html" style="font-weight:800;font-size:0.95rem;color:#8B2FC9;text-decoration:none;">GetCarrieAI</a>
-    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Back to kit</a>
+    <a href="kit.html" style="font-size:0.82rem;color:#6b7280;text-decoration:none;">← Home</a>
   </div>
 </nav>
 
 <div class="page-header">
   <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8B2FC9;margin-bottom:16px;">GetCarrieAI</p>
   <h1>Food &amp; Coffee</h1>
-  <p class="subtitle" id="form-subtitle">Fill this out once — your AI will know your exec's coffee order, dietary restrictions, and favorite spots without you having to repeat it every time.</p>
+  <p class="subtitle" id="form-subtitle">Fill in what you know. The more detail you add, the better your AI will handle orders, restrictions, and recommendations without you having to repeat yourself.</p>
   <div class="notice" id="form-notice">
-    ✓ Your answers will be added to your EA briefing kit automatically. When you're done with all sections, copy your full briefing from the <a href="kit.html" style="color:#8B2FC9;">kit page</a>.
+    Hit <strong>Save & Copy Prompt</strong> at the bottom — then paste into your AI of choice. Takes 30 seconds.
   </div>
 </div>
 
@@ -258,16 +258,12 @@
   }
 })();
 
-  function copyToChat() {
-    if (!window._lastProfile) return;
-    const text = JSON.stringify(window._lastProfile, null, 2);
-    localStorage.setItem('gcai_kit_food', text);
-    navigator.clipboard.writeText(text).then(() => {
+  function copyAgain() {
+    if (!window._lastPrompt) return;
+    navigator.clipboard.writeText(window._lastPrompt).then(() => {
       const btn = document.getElementById('copyBtn');
-      const orig = btn.textContent;
-      btn.textContent = '✅ Copied & saved to your kit!';
-      document.getElementById('kit-nudge').style.display = 'block';
-      setTimeout(() => btn.textContent = orig, 3000);
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy again', 2000);
     });
   }
 </script>
@@ -576,14 +572,18 @@
   </div>
 
   <div class="submit-area">
-    <button type="submit" class="btn-submit">Save My Food Profile</button>
+    <button type="submit" class="btn-submit">Save & Copy Prompt →</button>
   </div>
 
 </form>
 
 <div class="toast" id="toast"></div>
-<div id="save-instructions" style="display:none;margin-top:16px;"></div>
-<p id="kit-nudge" style="display:none;text-align:center;margin-top:16px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="family_profile.html" style="color:#8B2FC9;">Household manual →</a> &nbsp;·&nbsp; <a id="email-self" href="#" style="color:#8B2FC9;font-weight:500;">📧 Email to myself</a></p>
+<div id="success-state" style="display:none;background:#f3e8ff;border:1px solid #e9d5ff;border-radius:14px;padding:20px;margin-top:16px;">
+  <p style="font-weight:700;color:#111;margin-bottom:12px;">✓ Copied to clipboard!</p>
+  <div id="save-instructions"></div>
+  <button onclick="copyAgain()" id="copyBtn" style="background:#8B2FC9;color:#fff;border:none;border-radius:980px;padding:10px 20px;font-size:0.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:12px;">📋 Copy again</button>
+  <p style="margin-top:16px;font-size:0.84rem;color:#6b7280;">Want to add more context? <a href="executive_form.html" style="color:#8B2FC9;text-decoration:none;">Executive →</a> &nbsp;·&nbsp; <a href="team_profile.html" style="color:#8B2FC9;text-decoration:none;">Team →</a> &nbsp;·&nbsp; <a href="travel_form.html" style="color:#8B2FC9;text-decoration:none;">Travel →</a> &nbsp;·&nbsp; <a href="family_profile.html" style="color:#8B2FC9;text-decoration:none;">Household →</a></p>
+</div>
 
 <script>
   function addRestaurantRow() {
@@ -607,6 +607,74 @@
     t.textContent = msg;
     t.className = `toast ${type} visible`;
     setTimeout(() => t.className = 'toast', 7000);
+  }
+
+  function buildPrompt(data) {
+    function line(label, val) { return val ? `${label}: ${val}\n` : ''; }
+    function arr(label, val) { return (val && val.length) ? `${label}: ${val.join(', ')}\n` : ''; }
+    let t = `## Food & Coffee Preferences\n\n`;
+    if ([data.coffee_chain,data.coffee_order,data.milk_pref,data.sweetener,data.coffee_size,data.coffee_temp].some(Boolean)) {
+      t += `### Coffee Order\n`;
+      t += line('Preferred chain', data.coffee_chain);
+      t += line('Backup chain', data.coffee_chain_backup);
+      t += line('Usual order', data.coffee_order);
+      t += line('Size', data.coffee_size);
+      t += line('Temperature', data.coffee_temp);
+      t += line('Milk', data.milk_pref);
+      t += line('Sweetener', data.sweetener);
+      t += line('Syrups', data.coffee_syrups);
+      t += line('Espresso shots', data.coffee_shots);
+      t += line('Foam', data.coffee_foam);
+      t += line('Ice', data.coffee_ice);
+      t += line('Whipped cream', data.coffee_whip);
+      t += line('Exact temperature', data.coffee_exact_temp);
+      t += line('Other customizations', data.coffee_custom);
+      t += line('Backup order', data.coffee_backup_order);
+    }
+    if (data.other_drinks || data.drinks_avoid) {
+      t += `\n### Other Drinks\n`;
+      t += line('Non-coffee drinks', data.other_drinks);
+      t += line('Never order', data.drinks_avoid);
+    }
+    if (data.dietary_restrictions?.length || data.food_allergies || data.fav_cuisines || data.spice_level || data.foods_avoid) {
+      t += `\n### Dietary\n`;
+      t += arr('Dietary restrictions', data.dietary_restrictions);
+      t += line('Food allergies', data.food_allergies);
+      t += line('Favorite cuisines', data.fav_cuisines);
+      t += line('Cuisines to avoid', data.avoid_cuisines);
+      t += line('Spice tolerance', data.spice_level);
+      t += line('Foods to never order', data.foods_avoid);
+    }
+    if (data.favorite_restaurants?.filter(r=>r.name).length || data.restaurants_avoid || data.meal_notes) {
+      t += `\n### Restaurants\n`;
+      if (data.favorite_restaurants?.filter(r=>r.name).length) {
+        t += 'Favorite restaurants:\n';
+        data.favorite_restaurants.filter(r=>r.name).forEach(r => { t += `  ${r.name}${r.usual_order ? ' — usual: ' + r.usual_order : ''}\n`; });
+      }
+      t += line('Restaurants to avoid', data.restaurants_avoid);
+      t += line('Meal notes', data.meal_notes);
+    }
+    if ([data.snacks_salty,data.snacks_sweet,data.fav_drinks,data.fav_brands,data.staples,data.grocery_avoid].some(Boolean)) {
+      t += `\n### Snacks & Groceries\n`;
+      t += line('Salty snacks', data.snacks_salty);
+      t += line('Sweet snacks', data.snacks_sweet);
+      t += line('Favorite drinks', data.fav_drinks);
+      t += line('Favorite brands', data.fav_brands);
+      t += line('Staples to keep on hand', data.staples);
+      t += line('Never order', data.grocery_avoid);
+    }
+    if ([data.address_home,data.address_office,data.meal_budget,data.coffee_budget,data.delivery_timing].some(Boolean)) {
+      t += `\n### Delivery Details\n`;
+      t += line('Home address', data.address_home);
+      t += line('Home delivery instructions', data.instructions_home);
+      t += line('Office address', data.address_office);
+      t += line('Office delivery instructions', data.instructions_office);
+      t += line('Meal budget', data.meal_budget);
+      t += line('Coffee budget', data.coffee_budget);
+      t += line('Delivery timing', data.delivery_timing);
+    }
+    if (data.additional_notes) t += `\n### Notes\n${data.additional_notes}\n`;
+    return t.trim();
   }
 
   document.getElementById('food-form').addEventListener('submit', async (e) => {
@@ -638,44 +706,19 @@
 
     data.updated_at = new Date().toISOString();
 
-    const _download = () => {
-      window._lastProfile = data;
-      localStorage.setItem('gcai_kit_food', JSON.stringify(data, null, 2));
-      const subj = encodeURIComponent('Food & Coffee Profile — GetCarrieAI');
-      document.getElementById('email-self').href = `mailto:?subject=${subj}&body=${encodeURIComponent(JSON.stringify(data, null, 2).substring(0, 1800))}`;
-      document.getElementById('kit-nudge').style.display = 'block';
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const displayName = data.preferred_name || (data.name || 'person').split(' ')[0];
-      const safeName = displayName.toLowerCase().replace(/\s+/g, '_');
-      a.href = url;
-      a.download = `${safeName}_food_profile.json`;
-      a.click();
-      showToast(`Downloaded! Please email ${safeName}_food_profile.json to your coordinator.`, 'success');
-    };
-
-    try {
-      const res = await fetch('/food/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
-        showToast('Food profile saved!', 'success');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        _download();
-      }
-    } catch {
-      _download();
-    }
+    const prompt = buildPrompt(data);
+    localStorage.setItem('gcai_kit_food', prompt);
+    window._lastPrompt = prompt;
+    navigator.clipboard.writeText(prompt).catch(() => {});
+    document.getElementById('success-state').style.display = 'block';
+    showToast('Copied to clipboard!', 'success');
+    window.scrollTo({ top: document.getElementById('success-state').offsetTop - 20, behavior: 'smooth' });
   });
 </script>
 <script src="save-instructions.js"></script>
 
 <footer style="border-top:1px solid #e5e7eb;padding:32px 24px;text-align:center;font-size:0.82rem;color:#9ca3af;margin-top:20px;">
-  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Back to kit</a> &nbsp;·&nbsp;
+  <a href="kit.html" style="color:#8B2FC9;text-decoration:none;">← Home</a> &nbsp;·&nbsp;
   <a href="privacy.html" style="color:#8B2FC9;text-decoration:none;">Privacy</a> &nbsp;·&nbsp;
   <a href="terms.html" style="color:#8B2FC9;text-decoration:none;">Terms</a>
 </footer>
