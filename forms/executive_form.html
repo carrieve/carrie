@@ -511,7 +511,7 @@
     </div>
     <a href="kit.html" class="back-link">← Back to briefing kit</a>
   </div>
-        <div style="background:#f0f7ff; border:1px solid #e9d5ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
+        <div id="copy-section" style="display:none;background:#f3e8ff;border:1px solid #e9d5ff;border-radius:14px;padding:18px 20px;margin-top:14px;text-align:left;">
       <div id="save-instructions"></div>
       <p style="font-size:0.84rem;font-weight:700;margin-bottom:8px;">Step 2 — Copy your prompt</p>
       <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9; color:#fff; border:none; border-radius:980px; padding:12px 24px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit;">📋 Copy prompt</button>
@@ -608,6 +608,7 @@
     // Show success
     document.getElementById('exec-form').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('copy-section').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 

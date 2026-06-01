@@ -403,7 +403,7 @@
     </div>
     <a href="kit.html" class="back-link">← Back to briefing kit</a>
   </div>
-        <div style="background:#f0f7ff; border:1px solid #d0e8ff; border-radius:14px; padding:18px 20px; margin-top:14px; text-align:left;">
+        <div id="copy-section" style="display:none;background:#f3e8ff;border:1px solid #e9d5ff;border-radius:14px;padding:18px 20px;margin-top:14px;text-align:left;">
       <div id="save-instructions"></div>
       <button onclick="copyToChat()" id="copyBtn" style="background:#8B2FC9; color:#fff; border:none; border-radius:980px; padding:10px 20px; font-size:0.84rem; font-weight:600; cursor:pointer; font-family:inherit;">📋 Copy to paste into chat</button>
       <p id="kit-nudge" style="display:none;margin-top:12px;font-size:0.88rem;font-weight:600;color:#8B2FC9;">✓ Saved — Next up: <a href="travel_form.html" style="color:#8B2FC9;">Travel preferences →</a> &nbsp;·&nbsp; <a id="email-self" href="#" style="color:#8B2FC9;font-weight:500;">📧 Email to myself</a></p>
@@ -605,6 +605,7 @@
 
     document.getElementById('team-form').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('copy-section').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
